@@ -1,7 +1,7 @@
 {
-  "name": "r3f-sandbox-4",
+  "name": "r3f-sandbox-5",
   "version": "1.0.0",
-  "homepage": "https://evandaley.github.io/r3f-sandbox-4/",
+  "homepage": "https://evandaley.github.io/r3f-sandbox-5/",
   "main": "src/index.js",
   "dependencies": {
     "@pmndrs/branding": "0.0.8",

@@ -25,7 +25,7 @@ export default function SceneSwitcher() {
             pointerEvents: 'auto',
         }}>
             <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>
-                HOST CONTROLS
+                SCENE CONTROLS
             </div>
             <div style={{ marginBottom: '4px' }}>
                 Current Scene: {currentSceneId}
