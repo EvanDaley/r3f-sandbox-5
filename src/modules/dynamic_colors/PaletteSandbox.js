@@ -2,9 +2,8 @@
 import SimpleLighting from "../../components/environment/SimpleLighting"
 import PaletteTest1 from "./objects/PaletteTest1"
 import { usePaletteStore } from "./stores/paletteStore"
-import PaletteControls from "./controls/PaletteControls";
 
-export default function TileLevel1() {
+export default function PaletteSandbox() {
     const activePalette = usePaletteStore((s) => s.activePalette)
 
     return (
@@ -13,8 +12,6 @@ export default function TileLevel1() {
             <OrthoV2 />
             <SimpleLighting directionalIntensity={3} />
             <PaletteTest1 materials={activePalette} />
-
-            <PaletteControls/>
         </>
     )
 }
