@@ -6,13 +6,13 @@ export default function TileLevel1() {
     console.log('here')
     return (
         <>
-            <color attach="background" args={['red']} />
+            <color attach="background" args={['#181818']} />
 
             <OrthoV2/>
             <SimpleLighting/>
             <mesh>
                 <boxGeometry args={[1, 1, 1]} />
-                <MeshTransmissionMaterial color="green" />
+                < color="green" />
             </mesh>
         </>
     );
