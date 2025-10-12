@@ -1,18 +1,12 @@
-﻿import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
-import { useEffect } from "react";
-import TileGrid from "./components/TileGrid";
-import { startCameraLogger } from "../../utils/logCamera";
+﻿import TileGrid from "./components/TileGrid";
 import SimpleLighting from "../../components/environment/SimpleLighting";
 import OrthoZoomOnly from "../../components/controls/OrthoZoomOnly";
+import PaletteTest1 from "../dynamic_colors/objects/PaletteTest1";
+import {usePaletteStore} from "../dynamic_colors/stores/paletteStore";
+import EffectsV2 from "../../components/effects/EffectsV2";
 
 export default function ProceduralGround() {
-  // const { camera } = useThree();
-
-  // useEffect(() => {
-  //   const stopLogging = startCameraLogger(camera, 1000);
-  //   return stopLogging;
-  // }, [camera]);
+  const activePalette = usePaletteStore((s) => s.activePalette)
 
   return (
     <>
@@ -20,7 +14,9 @@ export default function ProceduralGround() {
       <SimpleLighting/>
       <TileGrid />
 
+      <PaletteTest1 materials={activePalette} scale={[.5,.5,.5]}/>
 
+      <EffectsV2/>
     </>
   );
 }

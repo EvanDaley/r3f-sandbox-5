@@ -6,7 +6,7 @@ export function createToonPalette({ p, e, s, t }) {
         e: new THREE.MeshToonMaterial({
             color: e,
             emissive: e,
-            emissiveIntensity: 2,
+            emissiveIntensity: 1.9,
         }),
         s: new THREE.MeshToonMaterial({ color: s }),
         t: new THREE.MeshToonMaterial({ color: t }),
