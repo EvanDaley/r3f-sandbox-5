@@ -2,7 +2,7 @@ import React from "react";
 
 export default function SimpleLighting({
                                            ambientIntensity = 0.5,
-                                           directionalPosition = [-8, 12, 8],
+                                           directionalPosition = [-8, 15, 8],
                                            directionalIntensity = 1.2,
                                        }) {
     return (

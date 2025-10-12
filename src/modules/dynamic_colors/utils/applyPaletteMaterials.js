@@ -9,6 +9,7 @@
         if (materials[name]) {
             child.material = materials[name]
             child.castShadow = true
+            // child.receiveShadow = true
         }
     })
 }

@@ -8,6 +8,7 @@ import FloatingRobot from "../dynamic_colors/objects/FloatingRobot";
 import LittleRobot from "../dynamic_colors/objects/LittleRobot";
 import Tree1 from "../dynamic_colors/objects/Tree1";
 import {useEnableShadows} from "../dynamic_colors/hooks/useEnableShadows";
+import Building1 from "../dynamic_colors/objects/Building1";
 
 export default function ProceduralGround() {
   const activePalette = usePaletteStore((s) => s.activePalette)
@@ -28,6 +29,10 @@ export default function ProceduralGround() {
         rotation={[0,Math.PI, 0]}
         materials={activePalette}
         position={[-2, 0, 6]}
+      />
+
+      <Building1
+        materials={activePalette}
       />
 
 

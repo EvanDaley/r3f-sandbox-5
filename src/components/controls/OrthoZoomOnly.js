@@ -4,7 +4,7 @@ import * as THREE from "three";
 export default function OrthoZoomOnly() {
   return (
     <>
-      <OrthographicCamera makeDefault position={[15, 18, 15]} zoom={60} />
+      <OrthographicCamera makeDefault position={[15, 15, 15]} zoom={60} />
 
       <OrbitControls
         enableRotate={false}
