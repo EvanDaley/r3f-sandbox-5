@@ -4,22 +4,18 @@ import React, {Suspense} from 'react'
 import useSceneStore from '../stores/sceneStore'
 
 export default function ThreeCanvas() {
-    const SceneComponent = useSceneStore(state => state.getCurrentSceneComponent())
+  const SceneComponent = useSceneStore(
+    state => state.scenes.find(s => s.id === state.currentSceneId)?.scene
+  )
 
-    // We have a list of scenes in the scene store, and we mount whichever one is selected.
-    return (
-        <>
-            <Canvas
-                dpr={[1, 2]}
-                style={{
-                    zIndex: 20
-                }}
-            >
-                <Suspense fallback={null}>
-                    {SceneComponent && React.createElement(SceneComponent)}
-                </Suspense>
-            </Canvas>
-            <Loader/>
-        </>
-    )
+  return (
+    <>
+      <Canvas dpr={[1, 2]} style={{ zIndex: 20 }}>
+        <Suspense fallback={null}>
+          {SceneComponent && React.createElement(SceneComponent)}
+        </Suspense>
+      </Canvas>
+      <Loader />
+    </>
+  )
 }

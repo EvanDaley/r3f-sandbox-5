@@ -10,13 +10,14 @@ import SceneSelect from './SceneSelect';
 import useSceneStore from "../stores/sceneStore";
 
 export default function HTMLContent() {
-    const getOverlay = useSceneStore(state => state.getCurrentOverlayComponent)
-    const OverlayComponent = getOverlay()
-
-    return (
-        <>
-            <SceneSelect />
-            {OverlayComponent && <OverlayComponent />}
-        </>
+    const Overlay = useSceneStore(
+      state => state.scenes.find(s => s.id === state.currentSceneId)?.overlay
     )
+
+  return (
+    <>
+      <SceneSelect />
+      {Overlay && <Overlay />}
+    </>
+  )
 }

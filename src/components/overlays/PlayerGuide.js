@@ -1,7 +1,7 @@
 ﻿export default function PlayerGuide({
                                         lines = [
-                                            <>Use the <span style={{ color: "#ffd166" }}>Scene Switcher</span> to pick scenes.</>,
-                                            <>Use the <span style={{ color: "#06d6a0" }}>Palette Switcher</span> to try different colors.</>,
+                                            // <>Use the <span style={{ color: "#ffd166" }}>Scene Switcher</span> to pick scenes.</>,
+                                            // <>Use the <span style={{ color: "#06d6a0" }}>Palette Switcher</span> to try different colors.</>,
                                         ],
                                     }) {
     return (
