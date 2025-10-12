@@ -7,12 +7,12 @@ import SimpleLighting from "../../components/environment/SimpleLighting";
 import OrthoZoomOnly from "../../components/controls/OrthoZoomOnly";
 
 export default function ProceduralGround() {
-  const { camera } = useThree();
+  // const { camera } = useThree();
 
-  useEffect(() => {
-    const stopLogging = startCameraLogger(camera, 1000);
-    return stopLogging;
-  }, [camera]);
+  // useEffect(() => {
+  //   const stopLogging = startCameraLogger(camera, 1000);
+  //   return stopLogging;
+  // }, [camera]);
 
   return (
     <>
