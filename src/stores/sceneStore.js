@@ -9,7 +9,7 @@ const scenes = [
   { id: 'proceduralGround', name: 'Procedural Ground Sandbox', scene: ProceduralGround, overlay: ProceduralGroundOverlay },
 ]
 
-const defaultScene = 'tileLevel1'
+const defaultScene = 'proceduralGround'
 
 const useSceneStore = create((set) => ({
   currentSceneId: defaultScene,
