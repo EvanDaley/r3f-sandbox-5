@@ -2,11 +2,11 @@
 import {useGLTF} from "@react-three/drei"
 import {useGlobalPalette} from "../hooks/useGlobalPalette"
 
-export default function PaletteTest1({
-                                       materials,
-                                       ...props
-                                     }) {
-  const MODEL_PATH = window.location.href + "/models/palette_testing/paletteTest1.glb"
+export default function LittleRobot({
+                                      materials,
+                                      ...props
+                                    }) {
+  const MODEL_PATH = window.location.href + "/models/palette_testing/littleRobot.glb"
   const {scene: original} = useGLTF(MODEL_PATH)
 
   if (!materials) {

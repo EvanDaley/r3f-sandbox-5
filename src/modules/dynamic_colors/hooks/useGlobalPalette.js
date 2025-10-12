@@ -1,6 +1,6 @@
-﻿import { useEffect, useState } from "react"
-import { SkeletonUtils } from "three-stdlib"
-import { applyPaletteMaterials } from "../utils/applyPaletteMaterials"
+﻿import {useEffect, useState} from "react"
+import {SkeletonUtils} from "three-stdlib"
+import {applyPaletteMaterials} from "../utils/applyPaletteMaterials"
 
 /**
  * usePaletteScene
@@ -12,25 +12,25 @@ import { applyPaletteMaterials } from "../utils/applyPaletteMaterials"
  * @returns {THREE.Object3D | null} A cloned scene with materials applied
  */
 export function useGlobalPalette(originalScene, materials) {
-    const [scene, setScene] = useState(null)
+  const [scene, setScene] = useState(null)
 
-    useEffect(() => {
-        if (!originalScene || !materials) return
+  useEffect(() => {
+    if (!originalScene || !materials) return
 
-        // Clone the scene to avoid mutating the cached GLTF instance
-        const cloned = SkeletonUtils.clone(originalScene)
+    // Clone the scene to avoid mutating the cached GLTF instance
+    const cloned = SkeletonUtils.clone(originalScene)
 
-        // Apply the new palette materials
-        applyPaletteMaterials(cloned, materials)
+    // Apply the new palette materials
+    applyPaletteMaterials(cloned, materials)
 
-        // Update the local state
-        setScene(cloned)
+    // Update the local state
+    setScene(cloned)
 
-        // Clean up the old clone when palette changes
-        return () => {
-            setScene(null)
-        }
-    }, [originalScene, materials])
+    // Clean up the old clone when palette changes
+    return () => {
+      setScene(null)
+    }
+  }, [originalScene, materials])
 
-    return scene
+  return scene
 }

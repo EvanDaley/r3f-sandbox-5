@@ -1,12 +1,13 @@
-﻿import React from "react"
+﻿
+import React from "react"
 import {useGLTF} from "@react-three/drei"
 import {useGlobalPalette} from "../hooks/useGlobalPalette"
 
-export default function PaletteTest1({
-                                       materials,
-                                       ...props
-                                     }) {
-  const MODEL_PATH = window.location.href + "/models/palette_testing/paletteTest1.glb"
+export default function Tree1({
+                                      materials,
+                                      ...props
+                                    }) {
+  const MODEL_PATH = window.location.href + "/models/palette_testing/tree1.glb"
   const {scene: original} = useGLTF(MODEL_PATH)
 
   if (!materials) {
