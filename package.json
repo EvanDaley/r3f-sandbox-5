@@ -8,6 +8,7 @@
     "@react-three/drei": "9.92.7",
     "@react-three/fiber": "8.15.12",
     "@react-three/postprocessing": "2.14.9",
+    "alea": "^1.0.1",
     "gh-pages": "^3.2.3",
     "leva": "0.9.35",
     "peerjs": "1.5.5",

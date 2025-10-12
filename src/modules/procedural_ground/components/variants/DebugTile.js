@@ -1,7 +1,7 @@
 ﻿import React, { useMemo } from 'react'
 import * as THREE from 'three'
 
-export default function Tile({ position, value }) {
+export default function DebugTile({ position, value }) {
   const color = useMemo(() => new THREE.Color().setHSL((value + 1) / 2, 0.6, 0.5), [value])
 
   const handleClick = (e) => {

@@ -3,10 +3,16 @@ import * as THREE from 'three'
 import GrassTile from './variants/GrassTile'
 import SandTile from './variants/SandTile'
 import RockTile from './variants/RockTile'
+import DebugTile from './variants/DebugTile'
 
-export default function Tile({ position, value }) {
+export default function Tile({ position, value, debugTile = false }) {
+  // if debug mode is on, skip variant logic
+  if (debugTile) {
+    return <DebugTile position={position} value={value} />
+  }
+
   const variant = useMemo(() => {
-    if (value < -0.6) return 'sand'
+    if (value < -0.8) return 'sand'
     if (value < 0.6) return 'grass'
     return 'rock'
   }, [value])

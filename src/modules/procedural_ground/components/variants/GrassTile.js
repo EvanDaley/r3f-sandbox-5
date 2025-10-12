@@ -3,8 +3,8 @@ import * as THREE from 'three'
 
 export default function GrassTile({ position, onClick, value }) {
   const { color } = useMemo(() => {
-    const hue = 0.3 + value * 0.02
-    const lightness = 0.45 + value * 0.3
+    const hue = 0.31 + value * 0.01
+    const lightness = 0.38 + (value * -0.05)
     const color = new THREE.Color().setHSL(hue, 0.7, lightness)
     return { color }
   }, [position, value])

@@ -1,5 +1,8 @@
 ﻿import { noise } from "./noise.js"
 
+import { createNoise2D } from 'simplex-noise'
+import alea from 'alea'
+
 // Default fractal terrain
 export function defaultTerrainAlgorithm({ size, seed }) {
   const data = []
@@ -112,52 +115,23 @@ export function randomAlgorithm({ size }) {
 }
 
 export function perlinLikeAlgorithm({ size, seed }) {
+  const noise2D = createNoise2D(alea(seed)) // ✅ deterministic noise generator
   const data = []
   const half = size / 2
-
-  // Tuned parameters for Perlin-like appearance
-  const octaves = 3
-  const persistence = 0.55
-  const lacunarity = 1.8
-  const scale = 0.1 // larger = more fine detail
-
-  const offsetX = Math.sin(seed) * 1000
-  const offsetY = Math.cos(seed) * 1000
-
-  function easeInOutQuad(t) {
-    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
-  }
+  const scale = 0.05 // larger = more fine detail
 
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
-      const nx = (x - half + offsetX) * scale
-      const ny = (y - half + offsetY) * scale
+      const nx = (x - half) * scale
+      const ny = (y - half) * scale
 
-      let frequency = 1.0
-      let amplitude = 1.0
-      let value = 0.0
-      let maxAmplitude = 0.0
+      // raw simplex noise is already in [-1, 1]
+      let value = noise2D(nx, ny)
 
-      // Multi-octave fractal noise (FBM)
-      for (let i = 0; i < octaves; i++) {
-        const n = noise(nx * frequency, ny * frequency, seed + i * 100)
-        value += n * amplitude
-        maxAmplitude += amplitude
-        amplitude *= persistence
-        frequency *= lacunarity
-      }
-
-      value /= maxAmplitude
-
-      // Center and smooth the distribution
-      value = (value + 1) / 2 // normalize to 0..1
-      value = easeInOutQuad(value) // smooth transitions
-      value = value * 2 - 1 // re-center to -1..1
-
-      // Optional: gentle radial falloff for island-style maps
-      const dist = Math.sqrt((x - half) ** 2 + (y - half) ** 2) / half
-      const falloff = Math.max(0, 1 - Math.pow(dist, 2))
-      value *= falloff
+      // optional: smooth falloff toward edges
+      // const dist = Math.sqrt((x - half) ** 2 + (y - half) ** 2) / half
+      // const falloff = 1 - dist * dist
+      // value *= Math.max(0, falloff)
 
       data.push({ x: x - half, y: y - half, value })
     }

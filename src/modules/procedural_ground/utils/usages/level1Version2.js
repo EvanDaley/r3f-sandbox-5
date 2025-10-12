@@ -2,8 +2,8 @@
 import {perlinLikeAlgorithm, randomAlgorithm, smoothTerrainAlgorithm} from "../terrainAlgorithms.js"
 
 generateLevel({
-  size: 55,
-  seed: 1,
+  size: 20,
+  seed: 2,
   algorithm: perlinLikeAlgorithm,
   outputFile: "../data/level1.json",
 })
