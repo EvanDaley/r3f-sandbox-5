@@ -2,6 +2,7 @@
 
 export function createToonPalette({ p, e, s, t }) {
     return {
+        // Primary, Emissive, Secondary, Tertiary
         p: new THREE.MeshToonMaterial({ color: p }),
         e: new THREE.MeshToonMaterial({
             color: e,
@@ -10,5 +11,9 @@ export function createToonPalette({ p, e, s, t }) {
         }),
         s: new THREE.MeshToonMaterial({ color: s }),
         t: new THREE.MeshToonMaterial({ color: t }),
+
+        // Materials with gradients added
+        p1: new THREE.MeshToonMaterial({ color: 'red' }),
+
     }
 }
