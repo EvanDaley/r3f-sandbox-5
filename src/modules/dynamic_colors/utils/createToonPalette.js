@@ -1,8 +1,15 @@
 ﻿import * as THREE from "three"
 
-export function createToonPalette({ p, e, s, t }) {
+export function createToonPalette({ p, e, s, t, d }) {
+    const texture = new THREE.TextureLoader().load(
+      window.location.href + "/images/textures/simple1_rotated_64.png"
+    )
+
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+    texture.flipY = false
+    texture.needsUpdate = true
+
     return {
-        // Primary, Emissive, Secondary, Tertiary
         p: new THREE.MeshToonMaterial({ color: p }),
         e: new THREE.MeshToonMaterial({
             color: e,
@@ -11,9 +18,13 @@ export function createToonPalette({ p, e, s, t }) {
         }),
         s: new THREE.MeshToonMaterial({ color: s }),
         t: new THREE.MeshToonMaterial({ color: t }),
+        d: new THREE.MeshToonMaterial({ color: d }),
 
-        // Materials with gradients added
-        p1: new THREE.MeshToonMaterial({ color: 'red' }),
+        p1: new THREE.MeshToonMaterial({
+            color: p,
+            map: texture,
+            combine: THREE.MultiplyOperation,
+        }),
 
     }
 }
