@@ -23,7 +23,7 @@ export default function ProceduralGround() {
 
       <TileGrid/>
 
-      <PaletteTest1 materials={activePalette} scale={[.5, .5, .5]}/>
+      {/*<PaletteTest1 materials={activePalette} scale={[.5, .5, .5]}/>*/}
       <FloatingRobot materials={activePalette} position={[10, 0, 2]}/>
       <LittleRobot
         rotation={[0,Math.PI, 0]}
@@ -33,6 +33,7 @@ export default function ProceduralGround() {
 
       <Building1
         materials={activePalette}
+        scale={[.7,.7,.7]}
       />
 
 
