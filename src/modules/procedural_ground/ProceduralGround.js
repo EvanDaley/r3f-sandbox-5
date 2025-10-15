@@ -1,41 +1,39 @@
-﻿import TileGrid from "./components/TileGrid";
-import OrthoZoomOnly from "../../components/controls/OrthoZoomOnly";
-import PaletteTest1 from "../dynamic_colors/objects/PaletteTest1";
-import {usePaletteStore} from "../dynamic_colors/stores/paletteStore";
-import EffectsV2 from "../../components/effects/EffectsV2";
-import FloatingRobot from "../dynamic_colors/objects/FloatingRobot";
-import LittleRobot from "../dynamic_colors/objects/LittleRobot";
-import Tree1 from "../dynamic_colors/objects/Tree1";
-import {useEnableShadows} from "../dynamic_colors/hooks/useEnableShadows";
-import Building1 from "../dynamic_colors/objects/Building1";
-import SimpleLighting from "../../components/environment/SimpleLighting";
-import SimpleLighting2 from "../../components/environment/SimpleLighting2";
+﻿import { useControls } from 'leva'
+import TileGrid from "./components/TileGrid"
+import OrthoZoomOnly from "../../components/controls/OrthoZoomOnly"
+import { usePaletteStore } from "../dynamic_colors/stores/paletteStore"
+import EffectsV2 from "../../components/effects/EffectsV2"
+import FloatingRobot from "../dynamic_colors/objects/FloatingRobot"
+import Tree1 from "../dynamic_colors/objects/Tree1"
+import Building1 from "../dynamic_colors/objects/Building1"
+import SimpleLighting2 from "../../components/environment/SimpleLighting2"
 
 export default function ProceduralGround() {
   const activePalette = usePaletteStore((s) => s.activePalette)
 
-  // useEnableShadows()
+  const { debugTile } = useControls('Debug', {
+    debugTile: { value: false, label: 'Debug Tiles' },
+  })
 
   return (
     <>
-      <OrthoZoomOnly/>
-      <SimpleLighting2/>
-      <EffectsV2/>
+      <OrthoZoomOnly />
+      <SimpleLighting2 />
+      <EffectsV2 />
       <color attach="background" args={['#cccccc']} />
 
-      <TileGrid/>
+      <TileGrid debugTile={debugTile} />
 
-      {/*<PaletteTest1 materials={activePalette} scale={[.5, .5, .5]}/>*/}
-      <FloatingRobot materials={activePalette} position={[10, 0, 2]}/>
+      <FloatingRobot materials={activePalette} position={[10, 0, 2]} />
       <FloatingRobot
-        rotation={[0,Math.PI, 0]}
+        rotation={[0, Math.PI, 0]}
         materials={activePalette}
         position={[-2, 0, 6]}
       />
 
       <Building1
         materials={activePalette}
-        scale={[.7,.7,.7]}
+        scale={[0.7, 0.7, 0.7]}
       />
 
       <Tree1
@@ -44,5 +42,5 @@ export default function ProceduralGround() {
         scale={[1.5, 1.5, 1.5]}
       />
     </>
-  );
+  )
 }

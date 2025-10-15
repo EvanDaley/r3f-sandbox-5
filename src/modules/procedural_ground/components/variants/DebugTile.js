@@ -1,22 +1,32 @@
 ﻿import React, { useMemo } from 'react'
 import * as THREE from 'three'
+import {Outlines} from "@react-three/drei";
 
-export default function DebugTile({ position, value }) {
-  const color = useMemo(() => new THREE.Color().setHSL((value + 1) / 2, 0.6, 0.5), [value])
-
-  const handleClick = (e) => {
-    e.stopPropagation()
-    const worldPos = new THREE.Vector3()
-    e.object.getWorldPosition(worldPos)
-    console.log(`Tile clicked at:`, worldPos.x, worldPos.z, 'with value: ', value)
-  }
+export default function DebugTile({ position, onClick, value }) {
+  const { color } = useMemo(() => {
+    // const hue = 0.31 + value * 0.01
+    const hue = value + .01
+    const lightness = 0.38 + (value * -0.05)
+    const color = new THREE.Color().setHSL(hue, 0.7, lightness)
+    return { color }
+  }, [position, value])
 
   return (
-    <mesh position={position} onClick={handleClick}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshToonMaterial
-        color={color}
-      />
+    <mesh
+      position={position}
+      onClick={onClick}
+      receiveShadow
+      castShadow
+    >
+      <boxGeometry args={[0.98, 0.5, 0.98]} />
+      <meshToonMaterial color={color} />
+      {/*<Outlines/>*/}
+
+      {/*<Outlines*/}
+      {/*  thickness={.2}*/}
+      {/*  color={"black"}*/}
+      {/*  screenspace={true}*/}
+      {/*/>*/}
     </mesh>
   )
 }
