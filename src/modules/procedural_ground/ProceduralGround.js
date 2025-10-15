@@ -1,5 +1,4 @@
 ﻿import TileGrid from "./components/TileGrid";
-import SimpleLighting from "../../components/environment/SimpleLighting";
 import OrthoZoomOnly from "../../components/controls/OrthoZoomOnly";
 import PaletteTest1 from "../dynamic_colors/objects/PaletteTest1";
 import {usePaletteStore} from "../dynamic_colors/stores/paletteStore";
@@ -9,6 +8,8 @@ import LittleRobot from "../dynamic_colors/objects/LittleRobot";
 import Tree1 from "../dynamic_colors/objects/Tree1";
 import {useEnableShadows} from "../dynamic_colors/hooks/useEnableShadows";
 import Building1 from "../dynamic_colors/objects/Building1";
+import SimpleLighting from "../../components/environment/SimpleLighting";
+import SimpleLighting2 from "../../components/environment/SimpleLighting2";
 
 export default function ProceduralGround() {
   const activePalette = usePaletteStore((s) => s.activePalette)
@@ -18,9 +19,9 @@ export default function ProceduralGround() {
   return (
     <>
       <OrthoZoomOnly/>
-      <SimpleLighting/>
+      <SimpleLighting2/>
       <EffectsV2/>
-      <color attach="background" args={['#aaaaaa']} />
+      <color attach="background" args={['#cccccc']} />
 
       <TileGrid/>
 

@@ -23,12 +23,12 @@ export default function Tile({ position, value, debugTile = false }) {
     console.log(`🟩 ${variant.toUpperCase()} tile clicked at:`, worldPos.x, worldPos.z, 'with value: ', value)
   }
 
-  const TileComponent =
-    variant === 'grass' ? GrassTile :
-      variant === 'sand' ? SandTile :
-        RockTile
-  //
-  // const TileComponent =GrassTile
+  // const TileComponent =
+    // variant === 'grass' ? GrassTile :
+    //   variant === 'sand' ? SandTile :
+    //     RockTile
+
+  const TileComponent =GrassTile
 
   return <TileComponent position={position} value={value} onClick={handleClick} />
 }
