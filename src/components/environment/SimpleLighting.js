@@ -15,8 +15,10 @@ export default function SimpleLighting({
                 castShadow
                 position={directionalPosition}
                 intensity={directionalIntensity}
+
                 shadow-mapSize-width={2048}
                 shadow-mapSize-height={2048}
+
                 shadow-camera-near={0.5}
                 shadow-camera-far={50}
                 shadow-camera-left={-20}

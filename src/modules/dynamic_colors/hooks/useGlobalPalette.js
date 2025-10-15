@@ -15,7 +15,9 @@ export function useGlobalPalette(originalScene, materials) {
   const [scene, setScene] = useState(null)
 
   useEffect(() => {
-    if (!originalScene || !materials) return
+    if (!materials) throw new Error("Object missing materials")
+
+    if (!originalScene) return
 
     // Clone the scene to avoid mutating the cached GLTF instance
     const cloned = SkeletonUtils.clone(originalScene)

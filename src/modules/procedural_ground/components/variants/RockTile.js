@@ -1,5 +1,6 @@
 ﻿import React, { useMemo } from 'react'
 import * as THREE from 'three'
+import {Outlines} from "@react-three/drei";
 
 export default function RockTile({ position, onClick, value }) {
   const { color, scale, rotation } = useMemo(() => {
@@ -35,6 +36,7 @@ export default function RockTile({ position, onClick, value }) {
     >
       <boxGeometry args={[1, .5, 1]} />
       <meshToonMaterial color={color} />
+      {/*<Outlines/>*/}
     </mesh>
   )
 }

@@ -27,6 +27,8 @@ export default function Tile({ position, value, debugTile = false }) {
     variant === 'grass' ? GrassTile :
       variant === 'sand' ? SandTile :
         RockTile
+  //
+  // const TileComponent =GrassTile
 
   return <TileComponent position={position} value={value} onClick={handleClick} />
 }

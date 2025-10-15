@@ -13,19 +13,20 @@ import Building1 from "../dynamic_colors/objects/Building1";
 export default function ProceduralGround() {
   const activePalette = usePaletteStore((s) => s.activePalette)
 
-  useEnableShadows()
+  // useEnableShadows()
 
   return (
     <>
       <OrthoZoomOnly/>
       <SimpleLighting/>
       <EffectsV2/>
+      <color attach="background" args={['#aaaaaa']} />
 
       <TileGrid/>
 
       {/*<PaletteTest1 materials={activePalette} scale={[.5, .5, .5]}/>*/}
       <FloatingRobot materials={activePalette} position={[10, 0, 2]}/>
-      <LittleRobot
+      <FloatingRobot
         rotation={[0,Math.PI, 0]}
         materials={activePalette}
         position={[-2, 0, 6]}
@@ -35,7 +36,6 @@ export default function ProceduralGround() {
         materials={activePalette}
         scale={[.7,.7,.7]}
       />
-
 
       <Tree1
         materials={activePalette}

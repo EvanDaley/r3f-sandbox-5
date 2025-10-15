@@ -1,5 +1,6 @@
 ﻿import React, { useMemo } from 'react'
 import * as THREE from 'three'
+import {Outlines} from "@react-three/drei";
 
 export default function SandTile({ position, onClick }) {
   const { color, scale, rotation } = useMemo(() => {
@@ -35,6 +36,7 @@ export default function SandTile({ position, onClick }) {
     >
       <boxGeometry args={[1, .5, 1]} />
       <meshToonMaterial color={color} />
+      {/*<Outlines/>*/}
     </mesh>
   )
 }
