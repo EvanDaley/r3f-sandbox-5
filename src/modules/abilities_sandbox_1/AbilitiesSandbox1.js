@@ -7,12 +7,21 @@ import FloatingRobot from "../dynamic_colors/objects/FloatingRobot";
 import Building1 from "../dynamic_colors/objects/Building1";
 import Tree1 from "../dynamic_colors/objects/Tree1";
 import {usePaletteStore} from "../dynamic_colors/stores/paletteStore";
+import {useAbilityStore} from "./stores/abilityStore";
+import {useFrame} from "@react-three/fiber";
+import AbilitySpawner from "./objects/AbilitySpawner";
 
 export default function AbilitiesSandbox1() {
   const activePalette = usePaletteStore((s) => s.activePalette)
 
   const { debugTile } = useControls('Debug', {
     debugTile: { value: false, label: 'Debug Tiles' },
+  })
+
+  const tick = useAbilityStore((s) => s.tick)
+
+  useFrame(() => {
+    tick()
   })
 
   return (
@@ -34,7 +43,7 @@ export default function AbilitiesSandbox1() {
         position={[0, 0, 6]}
       />
 
-
+      <AbilitySpawner/>
     </>
   )
 }

@@ -1,14 +1,11 @@
 ﻿import PlayerGuide from "../../components/overlays/PlayerGuide";
+import AbilityBarOverlay from "./controls/AbilityBarOverlay";
 
 export default function AbilitiesSandboxOverlay() {
   return (
     <>
-      <PlayerGuide
-        lines={[
-          <>When finished, use the <span style={{color: "#ffd166"}}>Scene Switcher</span> to pick another scene.</>,
-        ]}
-      />
 
+      <AbilityBarOverlay />
     </>
   )
 }
