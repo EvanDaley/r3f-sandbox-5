@@ -3,13 +3,16 @@ import PaletteSandbox from "../modules/dynamic_colors/PaletteSandbox"
 import PaletteSandboxOverlay from "../modules/dynamic_colors/PaletteSandboxOverlay"
 import ProceduralGroundOverlay from "../modules/procedural_ground/ProceduralGroundOverlay"
 import ProceduralGround from "../modules/procedural_ground/ProceduralGround"
+import AbilitiesSandbox1 from "../modules/abilities_sandbox_1/AbilitiesSandbox1";
+import AbilitiesSandboxOverlay from "../modules/abilities_sandbox_1/AbilitiesSandboxOverlay";
 
 const scenes = [
   { id: 'tileLevel1', name: 'Palette Sandbox', scene: PaletteSandbox, overlay: PaletteSandboxOverlay },
   { id: 'proceduralGround', name: 'Procedural Ground Sandbox', scene: ProceduralGround, overlay: ProceduralGroundOverlay },
+  { id: 'abilitiesSandbox1', name: 'Abilities Sandbox', scene: AbilitiesSandbox1, overlay: AbilitiesSandboxOverlay },
 ]
 
-const defaultScene = 'proceduralGround'
+const defaultScene = 'abilitiesSandbox1'
 
 const useSceneStore = create((set) => ({
   currentSceneId: defaultScene,
