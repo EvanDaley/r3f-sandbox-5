@@ -2,33 +2,38 @@
 
 export const useAbilityStore = create((set, get) => ({
   abilities: [
-    { id: 1, name: "🔥 Fireball", emoji: "🔥", charge: 1 },
-    { id: 2, name: "💧 Ice Spike", emoji: "💧", charge: 1 },
-    { id: 3, name: "⚡ Lightning", emoji: "⚡", charge: 1 },
-    { id: 4, name: "🌪️ Tornado", emoji: "🌪️", charge: 1 },
+    { id: 1, name: "🔥 Fireball", emoji: "🔥", charge: 0 },
+    { id: 2, name: "💧 Ice Spike", emoji: "💧", charge: 0 },
+    { id: 3, name: "⚡ Lightning", emoji: "⚡", charge: 0 },
+    { id: 4, name: "🌪️ Tornado", emoji: "🌪️", charge: 0 },
   ],
+
   selectedAbilityId: null,
 
   tick: () => {
-    set({
-      abilities: get().abilities.map(ability => ({
-        ...ability,
-        charge: Math.min(ability.charge + 0.01, 1),
-      })),
-    })
+    set((state) => ({
+      abilities: state.abilities.map((a) => {
+        // if (a.charge < 1) {
+        //   console.log(a.charge)
+        // }
+        return {
+          ...a,
+          charge: Math.min(a.charge + .01, 1), // ✅ new objects each frame
+        }
+      }),
+    }))
   },
 
   selectAbility: (id) => set({ selectedAbilityId: id }),
 
-  castAbility: (id) => {
-    set({
-      abilities: get().abilities.map(ability =>
-        ability.id === id ? { ...ability, charge: 0 } : ability
+  castAbility: (id) =>
+    set((state) => ({
+      abilities: state.abilities.map((a) =>
+        a.id === id ? { ...a, charge: 0 } : a
       ),
       // selectedAbilityId: null,
-    })
-  },
+    })),
 
   getSelectedAbility: () =>
-    get().abilities.find((s) => s.id === get().selectedAbilityId),
+    get().abilities.find((a) => a.id === get().selectedAbilityId),
 }))

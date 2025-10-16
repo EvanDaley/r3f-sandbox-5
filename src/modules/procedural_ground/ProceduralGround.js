@@ -20,7 +20,7 @@ export default function ProceduralGround() {
       <OrthoZoomOnly />
       <SimpleLighting2 />
       <EffectsV2 />
-      <color attach="background" args={['#cccccc']} />
+      <color attach="background" args={['#3c2828']} />
 
       <TileGrid debugTile={debugTile} />
 

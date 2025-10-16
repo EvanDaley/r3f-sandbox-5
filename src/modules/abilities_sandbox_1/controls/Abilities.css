@@ -27,7 +27,9 @@
   box-shadow: none;
   color: #777;
   background: rgba(255, 255, 255, 0.05);
-  transition: all 0.15s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Ready (fully charged) state */
@@ -52,8 +54,10 @@
   width: 100%;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 0 0 0.5rem 0.5rem;
-  transition: height 0.1s linear;
   pointer-events: none;
+  transform: none;
+  will-change: height;
+  /* ⚠️ no transition here — updates instantly, matches charge */
 }
 
 /* Emoji on top */
