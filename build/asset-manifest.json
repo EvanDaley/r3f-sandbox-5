@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/r3f-sandbox-5/static/css/main.9b2db7f4.css",
-    "main.js": "/r3f-sandbox-5/static/js/main.5779367b.js",
+    "main.js": "/r3f-sandbox-5/static/js/main.064820e5.js",
     "index.html": "/r3f-sandbox-5/index.html",
     "main.9b2db7f4.css.map": "/r3f-sandbox-5/static/css/main.9b2db7f4.css.map",
-    "main.5779367b.js.map": "/r3f-sandbox-5/static/js/main.5779367b.js.map"
+    "main.064820e5.js.map": "/r3f-sandbox-5/static/js/main.064820e5.js.map"
   },
   "entrypoints": [
     "static/css/main.9b2db7f4.css",
-    "static/js/main.5779367b.js"
+    "static/js/main.064820e5.js"
   ]
 }

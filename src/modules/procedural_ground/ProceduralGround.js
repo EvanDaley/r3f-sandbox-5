@@ -7,6 +7,7 @@ import FloatingRobot from "../dynamic_colors/objects/FloatingRobot"
 import Tree1 from "../dynamic_colors/objects/Tree1"
 import Building1 from "../dynamic_colors/objects/Building1"
 import SimpleLighting2 from "../../components/environment/SimpleLighting2"
+import {OrbitControls} from "@react-three/drei";
 
 export default function ProceduralGround() {
   const activePalette = usePaletteStore((s) => s.activePalette)
@@ -23,6 +24,8 @@ export default function ProceduralGround() {
       <color attach="background" args={['#cccccc']} />
 
       <TileGrid debugTile={debugTile} />
+
+      <OrbitControls/>
 
       <FloatingRobot materials={activePalette} position={[10, 0, 2]} />
       <FloatingRobot
