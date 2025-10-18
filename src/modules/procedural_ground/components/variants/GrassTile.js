@@ -16,7 +16,6 @@ export default function GrassTile({ position, onClick, value }) {
       position={position}
       onClick={onClick}
       receiveShadow
-      castShadow
     >
       <boxGeometry args={[0.98, 0.5, 0.98]} />
       <meshToonMaterial color={color} />

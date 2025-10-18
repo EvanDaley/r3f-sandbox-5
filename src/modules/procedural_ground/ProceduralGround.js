@@ -37,7 +37,7 @@ export default function ProceduralGround() {
       />
 
       <Building2
-        position={[-2, 0, 2]}
+        position={[-7.5, 0, 2]}
         materials={activePalette}
       />
 

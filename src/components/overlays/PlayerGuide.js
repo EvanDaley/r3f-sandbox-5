@@ -25,7 +25,6 @@
     lineHeight: "1.4",
   }
 
-  console.log(placement)
   if (placement === 'top') {
     styles.top = '70px'
   } else {

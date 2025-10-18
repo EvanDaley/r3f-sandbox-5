@@ -10,7 +10,7 @@ export default function ThreeCanvas() {
 
   return (
     <>
-      <Canvas dpr={[1, 2]} style={{ zIndex: 20 }} shadows gl={{ antialias: true }}>
+      <Canvas dpr={[1, 2]} style={{ zIndex: 1 }} shadows gl={{ antialias: true }}>
         <Suspense fallback={null}>
           {SceneComponent && React.createElement(SceneComponent)}
         </Suspense>

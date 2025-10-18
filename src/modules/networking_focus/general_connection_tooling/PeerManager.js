@@ -11,6 +11,9 @@ const localHostName = 'local-host-dev-2'
 // When working locally I open it in two tabs. The first tab is on 3000 and the second tab is on 3001.
 // They both use hardcoded peerIds so that I can easily have them find each other.
 const getLocalDevConfig = () => {
+  // TODO: Delete this to restore local dev config
+  return null
+
   const isLocalhost = window.location.hostname === 'localhost';
   const port = window.location.port;
   const envRole = process.env.REACT_APP_ROLE;

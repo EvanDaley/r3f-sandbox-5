@@ -11,7 +11,7 @@ export default function usePeerConnection() {
   const [hostId, setHostId] = useState('');
   const peerId = usePeerStore(state => state.peerId);
   const playerName = usePeerStore(state => state.playerName);
-  const setPlayerName = usePeerStore(state => state.setPlayerName);
+  const setMyPlayerName = usePeerStore(state => state.setMyPlayerName);
   const connections = usePeerStore(state => state.connections);
   const isHost = usePeerStore(state => state.isHost);
 
@@ -39,7 +39,7 @@ export default function usePeerConnection() {
     isConnected,
     hostId,
     setHostId,
-    setPlayerName,
+    setMyPlayerName,
     handleConnect,
     isHost,
     handleSceneChange
