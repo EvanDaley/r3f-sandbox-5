@@ -5,6 +5,7 @@ import {getRandomName} from "../../../utils/stringHelpers";
 import {usePeerStore} from "./stores/peerStore";
 
 const localHostName = 'local-host-dev-2'
+const localClientPrefix = 'client-local-dev'
 
 
 // Helper function to detect local development environment and role
@@ -13,12 +14,11 @@ const localHostName = 'local-host-dev-2'
 const getPreferredConfig = () => {
   const isLocalhost = window.location.hostname === 'localhost';
   const port = window.location.port;
-  const envRole = process.env.REACT_APP_ROLE;
 
   const role = port === '3001' ? 'client' : 'host'
   const peerId = role === 'host'
     ? localHostName
-    : `client-local-dev-${Math.floor(Math.random() * 10000)}`;
+    : `${localClientPrefix}-${Math.floor(Math.random() * 10000)}`;
 
   const playerName = port === '3000' ? 'Evan' : getRandomName();
 
@@ -36,11 +36,19 @@ export const initPeer = (onConnected) => {
 
   const desiredConfig = getPreferredConfig();
 
+  console.log('Setting up with desiredConfig', desiredConfig);
+
+  // Set player name for localhost development
+  if (desiredConfig && desiredConfig.playerName) {
+    setMyPlayerName(desiredConfig.playerName);
+    console.log(`Auto-set player name for localhost: ${desiredConfig.playerName}`);
+  }
+
   const newPeer = new Peer(desiredConfig ? desiredConfig.peerId : undefined, {
-    host: '0.peerjs.com',
-    port: 443,
-    path: '/',
-    secure: true,
+    host: '54.190.188.230',
+    port: 9000,
+    path: '/peerjs',
+    secure: false,
     config: {
       // These are the creds for a turn server I set up on an EC2.
       // Default to STUN (straight peer to peer after connecting), fallback to TURN UDP (traffic goes through the EC2)
@@ -60,12 +68,6 @@ export const initPeer = (onConnected) => {
     }
   });
 
-  // Set player name for localhost development
-  if (desiredConfig && desiredConfig.playerName) {
-    setMyPlayerName(desiredConfig.playerName);
-    console.log(`Auto-set player name for localhost: ${desiredConfig.playerName}`);
-  }
-
   newPeer.on('open', (id) => {
     console.log('Your peer ID is:', id);
     setMyPeerId(id);
@@ -84,7 +86,7 @@ export const initPeer = (onConnected) => {
     setupConnection(conn, onConnected);
     setIsHost(true);
 
-    // When we become host, add ourselves to the connections list
+    // When we become host, add ourselves to the connection list
     const { playerName, peerId, addConnection: addSelfConnection } = usePeerStore.getState();
     if (playerName && peerId) {
       // Add ourselves as a "connection" for display purposes
@@ -132,6 +134,8 @@ function setupConnection(conn, onConnected) {
   console.log('setup connection')
   const { addConnection, playerName, isClient } = usePeerStore.getState();
 
+  console.log('playerName', playerName)
+
   conn.on('open', () => {
     console.log('Connected to', conn.peer);
     addConnection(conn.peer, conn);
@@ -149,12 +153,12 @@ function setupConnection(conn, onConnected) {
   });
 
   conn.on('data', (data) => {
-    // console.log('Received from', conn.peer, ':', data);
+    console.log('Received from', conn.peer, ':', data);
     routeMessage(conn.peer, data);
   });
 
   conn.on('iceStateChanged', (state) => {
-    // console.log('ICE state changed for', conn.peer, ':', state);
+    console.log('ICE state changed for', conn.peer, ':', state);
   });
 
   conn.on('error', (err) => {

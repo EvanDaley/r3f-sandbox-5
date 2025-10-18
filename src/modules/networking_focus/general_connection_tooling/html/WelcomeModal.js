@@ -50,7 +50,7 @@ export default function WelcomeModal() {
             <ul className="welcome-modal-list">
               {Object.entries(connections).map(([peerId, data]) => (
                 <li key={peerId}>
-                  {data.name || "Unknown"} ({peerId.slice(0, 28)})
+                  {data.name || "Unknown"} <span style={{color: "green"}}>{peerId.slice(0, 28)}</span>
                 </li>
               ))}
             </ul>
