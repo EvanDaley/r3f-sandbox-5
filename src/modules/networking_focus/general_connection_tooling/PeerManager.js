@@ -72,10 +72,10 @@ export const initPeer = (onConnected) => {
     setMyPeerId(id);
 
     // Auto-connect for local development. Instance running on 3001 will try to connect to instance on 3000.
-    // if (desiredConfig && desiredConfig.role === 'client') {
-    //   console.log('Auto-connecting client to host...');
-    //   connectToPeer(localHostName, onConnected);
-    // }
+    if (desiredConfig && desiredConfig.role === 'client') {
+      console.log('Auto-connecting client to host...');
+      connectToPeer(localHostName, onConnected);
+    }
   });
 
   newPeer.on('connection', (conn) => {
