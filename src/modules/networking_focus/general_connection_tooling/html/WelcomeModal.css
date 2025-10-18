@@ -1,4 +1,4 @@
-﻿.welcome-modal__overlay {
+﻿.welcome-modal-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -12,7 +12,7 @@
     z-index: 20;
 }
 
-.welcome-modal__container {
+.welcome-modal-container {
     padding: 24px;
     background: #111;
     border-radius: 12px;
@@ -21,18 +21,18 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.welcome-modal__form {
+.welcome-modal-form {
     text-align: left;
 }
 
-.welcome-modal__label {
+.welcome-modal-label {
     display: block;
     margin-bottom: 6px;
     font-weight: bold;
     font-size: 1.2rem;
 }
 
-.welcome-modal__input {
+.welcome-modal-input {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
@@ -43,7 +43,7 @@
     font-size: 1.1rem;
 }
 
-.welcome-modal__button {
+.welcome-modal-button {
     width: 100%;
     padding: 10px;
     background-color: #3a3af9;
@@ -56,19 +56,11 @@
     transition: background-color 0.2s ease;
 }
 
-.welcome-modal__button:hover {
+.welcome-modal-button:hover {
     background-color: #5a5aff;
 }
 
-.welcome-modal__button--green {
-    background-color: #4caf50;
-}
-
-.welcome-modal__button--green:hover {
-    background-color: #65d567;
-}
-
-.welcome-modal__list {
+.welcome-modal-list {
     list-style: none;
     padding: 0;
 }

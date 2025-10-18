@@ -26,7 +26,7 @@ export default function VideoBackground({ src, fadeDuration = 1.8 }) {
         playsInline
       />
 
-      <style jsx>{`
+      <style>{`
         .display_video {
           position: fixed;
           top: 0;

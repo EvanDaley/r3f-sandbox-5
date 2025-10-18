@@ -17,40 +17,40 @@ export default function WelcomeModal() {
   } = usePeerConnection();
 
   return (
-    <div className="welcome-modal__overlay">
-      <div className="welcome-modal__container">
+    <div className="welcome-modal-overlay">
+      <div className="welcome-modal-container">
         {!isConnected ? (
-          <div className="welcome-modal__form">
-            <label className="welcome-modal__label">ROOM CODE</label>
+          <div className="welcome-modal-form">
+            <label className="welcome-modal-label">ROOM CODE</label>
             <input
               type="text"
               placeholder="Enter 3-Letter Room Code"
               value={hostId}
               maxLength={3}
               onChange={(e) => setHostId(e.target.value.toUpperCase())}
-              className="welcome-modal__input"
+              className="welcome-modal-input"
             />
 
-            <label className="welcome-modal__label">NAME</label>
+            <label className="welcome-modal-label">NAME</label>
             <input
               type="text"
               placeholder="Enter Your Name"
               value={playerName}
               onChange={(e) => setMyPlayerName(e.target.value)}
-              className="welcome-modal__input"
+              className="welcome-modal-input"
             />
 
-            <button onClick={handleConnect} className="welcome-modal__button">
+            <button onClick={handleConnect} className="welcome-modal-button">
               Join
             </button>
           </div>
         ) : (
           <>
             <p>Players:</p>
-            <ul className="welcome-modal__list">
+            <ul className="welcome-modal-list">
               {Object.entries(connections).map(([peerId, data]) => (
                 <li key={peerId}>
-                  {data.name || "Unknown"} ({peerId.slice(0, 8)}…)
+                  {data.name || "Unknown"} ({peerId.slice(0, 28)})
                 </li>
               ))}
             </ul>
@@ -58,7 +58,7 @@ export default function WelcomeModal() {
             {isHost && (
               <button
                 onClick={() => handleSceneChange("scene1")}
-                className="welcome-modal__button welcome-modal__button--green"
+                className="welcome-modal-button welcome-modal-button-green"
               >
                 Start Game
               </button>

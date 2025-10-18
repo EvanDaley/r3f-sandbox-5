@@ -10,24 +10,19 @@ const localHostName = 'local-host-dev-2'
 // Helper function to detect local development environment and role
 // When working locally I open it in two tabs. The first tab is on 3000 and the second tab is on 3001.
 // They both use hardcoded peerIds so that I can easily have them find each other.
-const getLocalDevConfig = () => {
-  // TODO: Delete this to restore local dev config
-  return null
-
+const getPreferredConfig = () => {
   const isLocalhost = window.location.hostname === 'localhost';
   const port = window.location.port;
   const envRole = process.env.REACT_APP_ROLE;
 
-  if (!isLocalhost) return null;
-
-  const role = envRole || (port === '3001' ? 'client' : 'host');
+  const role = port === '3001' ? 'client' : 'host'
   const peerId = role === 'host'
     ? localHostName
     : `client-local-dev-${Math.floor(Math.random() * 10000)}`;
 
   const playerName = port === '3000' ? 'Evan' : getRandomName();
 
-  return { role, peerId, playerName, isLocalDev: true };
+  return { role, peerId, playerName, isLocalhost };
 };
 
 // Set up Peer.js and attach some handlers
@@ -39,10 +34,9 @@ export const initPeer = (onConnected) => {
   const { peer, setPeer, setMyPeerId, setIsHost, setIsClient, addConnection, setMyPlayerName } = usePeerStore.getState();
   if (peer) return peer;
 
-  const localConfig = getLocalDevConfig();
-  // const newPeer = localConfig ? new Peer(localConfig.peerId) : new Peer();
+  const desiredConfig = getPreferredConfig();
 
-  const newPeer = new Peer(localConfig ? localConfig.peerId : undefined, {
+  const newPeer = new Peer(desiredConfig ? desiredConfig.peerId : undefined, {
     host: '0.peerjs.com',
     port: 443,
     path: '/',
@@ -67,9 +61,9 @@ export const initPeer = (onConnected) => {
   });
 
   // Set player name for localhost development
-  if (localConfig && localConfig.playerName) {
-    setMyPlayerName(localConfig.playerName);
-    console.log(`Auto-set player name for localhost: ${localConfig.playerName}`);
+  if (desiredConfig && desiredConfig.playerName) {
+    setMyPlayerName(desiredConfig.playerName);
+    console.log(`Auto-set player name for localhost: ${desiredConfig.playerName}`);
   }
 
   newPeer.on('open', (id) => {
@@ -77,13 +71,15 @@ export const initPeer = (onConnected) => {
     setMyPeerId(id);
 
     // Auto-connect for local development
-    if (localConfig && localConfig.role === 'client') {
+    if (desiredConfig && desiredConfig.role === 'client') {
       console.log('Auto-connecting client to host...');
       connectToPeer(localHostName, onConnected);
     }
   });
 
   newPeer.on('connection', (conn) => {
+    // TODO: Reject the connection if "I myself am a client connected to a host already"
+
     console.log('Incoming connection from', conn.peer);
     setupConnection(conn, onConnected);
     setIsHost(true);
@@ -106,8 +102,8 @@ export const initPeer = (onConnected) => {
   setPeer(newPeer);
 
   // Set initial role for local development
-  if (localConfig) {
-    if (localConfig.role === 'host') {
+  if (desiredConfig) {
+    if (desiredConfig.role === 'host') {
       setIsHost(true);
       console.log('Local dev: Set as HOST');
     } else {
