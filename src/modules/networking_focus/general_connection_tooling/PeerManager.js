@@ -7,7 +7,6 @@ import {usePeerStore} from "./stores/peerStore";
 const localHostName = 'local-host-dev-2'
 const localClientPrefix = 'client-local-dev'
 
-
 // Helper function to detect local development environment and role
 // When working locally I open it in two tabs. The first tab is on 3000 and the second tab is on 3001.
 // They both use hardcoded peerIds so that I can easily have them find each other.
@@ -72,11 +71,11 @@ export const initPeer = (onConnected) => {
     console.log('Your peer ID is:', id);
     setMyPeerId(id);
 
-    // Auto-connect for local development
-    if (desiredConfig && desiredConfig.role === 'client') {
-      console.log('Auto-connecting client to host...');
-      connectToPeer(localHostName, onConnected);
-    }
+    // Auto-connect for local development. Instance running on 3001 will try to connect to instance on 3000.
+    // if (desiredConfig && desiredConfig.role === 'client') {
+    //   console.log('Auto-connecting client to host...');
+    //   connectToPeer(localHostName, onConnected);
+    // }
   });
 
   newPeer.on('connection', (conn) => {
@@ -118,7 +117,11 @@ export const initPeer = (onConnected) => {
 };
 
 export const connectToPeer = (peerId, onConnected) => {
+  console.log("Requesting connection")
+
   const { setIsClient } = usePeerStore.getState();
+
+  peerId = localHostName
 
   const { peer } = usePeerStore.getState();
   const conn = peer.connect(peerId);

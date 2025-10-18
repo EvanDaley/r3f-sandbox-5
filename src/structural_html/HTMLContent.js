@@ -15,7 +15,7 @@ export default function HTMLContent() {
       window.location.hostname === "127.0.0.1")
 
   // The scene switcher is just for local development or for debugging as "host" in prod.
-  const showSceneSelect = isRunningLocally || isHost;
+  const showSceneSelect = isHost;
 
   return (
     <>

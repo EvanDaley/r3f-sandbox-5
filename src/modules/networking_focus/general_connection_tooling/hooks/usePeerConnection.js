@@ -8,7 +8,7 @@ import {usePeerStore} from "../stores/peerStore";
 export default function usePeerConnection() {
   const { scenes, currentSceneId, setSceneId } = useSceneStore();
 
-  const [hostId, setHostId] = useState('');
+  const [hostId, setHostId] = useState('CX-ENGINEERING');
   const peerId = usePeerStore(state => state.peerId);
   const playerName = usePeerStore(state => state.playerName);
   const setMyPlayerName = usePeerStore(state => state.setMyPlayerName);
@@ -23,6 +23,7 @@ export default function usePeerConnection() {
 
   // This exposes the peerManager connection function so we can easily call it from any component to join other peers
   const handleConnect = () => {
+    console.log("Connecting...");
     if (!hostId.trim()) return;
     connectToPeer(hostId.trim(), () => setHostId(''));
   };
