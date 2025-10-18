@@ -27,8 +27,8 @@
   "scripts": {
     "start": "react-scripts start",
     "dev": "npm run dev:dual",
-    "dev:host": "cross-env PORT=3000 REACT_APP_ROLE=host react-scripts start",
-    "dev:client": "cross-env PORT=3001 REACT_APP_ROLE=client react-scripts start",
+    "dev:host": "cross-env PORT=3001 REACT_APP_ROLE=host react-scripts start",
+    "dev:client": "cross-env PORT=3002 REACT_APP_ROLE=client react-scripts start",
     "dev:dual": "concurrently \"npm run dev:host\" \"npm run dev:client\"",
     "deploy": "gh-pages -d build",
     "ship": "npm run build && npm run deploy",

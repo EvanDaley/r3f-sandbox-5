@@ -4,7 +4,6 @@ import "./WelcomeModal.css";
 
 export default function WelcomeModal() {
   const {
-    peerId,
     playerName,
     isConnected,
     hostId,
@@ -16,12 +15,16 @@ export default function WelcomeModal() {
     handleSceneChange,
   } = usePeerConnection();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleConnect();
+  };
+
   return (
     <div className="welcome-modal-overlay">
       <div className="welcome-modal-container">
         {!isConnected ? (
-          <div className="welcome-modal-form">
-
+          <form className="welcome-modal-form" onSubmit={handleSubmit}>
             <label className="welcome-modal-label">NAME</label>
             <input
               type="text"
@@ -38,24 +41,28 @@ export default function WelcomeModal() {
               value={hostId}
               onChange={(e) => setHostId(e.target.value.toUpperCase())}
               className="welcome-modal-input"
+              maxLength={3}
             />
 
-
-            <button onClick={handleConnect} className="welcome-modal-button">
+            <button type="submit" className="welcome-modal-button">
               Join
             </button>
-          </div>
+          </form>
         ) : (
           <>
             <h1 className="welcome-title">Welcome!</h1>
-            <p className="welcome-subtitle">The host will begin the match shortly</p>
+            <p className="welcome-subtitle">
+              The host will begin the match shortly
+            </p>
 
             <div className="welcome-lobby">
               <h3>Players in Lobby</h3>
               <ul className="welcome-player-list">
                 {Object.entries(connections).map(([peerId, data]) => (
                   <li key={peerId}>
-                    <span className="player-name">{data.name || "Unknown"}</span>
+                    <span className="player-name">
+                      {data.name || "Unknown"}
+                    </span>
                     <span className="player-id">{peerId.slice(0, 28)}</span>
                   </li>
                 ))}

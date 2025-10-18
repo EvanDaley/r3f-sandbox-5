@@ -4,8 +4,8 @@ import { routeMessage } from './MessageRouter';
 import {getRandomName} from "../../../utils/stringHelpers";
 import {usePeerStore} from "./stores/peerStore";
 
-const localHostName = 'local-host-dev-2'
-const localClientPrefix = 'client-local-dev'
+const localHostName = 'game-host-666'
+const localClientPrefix = 'game-client'
 
 // Helper function to detect local development environment and role
 // When working locally I open it in two tabs. The first tab is on 3000 and the second tab is on 3001.
@@ -14,12 +14,12 @@ const getPreferredConfig = () => {
   const isLocalhost = window.location.hostname === 'localhost';
   const port = window.location.port;
 
-  const role = port === '3001' ? 'client' : 'host'
+  const role = port === '3001' ? 'host' : 'client'
   const peerId = role === 'host'
     ? localHostName
     : `${localClientPrefix}-${Math.floor(Math.random() * 10000)}`;
 
-  const playerName = port === '3000' ? 'Evan' : getRandomName();
+  const playerName = port === '3001' ? 'Evan' : getRandomName();
 
   return { role, peerId, playerName, isLocalhost };
 };
@@ -44,10 +44,10 @@ export const initPeer = (onConnected) => {
   }
 
   const newPeer = new Peer(desiredConfig ? desiredConfig.peerId : undefined, {
-    host: '54.190.188.230',
-    port: 9000,
+    host: 'peer.makingstuffwithevan.com',
+    port: 443,
     path: '/peerjs',
-    secure: false,
+    secure: true,
     config: {
       // These are the creds for a turn server I set up on an EC2.
       // Default to STUN (straight peer to peer after connecting), fallback to TURN UDP (traffic goes through the EC2)
@@ -72,7 +72,7 @@ export const initPeer = (onConnected) => {
     setMyPeerId(id);
 
     // Auto-connect for local development. Instance running on 3001 will try to connect to instance on 3000.
-    if (desiredConfig && desiredConfig.role === 'client') {
+    if (desiredConfig && desiredConfig.role === 'client' && desiredConfig.isLocalhost) {
       console.log('Auto-connecting client to host...');
       connectToPeer(localHostName, onConnected);
     }
