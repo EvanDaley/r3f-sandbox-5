@@ -72,8 +72,19 @@ This is a React Three Fiber (R3F) application with peer-to-peer networking using
 
 Open two Chrome tabs to test peer connections. One tab becomes the host (receives connections), the other becomes the client (initiates connection). Use the peer ID displayed in the top-right corner to connect between tabs.
 
-## Debugging
+## Networking - More Details
 
-Use Redux Dev tools to view application state.
+My preferred approach right now for adding networked events is to create hooks that:
 
-![debugging.png](debugging.png)
+- Can be attached to any scene
+- Determine their own criteria for broadcasting events
+- Attach their own handlers to the message bus so they can process their own events on each client
+- A good example of this is: TODO (link the cleanest one)
+
+There are also few scenarios to keep in mind when networking:
+
+- Host sending list updates to keep things in sync across players
+- Host and/or players triggering events (move here, switch rooms)
+- Multiple systems effecting the same piece of data (i.e. gravity + character movement + host updates)
+- If a client sends a position to the host, and the host rebroadcasts it, the client should throw out that message to avoid jitter
+
