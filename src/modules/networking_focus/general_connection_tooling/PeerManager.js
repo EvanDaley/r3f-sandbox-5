@@ -19,7 +19,9 @@ const getPreferredConfig = () => {
     ? localHostName
     : `${localClientPrefix}-${Math.floor(Math.random() * 10000)}`;
 
-  const playerName = port === '3001' ? 'Evan' : getRandomName();
+  let playerName = '';
+  if (port === '3001') playerName = 'Evan';
+  else if (port === '3002') playerName = getRandomName();
 
   return { role, peerId, playerName, isLocalhost };
 };
