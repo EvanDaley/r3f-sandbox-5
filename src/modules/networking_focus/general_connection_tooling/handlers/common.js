@@ -71,7 +71,7 @@ function broadcastPlayerList() {
     };
   });
 
-  console.log(connections)
+  console.log('broadcasting connections', connections)
 
   // Broadcast to all connected clients
   Object.values(connections).forEach(({ conn }) => {

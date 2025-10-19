@@ -28,8 +28,11 @@ export const usePeerStore = create(devtools((set) => ({
   setIsHost: (isHost) => set({ isHost: isHost }),
   setIsClient: (isClient) => set({ isClient: isClient }),
 
-  addConnection: (peerId, conn, playerName = '') =>
-    set((state) => ({
+  addConnection: (peerId, conn, playerName = '') => {
+    console.log("adding connection", peerId, conn);
+    console.log("adding name", playerName);
+
+    return set((state) => ({
       connections: {
         ...state.connections,
         [peerId]: {
@@ -37,7 +40,8 @@ export const usePeerStore = create(devtools((set) => ({
           name: playerName,
         },
       },
-    })),
+    }))
+  },
 
   updatePlayerName: (peerId, name) =>
     set((state) => ({

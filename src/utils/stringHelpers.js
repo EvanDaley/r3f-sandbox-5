@@ -1,9 +1,9 @@
 ﻿export const getRandomName = () => {
   const names = [
-    'Alex', 'Jordan', 'Casey', 'Taylor', 'Morgan', 'Avery', 'Riley', 'Quinn',
+    'Jeeb', 'Smet', 'Casey', 'Taylor', 'Morgan', 'Avery', 'Riley', 'Quinn',
     'Sage', 'River', 'Phoenix', 'Skyler', 'Cameron', 'Parker', 'Jamie', 'Drew',
     'Sam', 'Reese', 'Harper', 'Rowan', 'Charlie', 'Emerson', 'Finley', 'Hayden',
-    'Jules', 'Kai', 'Logan', 'Micah', 'Brandon', 'Oakley', 'Peyton', 'Remy',
+    'Jules', 'Kai', 'Logan', 'Micah', 'Brandon', 'Oakley', 'Scode', 'Remy',
     'Shiloh', 'Tatum', 'Winter', 'Zion', 'Blair', 'Dallas', 'Elliot', 'Frankie',
     'Indigo', 'Jesse', 'Kendall', 'Lennon', 'Marley', 'Nico', 'Onyx', 'Raine',
     'Blaine', 'Arden', 'Briar', 'Cass', 'Dakota', 'Ellis', 'Greer', 'Hollis',

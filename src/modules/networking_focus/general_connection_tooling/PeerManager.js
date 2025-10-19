@@ -6,6 +6,7 @@ import {usePeerStore} from "./stores/peerStore";
 
 const localHostName = 'game-host-666'
 const localClientPrefix = 'game-client'
+const autoconnect = true
 
 // Helper function to detect local development environment and role
 // When working locally I open it in two tabs. The first tab is on 3000 and the second tab is on 3001.
@@ -32,7 +33,7 @@ const getPreferredConfig = () => {
 // When a new client tries to connect to us, that hits the 'connection' handler.
 // All other events are sent through the 'data' handler and passed to our custom router class per connection.
 export const initPeer = (onConnected) => {
-  const { peer, setPeer, setMyPeerId, setIsHost, setIsClient, addConnection, setMyPlayerName } = usePeerStore.getState();
+  const { peer, setPeer, setMyPeerId, setIsHost, setIsClient, setMyPlayerName } = usePeerStore.getState();
   if (peer) return peer;
 
   const desiredConfig = getPreferredConfig();
@@ -76,8 +77,12 @@ export const initPeer = (onConnected) => {
     // Auto-connect for local development. Instance running on 3001 will try to connect to instance on 3000.
     if (desiredConfig && desiredConfig.role === 'client' && desiredConfig.isLocalhost) {
       console.log('Auto-connecting client to host...');
-      connectToPeer(localHostName, onConnected);
+
+      if (autoconnect) connectToPeer(localHostName, onConnected);
     }
+
+    // Put ourselves on our "list of peers" so others can see us when they join
+    addSelfToList()
   });
 
   newPeer.on('connection', (conn) => {
@@ -86,15 +91,6 @@ export const initPeer = (onConnected) => {
     console.log('Incoming connection from', conn.peer);
     setupConnection(conn, onConnected);
     setIsHost(true);
-
-    // When we become host, add ourselves to the connection list
-    const { playerName, peerId, addConnection: addSelfConnection } = usePeerStore.getState();
-    if (playerName && peerId) {
-      // Add ourselves as a "connection" for display purposes
-      setTimeout(() => {
-        addSelfConnection(peerId, null, playerName);
-      }, 100);
-    }
   });
 
   newPeer.on('error', (err) => {
@@ -175,4 +171,12 @@ function setupConnection(conn, onConnected) {
   });
 }
 
-export const getPeerId = () => usePeerStore.getState().peerId;
+const addSelfToList = () => {
+  const { playerName, peerId, addConnection, isHost } = usePeerStore.getState();
+  if (playerName && peerId && isHost) {
+    setTimeout(() => {
+      console.log("adding self with name", playerName);
+      if (playerName && peerId) addConnection(peerId, null, playerName);
+    }, 100);
+  }
+}

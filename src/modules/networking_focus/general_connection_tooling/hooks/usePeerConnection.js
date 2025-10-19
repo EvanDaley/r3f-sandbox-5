@@ -1,12 +1,16 @@
 ﻿// usePeerConnection.js
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {broadcastSceneChange} from "../broadcastSceneChange";
 import {connectToPeer, initPeer} from "../PeerManager";
 import useSceneStore from "../../../../stores/sceneStore";
 import {usePeerStore} from "../stores/peerStore";
 
 export default function usePeerConnection() {
-  const { scenes, currentSceneId, setSceneId } = useSceneStore();
+  const {
+    scenes,
+    currentSceneId,
+    setSceneId
+  } = useSceneStore();
 
   const [hostId, setHostId] = useState('CX-ENGINEERING');
   const peerId = usePeerStore(state => state.peerId);
@@ -18,13 +22,15 @@ export default function usePeerConnection() {
   const isConnected = Object.keys(connections).length > 0;
 
   useEffect(() => {
-    initPeer(() => {});
+    initPeer(() => {
+    });
   }, []);
 
   // This exposes the peerManager connection function so we can easily call it from any component to join other peers
   const handleConnect = () => {
     console.log("Connecting...");
     if (!hostId.trim()) return;
+    if (!playerName.trim()) return;
     connectToPeer(hostId.trim(), () => setHostId(''));
   };
 
