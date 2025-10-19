@@ -71,7 +71,7 @@ export default function WelcomeModal() {
 
             {isHost && (
               <button
-                onClick={() => handleSceneChange("scene1")}
+                onClick={() => handleSceneChange("proceduralGround")}
                 className="welcome-modal-button welcome-modal-button-green"
               >
                 Start Game

@@ -29,6 +29,7 @@ export default function usePeerConnection() {
   };
 
   const handleSceneChange = (sceneId) => {
+    console.log("handleSceneChange", sceneId);
     setSceneId(sceneId);
     broadcastSceneChange(sceneId);
   };

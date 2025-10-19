@@ -1,7 +1,7 @@
 ﻿import {usePeerStore} from "./stores/peerStore";
 
 export const broadcastSceneChange = (sceneId) => {
-  const { connections, isHost } = usePeerStore().getState();
+  const { connections, isHost } = usePeerStore.getState();
 
   if (!isHost) {
     console.warn('Only hosts can broadcast scene changes');
