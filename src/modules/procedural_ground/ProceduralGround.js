@@ -8,6 +8,9 @@ import Tree1 from "../dynamic_colors/objects/Tree1"
 import Building1 from "../dynamic_colors/objects/Building1"
 import SimpleLighting2 from "../../components/environment/SimpleLighting2"
 import Building2 from "../dynamic_colors/objects/Building2";
+import Turret1 from "../dynamic_colors/objects/Turret1";
+import Turret2 from "../dynamic_colors/objects/Turret2";
+import Turret3 from "../dynamic_colors/objects/Turret3";
 
 export default function ProceduralGround() {
   const activePalette = usePaletteStore((s) => s.activePalette)
@@ -18,6 +21,19 @@ export default function ProceduralGround() {
 
   return (
     <>
+      <Turret1
+        materials={activePalette}
+        position={[-3,0,0]}
+      />
+      <Turret2
+        materials={activePalette}
+        position={[-6,0,0]}
+      />
+      <Turret3
+        materials={activePalette}
+        position={[0,0,0]}
+      />
+
       <OrthoZoomOnly />
       <SimpleLighting2 />
       <EffectsV2 />
@@ -32,14 +48,14 @@ export default function ProceduralGround() {
         position={[-2, 0, 6]}
       />
 
-      <Building1
-        materials={activePalette}
-      />
+      {/*<Building1*/}
+      {/*  materials={activePalette}*/}
+      {/*/>*/}
 
-      <Building2
-        position={[-7.5, 0, 2]}
-        materials={activePalette}
-      />
+      {/*<Building2*/}
+      {/*  position={[-7.5, 0, 2]}*/}
+      {/*  materials={activePalette}*/}
+      {/*/>*/}
 
       <Tree1
         materials={activePalette}

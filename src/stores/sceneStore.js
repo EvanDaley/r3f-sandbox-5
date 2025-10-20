@@ -17,7 +17,7 @@ const scenes = [
   { id: 'abilitiesSandbox1', name: 'Abilities Sandbox', scene: AbilitiesSandbox1, overlay: AbilitiesSandboxOverlay },
 ]
 
-const defaultScene = 'landingArea'
+const defaultScene = 'proceduralGround'
 
 const useSceneStore = create((set) => ({
   currentSceneId: defaultScene,
