@@ -13,11 +13,19 @@ export default function usePeerConnection() {
   } = useSceneStore();
 
   const [hostId, setHostId] = useState('CX-ENGINEERING');
-  const peerId = usePeerStore(state => state.peerId);
-  const playerName = usePeerStore(state => state.playerName);
-  const setMyPlayerName = usePeerStore(state => state.setMyPlayerName);
-  const connections = usePeerStore(state => state.connections);
-  const isHost = usePeerStore(state => state.isHost);
+  const {
+    peerId,
+    playerName,
+    setMyPlayerName,
+    connections,
+    isHost,
+  } = usePeerStore(state => ({
+    peerId: state.peerId,
+    playerName: state.playerName,
+    setMyPlayerName: state.setMyPlayerName,
+    connections: state.connections,
+    isHost: state.isHost,
+  }));
 
   const isConnected = Object.keys(connections).length > 0;
 
