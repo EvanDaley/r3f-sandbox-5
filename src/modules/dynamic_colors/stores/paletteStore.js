@@ -4,10 +4,16 @@ import { createToonPalette } from "../utils/createToonPalette"
 export const usePaletteStore = create((set, get) => {
     const palettes = {
         default: createToonPalette({
-            p: "#ffffff",
-            e: "#ff2222",
-            s: "#ffaa33",
-            t: "#009e9e",
+            // p: "#ffffff",
+            // e: "#ff2222",
+            // s: "#ffaa33",
+            // t: "#009e9e",
+            // d: "#4e4848",
+
+            p: "#f8e3a1",
+            e: "#ff8822",
+            s: "#d27b41",
+            t: "#b4a47a",
             d: "#4e4848",
         }),
         night: createToonPalette({

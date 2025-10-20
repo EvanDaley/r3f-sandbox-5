@@ -11,6 +11,7 @@ import Building2 from "../dynamic_colors/objects/Building2";
 import Turret1 from "../dynamic_colors/objects/Turret1";
 import Turret2 from "../dynamic_colors/objects/Turret2";
 import Turret3 from "../dynamic_colors/objects/Turret3";
+import {OrbitControls} from "@react-three/drei";
 
 export default function ProceduralGround() {
   const activePalette = usePaletteStore((s) => s.activePalette)
@@ -48,20 +49,22 @@ export default function ProceduralGround() {
         position={[-2, 0, 6]}
       />
 
-      {/*<Building1*/}
-      {/*  materials={activePalette}*/}
-      {/*/>*/}
+      <Building1
+        materials={activePalette}
+      />
 
-      {/*<Building2*/}
-      {/*  position={[-7.5, 0, 2]}*/}
-      {/*  materials={activePalette}*/}
-      {/*/>*/}
+      <Building2
+        position={[-7.5, 0, 2]}
+        materials={activePalette}
+      />
 
       <Tree1
         materials={activePalette}
         position={[-8, 0, 6]}
         scale={[1.5, 1.5, 1.5]}
       />
+
+      {/*<OrbitControls/>*/}
     </>
   )
 }
