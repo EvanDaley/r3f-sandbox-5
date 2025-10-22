@@ -1,15 +1,21 @@
-﻿import React from "react"
-import PaletteModel from "./PaletteModel"
+﻿import React, { forwardRef } from "react";
+import PaletteModel from "./PaletteModel";
 
-export default function LittleRobot({ materials, ...props }) {
+const LittleRobot = forwardRef(({ materials, ...props }, ref) => {
+  // If PaletteModel is a custom mesh-like object that expects props but not a ref,
+  // wrap it in a <group> that can safely receive a ref.
   return (
-    <PaletteModel
-      file="palette_testing/littleRobot.glb"
-      materials={materials}
-      outline
-      castShadow
-      receiveShadow
-      {...props}
-    />
-  )
-}
+    <group ref={ref}>
+      <PaletteModel
+        file="palette_testing/littleRobot.glb"
+        materials={materials}
+        outline
+        castShadow
+        receiveShadow
+        {...props}
+      />
+    </group>
+  );
+});
+
+export default LittleRobot;

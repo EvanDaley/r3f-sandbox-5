@@ -33,6 +33,7 @@ export default function RockTile({ position, onClick, value }) {
       onClick={onClick}
       rotation={[0, rotation, 0]}
       scale={scale}
+      receiveShadow={true}
     >
       <boxGeometry args={[1, .5, 1]} />
       <meshToonMaterial color={color} />

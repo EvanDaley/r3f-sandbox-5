@@ -4,8 +4,6 @@ import SimpleLighting2 from "../../components/environment/SimpleLighting2";
 import EffectsV2 from "../../components/effects/EffectsV2";
 import TileGrid from "../procedural_ground/components/TileGrid";
 import FloatingRobot from "../dynamic_colors/objects/FloatingRobot";
-import Building1 from "../dynamic_colors/objects/Building1";
-import Tree1 from "../dynamic_colors/objects/Tree1";
 import {usePaletteStore} from "../dynamic_colors/stores/paletteStore";
 import {useAbilityStore} from "./stores/abilityStore";
 import {useFrame} from "@react-three/fiber";

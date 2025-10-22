@@ -38,12 +38,12 @@ export const initPeer = (onConnected) => {
 
   const desiredConfig = getPreferredConfig();
 
-  console.log('Setting up with desiredConfig', desiredConfig);
+  // console.log('Setting up with desiredConfig', desiredConfig);
 
   // Set player name for localhost development
   if (desiredConfig && desiredConfig.playerName) {
     setMyPlayerName(desiredConfig.playerName);
-    console.log(`Auto-set player name for localhost: ${desiredConfig.playerName}`);
+    // console.log(`Auto-set player name for localhost: ${desiredConfig.playerName}`);
   }
 
   const newPeer = new Peer(desiredConfig ? desiredConfig.peerId : undefined, {

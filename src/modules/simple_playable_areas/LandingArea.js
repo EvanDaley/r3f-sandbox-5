@@ -17,15 +17,15 @@ export default function LandingArea() {
 
       <TileGrid debugTile={false} />
 
-      {/*<FloatingRobot*/}
-      {/*  materials={activePalette}*/}
-      {/*  position={[0, 0, -4]}*/}
-      {/*/>*/}
-      {/*<FloatingRobot*/}
-      {/*  rotation={[0, Math.PI, 0]}*/}
-      {/*  materials={activePalette}*/}
-      {/*  position={[0, 0, 6]}*/}
-      {/*/>*/}
+      <FloatingRobot
+        materials={activePalette}
+        position={[0, 0, -4]}
+      />
+      <FloatingRobot
+        rotation={[0, Math.PI, 0]}
+        materials={activePalette}
+        position={[0, 0, 6]}
+      />
 
     </>
   )
