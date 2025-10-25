@@ -1,5 +1,4 @@
-﻿// hooks/useKeyboardMovement.js
-import { useEffect, useRef } from "react";
+﻿import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 export function useKeyboardMovement(speed = 7) {
@@ -9,11 +8,23 @@ export function useKeyboardMovement(speed = 7) {
   useEffect(() => {
     const down = (e) => (keys.current[e.key.toLowerCase()] = true);
     const up = (e) => (keys.current[e.key.toLowerCase()] = false);
+
+    const clearKeys = () => {
+      for (const k in keys.current) keys.current[k] = false;
+    };
+
     window.addEventListener("keydown", down);
     window.addEventListener("keyup", up);
+    window.addEventListener("blur", clearKeys);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) clearKeys();
+    });
+
     return () => {
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
+      window.removeEventListener("blur", clearKeys);
+      document.removeEventListener("visibilitychange", clearKeys);
     };
   }, []);
 
@@ -30,6 +41,7 @@ export function useKeyboardMovement(speed = 7) {
       direction.current.copy(move);
       return move.multiplyScalar(speed * delta);
     }
+
     return new THREE.Vector3(0, 0, 0);
   };
 

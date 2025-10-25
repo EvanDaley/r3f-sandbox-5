@@ -9,9 +9,10 @@ import TileGrid from "../../procedural_ground/components/TileGrid";
 import FloatingRobot from "../../dynamic_colors/objects/FloatingRobot";
 import {usePaletteStore} from "../../dynamic_colors/stores/paletteStore";
 import LittleRobot from "../../dynamic_colors/objects/LittleRobot";
+import {useInitPlayer} from "./hooks/useInitPlayer";
 
 export default function MovementSandbox2() {
-  // useInitPlayer(); // ensure we have a starting position
+  useInitPlayer();
 
   const activePalette = usePaletteStore((s) => s.activePalette);
   const players = usePlayerStore((s) => s.players);
