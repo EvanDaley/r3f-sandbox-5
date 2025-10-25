@@ -1,4 +1,4 @@
-﻿import PlayerGuide from "../../components/overlays/PlayerGuide";
+﻿import PlayerGuide from "../../../components/overlays/PlayerGuide";
 
 export default function MovementSandboxOverlay() {
   return (
