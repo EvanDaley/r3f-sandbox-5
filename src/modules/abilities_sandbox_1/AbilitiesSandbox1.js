@@ -8,6 +8,7 @@ import {usePaletteStore} from "../dynamic_colors/stores/paletteStore";
 import {useAbilityStore} from "./stores/abilityStore";
 import {useFrame} from "@react-three/fiber";
 import AbilitySpawner from "./objects/AbilitySpawner";
+import MoveablePlayers1 from "../networking_focus/movement_sandbox_2/MoveablePlayers1";
 
 export default function AbilitiesSandbox1() {
   const activePalette = usePaletteStore((s) => s.activePalette)
@@ -31,15 +32,17 @@ export default function AbilitiesSandbox1() {
 
       <TileGrid debugTile={debugTile} />
 
-      <FloatingRobot
-        materials={activePalette}
-        position={[0, 0, -4]}
-      />
-      <FloatingRobot
-        rotation={[0, Math.PI, 0]}
-        materials={activePalette}
-        position={[0, 0, 6]}
-      />
+      {/*<FloatingRobot*/}
+      {/*  materials={activePalette}*/}
+      {/*  position={[0, 0, -4]}*/}
+      {/*/>*/}
+      {/*<FloatingRobot*/}
+      {/*  rotation={[0, Math.PI, 0]}*/}
+      {/*  materials={activePalette}*/}
+      {/*  position={[0, 0, 6]}*/}
+      {/*/>*/}
+
+      <MoveablePlayers1/>
 
       <AbilitySpawner/>
     </>

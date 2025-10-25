@@ -1,13 +1,18 @@
-import useSceneStore from "../stores/sceneStore"
+import { useRef } from "react";
+import useSceneStore from "../stores/sceneStore";
 import usePeerConnection from "../modules/networking_focus/general_connection_tooling/hooks/usePeerConnection";
 
 export default function SceneSelect() {
-  const {
-    scenes,
-    currentSceneId,
-  } = useSceneStore()
+  const { scenes, currentSceneId } = useSceneStore();
+  const { handleSceneChange } = usePeerConnection();
 
-  const {handleSceneChange} = usePeerConnection();
+  const selectRef = useRef(null);
+
+  const onChange = (e) => {
+    const newScene = e.target.value;
+    handleSceneChange(newScene);
+    e.target.blur(); // deselect immediately
+  };
 
   return (
     <div
@@ -30,8 +35,9 @@ export default function SceneSelect() {
     >
       <label>Scene:</label>
       <select
+        ref={selectRef}
         value={currentSceneId}
-        onChange={(e) => handleSceneChange(e.target.value)}
+        onChange={onChange}
         style={{
           background: "#333",
           color: "#fff",
@@ -48,5 +54,5 @@ export default function SceneSelect() {
         ))}
       </select>
     </div>
-  )
+  );
 }

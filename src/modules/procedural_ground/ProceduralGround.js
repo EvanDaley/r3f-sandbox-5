@@ -12,6 +12,7 @@ import Turret1 from "../dynamic_colors/objects/Turret1";
 import Turret2 from "../dynamic_colors/objects/Turret2";
 import Turret3 from "../dynamic_colors/objects/Turret3";
 import {OrbitControls} from "@react-three/drei";
+import MoveablePlayers1 from "../networking_focus/movement_sandbox_2/MoveablePlayers1";
 
 export default function ProceduralGround() {
   const activePalette = usePaletteStore((s) => s.activePalette)
@@ -42,12 +43,14 @@ export default function ProceduralGround() {
 
       <TileGrid debugTile={debugTile} />
 
-      <FloatingRobot materials={activePalette} position={[10, 0, 2]} />
-      <FloatingRobot
-        rotation={[0, Math.PI, 0]}
-        materials={activePalette}
-        position={[-2, 0, 6]}
-      />
+      {/*<FloatingRobot materials={activePalette} position={[10, 0, 2]} />*/}
+      {/*<FloatingRobot*/}
+      {/*  rotation={[0, Math.PI, 0]}*/}
+      {/*  materials={activePalette}*/}
+      {/*  position={[-2, 0, 6]}*/}
+      {/*/>*/}
+
+      <MoveablePlayers1/>
 
       <Building1
         materials={activePalette}

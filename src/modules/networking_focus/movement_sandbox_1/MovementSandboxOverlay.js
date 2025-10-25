@@ -5,12 +5,12 @@ export default function MovementSandboxOverlay() {
     <>
       {/*<AbilityBarOverlay />*/}
 
-      {/*<PlayerGuide*/}
-      {/*  placement={'top'}*/}
-      {/*  lines={[*/}
-      {/*    <>Try using an <span style={{color: "#06d6a0"}}>Ability</span>.</>,*/}
-      {/*  ]}*/}
-      {/*/>*/}
+      <PlayerGuide
+        placement={'top'}
+        lines={[
+          <>First attempt at movement in Three.js. This one is <span style={{color: "#06d6a0"}}>client only</span>.</>,
+        ]}
+      />
     </>
   )
 }
