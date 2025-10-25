@@ -8,6 +8,8 @@ import AbilitiesSandboxOverlay from "../modules/abilities_sandbox_1/AbilitiesSan
 import ConnectPage from "../modules/networking_focus/connect_page/ConnectPage";
 import ConnectPageOverlay from "../modules/networking_focus/connect_page/ConnectPageOverlay";
 import LandingArea from "../modules/simple_playable_areas/LandingArea";
+import MovementSandbox1 from "../modules/networking_focus/movement_sandbox_1/MovementSandbox1";
+import MovementSandboxOverlay from "../modules/networking_focus/movement_sandbox_1/MovementSandboxOverlay";
 import MovementSandbox2 from "../modules/networking_focus/movement_sandbox_2/MovementSandbox2";
 import MovementSandbox2Overlay from "../modules/networking_focus/movement_sandbox_2/MovementSandbox2Overlay";
 
@@ -17,6 +19,7 @@ const scenes = [
   { id: 'tileLevel1', name: 'Palette Sandbox', scene: PaletteSandbox, overlay: PaletteSandboxOverlay },
   { id: 'proceduralGround', name: 'Procedural Ground Sandbox', scene: ProceduralGround, overlay: ProceduralGroundOverlay },
   { id: 'abilitiesSandbox1', name: 'Abilities Sandbox', scene: AbilitiesSandbox1, overlay: AbilitiesSandboxOverlay },
+  { id: 'movementSandbox1', name: 'Movement Sandbox 1', scene: MovementSandbox1, overlay: MovementSandboxOverlay },
   { id: 'movementSandbox2', name: 'Movement Sandbox 2', scene: MovementSandbox2, overlay: MovementSandbox2Overlay },
 ]
 
