@@ -1,7 +1,7 @@
 ﻿// usePeerConnection.js
 import {useEffect, useState} from 'react';
 import {broadcastSceneChange} from "../broadcastSceneChange";
-import {connectToPeer, initPeer} from "../PeerManager";
+import {connectToPeer, initPeer} from "../initPeer";
 import useSceneStore from "../../../../stores/sceneStore";
 import {usePeerStore} from "../stores/peerStore";
 

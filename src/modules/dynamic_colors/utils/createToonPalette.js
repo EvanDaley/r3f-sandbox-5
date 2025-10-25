@@ -23,7 +23,7 @@ export function createToonPalette({ p, e, s, t, d }) {
         p1: new THREE.MeshToonMaterial({
             color: p,
             map: texture,
-            combine: THREE.MultiplyOperation,
+            // combine: THREE.MultiplyOperation,
         }),
 
     }

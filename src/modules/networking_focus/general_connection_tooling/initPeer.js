@@ -1,12 +1,17 @@
-﻿// PeerManager.js
+﻿// initPeer.js
 import Peer from 'peerjs';
-import { routeMessage } from './MessageRouter';
+import { routeMessage } from './routeMessage';
 import {getRandomName} from "../../../utils/stringHelpers";
 import {usePeerStore} from "./stores/peerStore";
 
 const localHostName = 'game-host-666'
 const localClientPrefix = 'game-client'
 const autoconnect = true
+
+// Set to
+// 1 for init logs
+// 2 for messages
+const debugMode = 0
 
 // Helper function to detect local development environment and role
 // When working locally I open it in two tabs. The first tab is on 3000 and the second tab is on 3001.
@@ -38,15 +43,20 @@ export const initPeer = (onConnected) => {
 
   const desiredConfig = getPreferredConfig();
 
-  // console.log('Setting up with desiredConfig', desiredConfig);
+  if (debugMode === 1) {
+    console.log('Setting up with desiredConfig', desiredConfig);
+  }
 
   // Set player name for localhost development
   if (desiredConfig && desiredConfig.playerName) {
     setMyPlayerName(desiredConfig.playerName);
-    // console.log(`Auto-set player name for localhost: ${desiredConfig.playerName}`);
+
+    if (debugMode === 1) {
+      console.log(`Auto-set player name for localhost: ${desiredConfig.playerName}`);
+    }
   }
 
-  const newPeer = new Peer(desiredConfig ? desiredConfig.peerId : undefined, {
+  const connectionSettings = {
     host: 'peer.makingstuffwithevan.com',
     port: 443,
     path: '/peerjs',
@@ -68,15 +78,21 @@ export const initPeer = (onConnected) => {
         }
       ]
     }
-  });
+  }
+
+  if (debugMode === 1) {
+    console.log('Connecting with settings', connectionSettings);
+  }
+
+  const newPeer = new Peer(desiredConfig ? desiredConfig.peerId : undefined, connectionSettings);
 
   newPeer.on('open', (id) => {
-    console.log('Your peer ID is:', id);
+    // console.log('Your peer ID is:', id);
     setMyPeerId(id);
 
     // Auto-connect for local development. Instance running on 3001 will try to connect to instance on 3000.
     if (desiredConfig && desiredConfig.role === 'client' && desiredConfig.isLocalhost) {
-      console.log('Auto-connecting client to host...');
+      // console.log('Auto-connecting client to host...');
 
       if (autoconnect) connectToPeer(localHostName, onConnected);
     }
@@ -88,7 +104,9 @@ export const initPeer = (onConnected) => {
   newPeer.on('connection', (conn) => {
     // TODO: Reject the connection if "I myself am a client connected to a host already"
 
-    console.log('Incoming connection from', conn.peer);
+    if (debugMode === 1) {
+      console.log('Incoming connection from', conn.peer);
+    }
     setupConnection(conn, onConnected);
     setIsHost(true);
   });
@@ -132,13 +150,17 @@ export const connectToPeer = (peerId, onConnected) => {
 // Set up handlers on the new connection. We should be able to call this on connections both for sending, and
 // receiving. On 'open' send player info. On 'data', call the custom router.
 function setupConnection(conn, onConnected) {
-  console.log('setup connection')
   const { addConnection, playerName, isClient } = usePeerStore.getState();
 
-  console.log('playerName', playerName)
+  if (debugMode === 1) {
+    console.log('Setting up with playerName', playerName)
+  }
 
   conn.on('open', () => {
-    console.log('Connected to', conn.peer);
+    if (debugMode === 1) {
+      console.log('Connected to', conn.peer);
+    }
+
     addConnection(conn.peer, conn);
 
     // If we're a client connecting to host, send our player info
@@ -154,12 +176,16 @@ function setupConnection(conn, onConnected) {
   });
 
   conn.on('data', (data) => {
-    console.log('Received from', conn.peer, ':', data);
+    if (debugMode === 2) {
+      console.log('Received from', conn.peer, ':', data);
+    }
     routeMessage(conn.peer, data);
   });
 
   conn.on('iceStateChanged', (state) => {
-    console.log('ICE state changed for', conn.peer, ':', state);
+    if (debugMode === 1) {
+      console.log('ICE state changed for', conn.peer, ':', state);
+    }
   });
 
   conn.on('error', (err) => {
@@ -175,7 +201,9 @@ const addSelfToList = () => {
   const { playerName, peerId, addConnection, isHost } = usePeerStore.getState();
   if (playerName && peerId && isHost) {
     setTimeout(() => {
-      console.log("adding self with name", playerName);
+      if (debugMode === 1) {
+        console.log("adding self with name", playerName);
+      }
       if (playerName && peerId) addConnection(peerId, null, playerName);
     }, 100);
   }

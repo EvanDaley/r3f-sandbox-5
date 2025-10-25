@@ -7,8 +7,11 @@ import TileGrid from "../../procedural_ground/components/TileGrid";
 import FloatingRobot from "../../dynamic_colors/objects/FloatingRobot";
 import LittleRobot from "../../dynamic_colors/objects/LittleRobot";
 import useRobotMovement from "./hooks/useRobotMovement";
+import {useTimeIncrement} from "../general_connection_tooling/hook_examples/useTimeIncrement";
 
 export default function MovementSandbox1() {
+  const time = useTimeIncrement();
+
   const activePalette = usePaletteStore((s) => s.activePalette);
   const littleRef = useRef();
 

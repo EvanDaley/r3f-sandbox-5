@@ -29,9 +29,6 @@ export const usePeerStore = create(devtools((set) => ({
   setIsClient: (isClient) => set({ isClient: isClient }),
 
   addConnection: (peerId, conn, playerName = '') => {
-    console.log("adding connection", peerId, conn);
-    console.log("adding name", playerName);
-
     return set((state) => ({
       connections: {
         ...state.connections,
