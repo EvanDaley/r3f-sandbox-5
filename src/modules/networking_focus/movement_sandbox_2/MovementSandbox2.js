@@ -21,6 +21,7 @@ export default function MovementSandbox2() {
   useInitPlayer();
 
   const activePalette = usePaletteStore((s) => s.activePalette);
+  const palettes = usePaletteStore((s) => s.palettes);
   const players = usePlayerStore((s) => s.players);
   const {
     peerId,
@@ -47,7 +48,7 @@ export default function MovementSandbox2() {
             <LittleRobot
               key={id}
               ref={localRef}
-              materials={materials}
+              materials={palettes.desert}
               position={[pos.x, pos.y, pos.z]}
               rotation={[0, rotationY, 0]}  // ✅ apply networked rotation
               scale={scale}
