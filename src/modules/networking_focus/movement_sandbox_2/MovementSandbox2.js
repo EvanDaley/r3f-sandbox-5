@@ -39,7 +39,7 @@ export default function MovementSandbox2() {
       {Object.entries(players).map(([id, pos]) => {
         const isHostPlayer = id === hostId;
         const isSelf = id === peerId;
-        const scale = isHostPlayer ? 2 : 1;
+        const scale = isHostPlayer ? 1 : 1;
         const materials = activePalette;
         const rotationY = pos.rotation ?? 0;
 
@@ -49,8 +49,6 @@ export default function MovementSandbox2() {
               key={id}
               ref={localRef}
               materials={palettes.desert}
-              position={[pos.x, pos.y, pos.z]}
-              rotation={[0, rotationY, 0]}  // ✅ apply networked rotation
               scale={scale}
             />
           );
@@ -62,7 +60,7 @@ export default function MovementSandbox2() {
             key={id}
             materials={materials}
             position={[pos.x, pos.y, pos.z]}
-            rotation={[0, rotationY, 0]}  // ✅ same rotation
+            rotation={[0, rotationY, 0]}
             scale={scale}
           />
         );
