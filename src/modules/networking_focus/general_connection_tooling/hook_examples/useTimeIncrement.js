@@ -1,6 +1,6 @@
-﻿// This is an example of a hook that sends and receives its own payload
-// On scene initialization, it connects itself to the message bus
-// On an interval, it publishes and routes a message to itself across every connected client
+﻿// This is a working example of a hook that sends a payload and receives it on all clients through the message bus.
+// On scene initialization, it connects itself to the message bus.
+// On interval, it publishes and routes a message to itself across every connected client.
 
 // hooks/useTimeIncrement.js
 import { useEffect, useRef } from "react";
