@@ -38,7 +38,7 @@ const getPreferredConfig = () => {
 // When a new client tries to connect to us, that hits the 'connection' handler.
 // All other events are sent through the 'data' handler and passed to our custom router class per connection.
 export const initPeer = (onConnected) => {
-  const { peer, setPeer, setMyPeerId, setIsHost, setIsClient, setMyPlayerName } = usePeerStore.getState();
+  const { peer, setPeer, setMyPeerId, setIsHost, setIsClient, setMyPlayerName, setHostId } = usePeerStore.getState();
   if (peer) return peer;
 
   const desiredConfig = getPreferredConfig();
@@ -90,6 +90,12 @@ export const initPeer = (onConnected) => {
     // console.log('Your peer ID is:', id);
     setMyPeerId(id);
 
+    if (desiredConfig.role === 'host') {
+      setIsHost(true);
+      setHostId(id);
+      if (debugMode === 1) console.log(`[HOST] My peerId is hostId: ${id}`);
+    }
+
     // Auto-connect for local development. Instance running on 3001 will try to connect to instance on 3000.
     if (desiredConfig && desiredConfig.role === 'client' && desiredConfig.isLocalhost) {
       // console.log('Auto-connecting client to host...');
@@ -102,13 +108,18 @@ export const initPeer = (onConnected) => {
   });
 
   newPeer.on('connection', (conn) => {
+    const { hostId, peerId } = usePeerStore.getState();
+
     // TODO: Reject the connection if "I myself am a client connected to a host already"
+    // if (hostId) return
 
     if (debugMode === 1) {
       console.log('Incoming connection from', conn.peer);
     }
+
     setupConnection(conn, onConnected);
     setIsHost(true);
+    setHostId(peerId);
   });
 
   newPeer.on('error', (err) => {
@@ -135,7 +146,7 @@ export const initPeer = (onConnected) => {
 export const connectToPeer = (peerId, onConnected) => {
   console.log("Requesting connection")
 
-  const { setIsClient } = usePeerStore.getState();
+  const { setIsClient, setHostId } = usePeerStore.getState();
 
   peerId = localHostName
 
@@ -143,8 +154,9 @@ export const connectToPeer = (peerId, onConnected) => {
   const conn = peer.connect(peerId);
   setupConnection(conn, onConnected);
 
-  // ON SENDING CONNECTION save the notion that [ I AM CLIENT ]
+  // ON SENDING CONNECTION save the notions that [ I AM CLIENT ], and [ HOST IS WHO I'M CONNECTING TO ]
   setIsClient(true);
+  setHostId(peerId);
 };
 
 // Set up handlers on the new connection. We should be able to call this on connections both for sending, and

@@ -32,10 +32,10 @@ export const routeMessage = (fromPeerId, message) => {
 // MessageBus-based routing (preferred moving forward)
 function handleBusMessage(fromPeerId, message) {
   const { payload, type } = message;
-  const { myPeerId } = usePeerStore.getState?.() || {};
+  const { peerId } = usePeerStore.getState?.() || {};
 
   // Skip our own messages
-  if (payload?.sender && payload.sender === myPeerId) return;
+  if (payload?.sender && payload.sender === peerId) return;
 
   if (payload?.group) {
     messageBus.publish(payload.group, { fromPeerId, type, payload });
