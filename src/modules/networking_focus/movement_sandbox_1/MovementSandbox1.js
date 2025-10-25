@@ -25,7 +25,7 @@ export default function MovementSandbox1() {
       <color attach="background" args={["#3c2828"]} />
 
       <TileGrid />
-      <LittleRobot ref={littleRef} materials={activePalette} />
+      <LittleRobot ref={littleRef} materials={activePalette} position={[0, 0, 4]}/>
 
       <FloatingRobot
         rotation={[0, Math.PI, 0]}

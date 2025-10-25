@@ -9,12 +9,11 @@ import { usePlayerStore } from "../stores/usePlayerStore";
 
 export function useRobotMovement(ref) {
   const { computeMovement, direction } = useKeyboardMovement();
-  const { broadcastPosition } = useNetworkedPlayer("playerMovement");
+  const { broadcastTransform } = useNetworkedPlayer("playerMovement");
   const peerId = usePeerStore((s) => s.peerId);
   const players = usePlayerStore((s) => s.players);
   const isReady = useRef(false);
 
-  // Wait until ref is ready
   useEffect(() => {
     const interval = setInterval(() => {
       if (ref.current) {
@@ -25,7 +24,7 @@ export function useRobotMovement(ref) {
     return () => clearInterval(interval);
   }, [ref]);
 
-  // Apply local input for our own player
+  // Local control + broadcast
   useFrame((_, delta) => {
     if (!isReady.current || !ref.current || !peerId) return;
 
@@ -33,24 +32,29 @@ export function useRobotMovement(ref) {
     if (moveVec.lengthSq() > 0) {
       ref.current.position.add(moveVec);
 
-      // Rotate to face movement
       const angle = Math.atan2(direction.current.x, direction.current.z);
       ref.current.rotation.y = angle;
 
-      // Broadcast new position to network
-      broadcastPosition(ref.current.position);
+      broadcastTransform(ref.current.position, angle);
     }
   });
 
-  // Sync remote players visually
+  // Remote interpolation
   useFrame(() => {
     if (!isReady.current || !players || !peerId) return;
     const me = players[peerId];
     if (me && ref.current) {
       ref.current.position.lerp(
         new THREE.Vector3(me.x, me.y, me.z),
-        0.2 // smoothing
+        0.2
       );
+      if (me.rotation !== undefined) {
+        ref.current.rotation.y = THREE.MathUtils.lerp(
+          ref.current.rotation.y,
+          me.rotation,
+          0.2
+        );
+      }
     }
   });
 }

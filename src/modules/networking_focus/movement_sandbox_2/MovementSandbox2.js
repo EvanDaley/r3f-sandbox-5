@@ -6,11 +6,14 @@ import OrthoZoomOnly from "../../../components/controls/OrthoZoomOnly";
 import SimpleLighting2 from "../../../components/environment/SimpleLighting2";
 import EffectsV2 from "../../../components/effects/EffectsV2";
 import TileGrid from "../../procedural_ground/components/TileGrid";
-import {useInitPlayer} from "./hooks/useInitPlayer";
+import FloatingRobot from "../../dynamic_colors/objects/FloatingRobot";
+import {usePaletteStore} from "../../dynamic_colors/stores/paletteStore";
+import LittleRobot from "../../dynamic_colors/objects/LittleRobot";
 
 export default function MovementSandbox2() {
   // useInitPlayer(); // ensure we have a starting position
 
+  const activePalette = usePaletteStore((s) => s.activePalette);
   const players = usePlayerStore((s) => s.players);
   const { peerId, hostId } = usePeerStore((s) => ({
     peerId: s.peerId,
@@ -26,24 +29,34 @@ export default function MovementSandbox2() {
         const isHostPlayer = id === hostId;
         const isSelf = id === peerId;
         const scale = isHostPlayer ? 2 : 1;
-        const color = isSelf ? "#ffa600" : isHostPlayer ? "#ff3b3b" : "#3ba9ff";
+        const materials = activePalette;
+        const rotationY = pos.rotation ?? 0;
 
         if (isSelf) {
           return (
-            <mesh key={id} ref={localRef} position={[pos.x, pos.y, pos.z]} scale={scale}>
-              <boxGeometry args={[1, 1, 1]} />
-              <meshStandardMaterial color={color} />
-            </mesh>
+            <LittleRobot
+              key={id}
+              ref={localRef}
+              materials={materials}
+              position={[pos.x, pos.y, pos.z]}
+              rotation={[0, rotationY, 0]}  // ✅ apply networked rotation
+              scale={scale}
+            />
           );
         }
 
+        // Remote robots (no ref)
         return (
-          <mesh key={id} position={[pos.x, pos.y, pos.z]} scale={scale}>
-            <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color={color} />
-          </mesh>
+          <LittleRobot
+            key={id}
+            materials={materials}
+            position={[pos.x, pos.y, pos.z]}
+            rotation={[0, rotationY, 0]}  // ✅ same rotation
+            scale={scale}
+          />
         );
       })}
+
 
       <color attach="background" args={["#3c2828"]} />
       <OrthoZoomOnly />

@@ -8,56 +8,52 @@ export function useNetworkedPlayer(group = "playerMovement") {
   const isHost = usePeerStore((s) => s.isHost);
   const peerId = usePeerStore((s) => s.peerId);
   const connections = usePeerStore((s) => s.connections);
-  const setPlayerPosition = usePlayerStore((s) => s.setPlayerPosition);
+  const setPlayerTransform = usePlayerStore((s) => s.setPlayerTransform);
 
-  // Announce spawn + handle network updates
   useEffect(() => {
     if (!peerId) return;
 
-    // Spawn point
     const spawn = {
       x: (Math.random() - 0.5) * 5,
       y: 0,
       z: (Math.random() - 0.5) * 5,
+      rotation: 0,
     };
-    setPlayerPosition(peerId, spawn);
-    messageBus.broadcast(group, "updatePosition", { sender: peerId, position: spawn });
+    setPlayerTransform(peerId, spawn);
+    messageBus.broadcast(group, "updateTransform", { sender: peerId, transform: spawn });
 
-    // Subscribe to incoming updates
     const unsubscribe = messageBus.subscribe(group, ({ fromPeerId, payload }) => {
-      const { position, sender } = payload;
+      const { transform, sender } = payload;
       const senderId = sender || fromPeerId;
-      if (!senderId || !position) return;
+      if (!senderId || !transform) return;
 
-      // Host rebroadcasts
       if (isHost) {
         Object.values(connections).forEach(({ conn }) => {
           if (conn && conn.open && conn.peer !== senderId) {
             conn.send({
               scene: "bus",
-              type: "updatePosition",
-              payload: { group, sender: senderId, position },
+              type: "updateTransform",
+              payload: { group, sender: senderId, transform },
             });
           }
         });
       }
 
-      // Update local state
-      setPlayerPosition(senderId, position);
+      setPlayerTransform(senderId, transform);
     });
 
     return unsubscribe;
-  }, [peerId, isHost, group, connections, setPlayerPosition]);
+  }, [peerId, isHost, group, connections, setPlayerTransform]);
 
-  // Utility to broadcast movement updates
-  const broadcastPosition = (position) => {
+  const broadcastTransform = (position, rotation) => {
     if (!peerId) return;
-    setPlayerPosition(peerId, position);
-    messageBus.broadcast(group, "updatePosition", {
+    const transform = { x: position.x, y: position.y, z: position.z, rotation };
+    setPlayerTransform(peerId, transform);
+    messageBus.broadcast(group, "updateTransform", {
       sender: peerId,
-      position,
+      transform,
     });
   };
 
-  return { broadcastPosition };
+  return { broadcastTransform };
 }

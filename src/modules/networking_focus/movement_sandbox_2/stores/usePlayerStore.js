@@ -1,14 +1,14 @@
 ﻿// stores/usePlayerStore.js
-import create from 'zustand';
+import create from "zustand";
 
 export const usePlayerStore = create((set, get) => ({
-  players: {},
+  players: {}, // { peerId: { x, y, z, rotation } }
 
-  setPlayerPosition: (peerId, position) =>
+  setPlayerTransform: (peerId, transform) =>
     set((state) => ({
       players: {
         ...state.players,
-        [peerId]: { ...state.players[peerId], ...position },
+        [peerId]: { ...state.players[peerId], ...transform },
       },
     })),
 
