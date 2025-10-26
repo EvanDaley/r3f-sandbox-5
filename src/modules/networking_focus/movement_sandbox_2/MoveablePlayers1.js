@@ -5,6 +5,7 @@ import {usePeerStore} from "../general_connection_tooling/stores/peerStore";
 import React, {useRef} from "react";
 import {useRobotMovement} from "./hooks/useRobotMovement";
 import LittleRobot from "../../dynamic_colors/objects/LittleRobot";
+import Ninja1 from "../../dynamic_colors/objects/Ninja1";
 
 export default function MoveablePlayers1() {
   useInitPlayer();
@@ -34,25 +35,37 @@ export default function MoveablePlayers1() {
 
         if (isSelf) {
           return (
-            <LittleRobot
+            <Ninja1
               key={id}
               ref={localRef}
-              materials={palettes.desert}
+              materials={materials}
               scale={scale}
               position={[pos.x, pos.y, pos.z]}
               rotation={[0, rotationY, 0]}
             />
           );
         }
+        //
+        // if (isSelf) {
+        //   return (
+        //     <Ninja1
+        //       key={id}
+        //       ref={localRef}
+        //       materials={palettes.desert}
+        //       scale={scale}
+        //       position={[pos.x, pos.y, pos.z]}
+        //       rotation={[0, rotationY, 0]}
+        //     />
+        //   );
+        // }
 
         // Remote robots (no ref)
         return (
-          <LittleRobot
+          <Ninja1
             key={id}
             materials={materials}
             position={[pos.x, pos.y, pos.z]}
             rotation={[0, rotationY, 0]}
-            scale={scale}
           />
         );
       })}

@@ -12,18 +12,22 @@ import MovementSandbox1 from "../modules/networking_focus/movement_sandbox_1/Mov
 import MovementSandboxOverlay from "../modules/networking_focus/movement_sandbox_1/MovementSandboxOverlay";
 import MovementSandbox2 from "../modules/networking_focus/movement_sandbox_2/MovementSandbox2";
 import MovementSandbox2Overlay from "../modules/networking_focus/movement_sandbox_2/MovementSandbox2Overlay";
+import OfficePrototype from "../modules/simple_playable_areas/OfficePrototype";
+import OfficePrototype2 from "../modules/simple_playable_areas/OfficePrototype2";
 
 const scenes = [
   { id: 'connectPage', name: 'Join Game', scene: ConnectPage, overlay: ConnectPageOverlay },
-  { id: 'landingArea', name: 'Landing Area', scene: LandingArea, overlay: PaletteSandboxOverlay },
+  { id: 'landingArea', name: 'Landing Area', scene: LandingArea },
   { id: 'tileLevel1', name: 'Palette Sandbox', scene: PaletteSandbox, overlay: PaletteSandboxOverlay },
   { id: 'proceduralGround', name: 'Procedural Ground Sandbox', scene: ProceduralGround, overlay: ProceduralGroundOverlay },
   { id: 'abilitiesSandbox1', name: 'Abilities Sandbox', scene: AbilitiesSandbox1, overlay: AbilitiesSandboxOverlay },
   { id: 'movementSandbox1', name: 'Movement Sandbox 1', scene: MovementSandbox1, overlay: MovementSandboxOverlay },
   { id: 'movementSandbox2', name: 'Movement Sandbox 2', scene: MovementSandbox2, overlay: MovementSandbox2Overlay },
+  { id: 'OfficePrototype', name: 'OfficePrototype', scene: OfficePrototype, overlay: MovementSandbox2Overlay },
+  { id: 'OfficePrototype2', name: 'OfficePrototype2', scene: OfficePrototype2, overlay: PaletteSandboxOverlay },
 ]
 
-let defaultScene = 'movementSandbox2'
+let defaultScene = 'OfficePrototype2'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {
