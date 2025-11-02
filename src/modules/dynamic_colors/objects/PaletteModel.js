@@ -33,14 +33,14 @@ export default function PaletteModel({
           castShadow={castShadow}
           receiveShadow={receiveShadow}
         >
-          {outline && (
+          {/* {outline && (
             <Outlines
               thickness={2}
               color="black"
               screenspace
               opacity={1}
               {...outlineProps}
-            />
+            /> */}
           )}
         </mesh>
       ))}

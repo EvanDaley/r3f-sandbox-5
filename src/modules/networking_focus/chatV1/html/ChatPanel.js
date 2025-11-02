@@ -9,6 +9,7 @@ export default function ChatPanel() {
   const messages = useChatStore((s) => s.messages);
   const { sendMessage } = useChat();
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
   const AUTO_EXPAND_THRESHOLD = 3; // Auto-expand for first 3 messages
 
   const scrollToBottom = () => {
@@ -31,6 +32,55 @@ export default function ChatPanel() {
     }
   }, [messages.length, isCollapsed, userManuallyClosed]);
 
+  // Global Enter key handler - opens chat and focuses input
+  useEffect(() => {
+    const handleGlobalEnter = (e) => {
+      // Don't interfere if user is typing in the input
+      if (document.activeElement === inputRef.current) {
+        return;
+      }
+
+      // Don't trigger if user is typing in another input/textarea
+      const activeTag = document.activeElement?.tagName?.toLowerCase();
+      if (activeTag === "input" || activeTag === "textarea") {
+        return;
+      }
+
+      // Only handle Enter (not Shift+Enter)
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault(); // Prevent any default behavior
+        // Open chat if collapsed
+        if (isCollapsed) {
+          setIsCollapsed(false);
+          setUserManuallyClosed(false); // Reset this so chat stays open
+          // Focus input after a brief delay to allow DOM update
+          setTimeout(() => {
+            inputRef.current?.focus();
+          }, 50);
+        } else {
+          // Chat is already open, just focus the input
+          inputRef.current?.focus();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalEnter);
+    return () => {
+      window.removeEventListener("keydown", handleGlobalEnter);
+    };
+  }, [isCollapsed]);
+
+  // Focus input when chat is opened (if not already focused)
+  useEffect(() => {
+    if (!isCollapsed && inputRef.current && document.activeElement !== inputRef.current) {
+      // Small delay to ensure input is rendered
+      const timeoutId = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 50);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isCollapsed]);
+
   const handleSend = (e) => {
     e.preventDefault();
     if (inputValue.trim()) {
@@ -40,7 +90,8 @@ export default function ChatPanel() {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    // Only send if input is actually focused (prevent accidental sends)
+    if (e.key === "Enter" && !e.shiftKey && document.activeElement === inputRef.current) {
       e.preventDefault();
       handleSend(e);
     }
@@ -170,6 +221,7 @@ export default function ChatPanel() {
             {/* Input */}
             <form onSubmit={handleSend} style={{ display: "flex", gap: "4px" }}>
               <input
+                ref={inputRef}
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}

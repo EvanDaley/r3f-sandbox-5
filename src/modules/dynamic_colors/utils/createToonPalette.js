@@ -10,17 +10,17 @@ export function createToonPalette({ p, e, s, t, d }) {
     texture.needsUpdate = true
 
     return {
-        p: new THREE.MeshToonMaterial({ color: p }),
-        e: new THREE.MeshToonMaterial({
+        p: new THREE.MeshStandardMaterial({ color: p }),
+        e: new THREE.MeshStandardMaterial({
             color: e,
             emissive: e,
             emissiveIntensity: 1.9,
         }),
-        s: new THREE.MeshToonMaterial({ color: s }),
-        t: new THREE.MeshToonMaterial({ color: t }),
-        d: new THREE.MeshToonMaterial({ color: d }),
+        s: new THREE.MeshStandardMaterial({ color: s }),
+        t: new THREE.MeshStandardMaterial({ color: t }),
+        d: new THREE.MeshStandardMaterial({ color: d }),
 
-        p1: new THREE.MeshToonMaterial({
+        p1: new THREE.MeshStandardMaterial({
             color: p,
             map: texture,
             // combine: THREE.MultiplyOperation,
