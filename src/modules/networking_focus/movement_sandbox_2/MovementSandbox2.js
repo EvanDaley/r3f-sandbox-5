@@ -1,5 +1,5 @@
-﻿import React, {useRef} from "react";
-import OrthoZoomOnly from "../../../components/controls/OrthoZoomOnly";
+﻿import React, {useRef, useState, useCallback} from "react";
+import OrthoZoomOnlyFollow from "../../../components/controls/OrthoZoomOnlyFollow";
 import SimpleLighting2 from "../../../components/environment/SimpleLighting2";
 import EffectsV2 from "../../../components/effects/EffectsV2";
 import TileGrid from "../../procedural_ground/components/TileGrid";
@@ -14,13 +14,19 @@ import MoveablePlayers1 from "./MoveablePlayers1";
 
 export default function MovementSandbox2() {
   const activePalette = usePaletteStore((s) => s.activePalette);
+  const [localPlayerRef, setLocalPlayerRef] = useState(null);
+
+  // Callback to receive local player ref from MoveablePlayers1
+  const handleLocalPlayerRef = useCallback((ref) => {
+    setLocalPlayerRef(ref);
+  }, []);
 
   return (
     <>
-      <MoveablePlayers1/>
+      <MoveablePlayers1 onLocalPlayerRef={handleLocalPlayerRef}/>
 
       <color attach="background" args={["#3c2828"]}/>
-      <OrthoZoomOnly/>
+      <OrthoZoomOnlyFollow targetRef={localPlayerRef}/>
       <SimpleLighting2/>
       <EffectsV2/>
       <TileGrid/>

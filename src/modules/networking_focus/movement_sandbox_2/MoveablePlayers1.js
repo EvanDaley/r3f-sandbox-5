@@ -61,7 +61,7 @@ function RemotePlayer({ playerId, transform, materials, scale }) {
   );
 }
 
-export default function MoveablePlayers1() {
+export default function MoveablePlayers1({ onLocalPlayerRef }) {
   useInitPlayer();
 
   const activePalette = usePaletteStore((s) => s.activePalette);
@@ -77,6 +77,13 @@ export default function MoveablePlayers1() {
 
   const localRef = useRef();
   useRobotMovement(localRef);
+
+  // Expose local player ref to parent component (for camera following)
+  useEffect(() => {
+    if (onLocalPlayerRef) {
+      onLocalPlayerRef(localRef);
+    }
+  }, [onLocalPlayerRef]);
 
   return (
     <>
