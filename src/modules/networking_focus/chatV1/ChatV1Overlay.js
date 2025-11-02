@@ -4,10 +4,12 @@ import { useChatStore } from "./stores/chatStore";
 
 export default function ChatV1Overlay() {
   const [inputValue, setInputValue] = useState("");
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [userManuallyClosed, setUserManuallyClosed] = useState(false);
   const messages = useChatStore((s) => s.messages);
   const { sendMessage } = useChat();
   const messagesEndRef = useRef(null);
+  const AUTO_EXPAND_THRESHOLD = 3; // Auto-expand for first 3 messages
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -16,6 +18,18 @@ export default function ChatV1Overlay() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Auto-expand for first few messages, but stop if user manually closes
+  useEffect(() => {
+    if (
+      messages.length > 0 &&
+      messages.length <= AUTO_EXPAND_THRESHOLD &&
+      isCollapsed &&
+      !userManuallyClosed
+    ) {
+      setIsCollapsed(false);
+    }
+  }, [messages.length, isCollapsed, userManuallyClosed]);
 
   const handleSend = (e) => {
     e.preventDefault();
@@ -29,6 +43,15 @@ export default function ChatV1Overlay() {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend(e);
+    }
+  };
+
+  const handleToggleCollapse = () => {
+    const newCollapsed = !isCollapsed;
+    setIsCollapsed(newCollapsed);
+    // If user manually closes it, mark it so we don't auto-expand anymore
+    if (newCollapsed) {
+      setUserManuallyClosed(true);
     }
   };
 
@@ -75,7 +98,7 @@ export default function ChatV1Overlay() {
       >
         {/* Collapsible Header */}
         <div
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          onClick={handleToggleCollapse}
           style={{
             display: "flex",
             alignItems: "center",

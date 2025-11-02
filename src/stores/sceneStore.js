@@ -30,7 +30,7 @@ const scenes = [
   { id: 'OfficePrototype2', name: 'OfficePrototype2', scene: OfficePrototype2, overlay: PaletteSandboxOverlay },
 ]
 
-let defaultScene = 'chatV1'
+let defaultScene = 'movementSandbox2'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {
