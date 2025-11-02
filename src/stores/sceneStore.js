@@ -16,6 +16,8 @@ import ChatV1 from "../modules/networking_focus/chatV1/ChatV1";
 import ChatV1Overlay from "../modules/networking_focus/chatV1/ChatV1Overlay";
 import OfficePrototype from "../modules/simple_playable_areas/OfficePrototype";
 import OfficePrototype2 from "../modules/simple_playable_areas/OfficePrototype2";
+import ActivitySandbox from "../modules/networking_focus/activity_sandbox/ActivitySandbox";
+import ActivitySandboxOverlay from "../modules/networking_focus/activity_sandbox/ActivitySandboxOverlay";
 
 const scenes = [
   { id: 'connectPage', name: 'Join Game', scene: ConnectPage, overlay: ConnectPageOverlay },
@@ -28,9 +30,10 @@ const scenes = [
   { id: 'chatV1', name: 'Chat V1', scene: ChatV1, overlay: ChatV1Overlay },
   { id: 'OfficePrototype', name: 'OfficePrototype', scene: OfficePrototype, overlay: MovementSandbox2Overlay },
   { id: 'OfficePrototype2', name: 'OfficePrototype2', scene: OfficePrototype2, overlay: PaletteSandboxOverlay },
+  { id: 'activitySandbox', name: 'Activity Sandbox', scene: ActivitySandbox, overlay: ActivitySandboxOverlay },
 ]
 
-let defaultScene = 'movementSandbox2'
+let defaultScene = 'activitySandbox'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {
