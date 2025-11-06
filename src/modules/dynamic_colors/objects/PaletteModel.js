@@ -32,17 +32,7 @@ export default function PaletteModel({
           scale={mesh.scale}
           castShadow={castShadow}
           receiveShadow={receiveShadow}
-        >
-          {/* {outline && (
-            <Outlines
-              thickness={2}
-              color="black"
-              screenspace
-              opacity={1}
-              {...outlineProps}
-            /> */}
-          )}
-        </mesh>
+        />
       ))}
     </group>
   )

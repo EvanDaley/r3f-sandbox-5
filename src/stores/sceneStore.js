@@ -33,10 +33,10 @@ const scenes = [
   { id: 'OfficePrototype', name: 'OfficePrototype', scene: OfficePrototype, overlay: MovementSandbox2Overlay },
   { id: 'OfficePrototype2', name: 'OfficePrototype2', scene: OfficePrototype2, overlay: PaletteSandboxOverlay },
   { id: 'activitySandbox', name: 'Activity Sandbox', scene: ActivitySandbox, overlay: ActivitySandboxOverlay },
-  { id: 'screamingText', name: 'Screaming Text', scene: ScreamingText, overlay: ScreamingTextOverlay },
+  { id: 'screamingText', name: 'Screaming Text', scene: null, overlay: ScreamingTextOverlay },
 ]
 
-let defaultScene = 'screamingText'
+let defaultScene = 'connectPage'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {

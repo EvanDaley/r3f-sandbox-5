@@ -8,7 +8,7 @@ const styles = `
     align-items: center;
     justify-content: center;
     background: #000;
-    z-index: 1000;
+    z-index: 0;
     overflow: hidden;
   }
 
