@@ -10,6 +10,8 @@ import { useInteraction } from "./hooks/useInteraction";
 import { useSharedObjectsStore } from "./stores/useSharedObjectsStore";
 import { useSharedObjectsNetwork } from "./hooks/useSharedObjectsNetwork";
 import { usePeerStore } from "../general_connection_tooling/stores/peerStore";
+import Desk from "../../../components/props/sprites/Desk";
+import Desk1 from "../../dynamic_colors/objects/Desk1";
 
 export default function ActivitySandbox() {
   const activePalette = usePaletteStore((s) => s.activePalette);
@@ -30,7 +32,7 @@ export default function ActivitySandbox() {
 
   // Initialize boxes - host creates them, clients receive via network
   const boxes = [
-    { id: "box1", position: { x: 0, y: 0, z: 0 } },
+    { id: "box1", position: { x: 2, y: 0, z: 0 } },
     { id: "box2", position: { x: 3, y: 0, z: 0 } },
     { id: "box3", position: { x: -3, y: 0, z: 3 } },
   ];
@@ -54,6 +56,9 @@ export default function ActivitySandbox() {
   return (
     <>
       <MoveablePlayersV2 onLocalPlayerRef={handleLocalPlayerRef} />
+
+      <Desk position={[-5, .8, -5.5]} scale={[3,3,3]} />
+      <Desk1 position={[-5, 0, 0]} scale={[1,1,1]} materials={activePalette} />
 
       <color attach="background" args={["#3c2828"]} />
       <OrthoZoomOnlyFollow targetRef={localPlayerRef} />
