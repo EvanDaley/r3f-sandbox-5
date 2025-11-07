@@ -87,7 +87,7 @@ export default function CarryableBox({ boxId, initialPosition, materials }) {
       const storedY = object.position.y !== undefined ? object.position.y : 0;
       targetPosition.current.set(
         object.position.x,
-        storedY,
+        .5,
         object.position.z
       );
     }
@@ -120,7 +120,7 @@ export default function CarryableBox({ boxId, initialPosition, materials }) {
   const isCarried = holderCount >= 2;
 
   return (
-    <mesh ref={meshRef} position={[initialPosition.x, initialPosition.y || BOX_HEIGHT / 2, initialPosition.z]}>
+    <mesh ref={meshRef} receiveShadow castShadow position={[initialPosition.x, initialPosition.y || BOX_HEIGHT / 2, initialPosition.z]}>
       <boxGeometry args={[1, BOX_HEIGHT, 1]} />
       <meshStandardMaterial
         ref={materialRef}
