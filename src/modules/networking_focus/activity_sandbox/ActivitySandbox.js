@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
-import OrthoZoomOnlyFollow from "../../../components/controls/OrthoZoomOnlyFollow";
+import PerspectiveFollow from "../../../components/controls/PerspectiveFollow";
 import SimpleLighting2 from "../../../components/environment/SimpleLighting2";
 import EffectsV2 from "../../../components/effects/EffectsV2";
 import TileGrid from "../../procedural_ground/components/TileGrid";
@@ -16,8 +16,6 @@ import Desk1 from "../../dynamic_colors/objects/Desk1";
 export default function ActivitySandbox() {
   const activePalette = usePaletteStore((s) => s.activePalette);
   const [localPlayerRef, setLocalPlayerRef] = useState(null);
-  const objects = useSharedObjectsStore((s) => s.objects);
-  const isHost = usePeerStore((s) => s.isHost);
   const peerId = usePeerStore((s) => s.peerId);
   
   // Initialize networking for shared objects
@@ -57,11 +55,21 @@ export default function ActivitySandbox() {
     <>
       <MoveablePlayersV2 onLocalPlayerRef={handleLocalPlayerRef} />
 
-      <Desk position={[-5, .8, -5.5]} scale={[3,3,3]} />
-      <Desk1 position={[-5, 0, 0]} scale={[1,1,1]} materials={activePalette} />
-
+      {/* <Desk position={[-5, .8, -5.5]} scale={[3,3,3]} /> */}
+      <group position={[-10, 0, 0]}>
+        {[-5, 0, 5].map((x) =>
+          ([-4, -2, 0, 2, 4].map((z) =>
+            <Desk1
+              key={`desk1-${x}-${z}`}
+              position={[x, 0, z]}
+              scale={[1,1,1]}
+              materials={activePalette}
+            />
+          ))
+        )}
+      </group>
       <color attach="background" args={["#3c2828"]} />
-      <OrthoZoomOnlyFollow targetRef={localPlayerRef} />
+      <PerspectiveFollow targetRef={localPlayerRef} />
       <SimpleLighting2 />
       <EffectsV2 />
       <TileGrid />

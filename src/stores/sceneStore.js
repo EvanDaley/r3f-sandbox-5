@@ -18,6 +18,8 @@ import OfficePrototype from "../modules/simple_playable_areas/OfficePrototype";
 import OfficePrototype2 from "../modules/simple_playable_areas/OfficePrototype2";
 import ActivitySandbox from "../modules/networking_focus/activity_sandbox/ActivitySandbox";
 import ActivitySandboxOverlay from "../modules/networking_focus/activity_sandbox/ActivitySandboxOverlay";
+import GravitySandbox from "../modules/networking_focus/gravity_sandbox/GravitySandbox";
+import GravitySandboxOverlay from "../modules/networking_focus/gravity_sandbox/GravitySandboxOverlay";
 import ScreamingText from "../modules/screaming_text/ScreamingText";
 import ScreamingTextOverlay from "../modules/screaming_text/ScreamingTextOverlay";
 
@@ -33,6 +35,7 @@ const scenes = [
   { id: 'OfficePrototype', name: 'OfficePrototype', scene: OfficePrototype, overlay: MovementSandbox2Overlay },
   { id: 'OfficePrototype2', name: 'OfficePrototype2', scene: OfficePrototype2, overlay: PaletteSandboxOverlay },
   { id: 'activitySandbox', name: 'Activity Sandbox', scene: ActivitySandbox, overlay: ActivitySandboxOverlay },
+  { id: 'gravitySandbox', name: 'Gravity Sandbox', scene: GravitySandbox, overlay: GravitySandboxOverlay },
   { id: 'screamingText', name: 'Screaming Text', scene: null, overlay: ScreamingTextOverlay },
 ]
 
