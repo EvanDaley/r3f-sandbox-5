@@ -7,6 +7,7 @@ import { usePlayerStoreV4 } from "../stores/usePlayerStoreV4";
 import { usePeerStore } from "../../general_connection_tooling/stores/peerStore";
 import { useBombTimer } from "../hooks/useBombTimer";
 import Explosion from "./Explosion";
+import BombConnection from "./BombConnection";
 import * as THREE from "three";
 
 const INTERPOLATION_FACTOR = 0.2;
@@ -145,15 +146,20 @@ export default function Bomb({ bombId, initialPosition, materials }) {
   };
   const timerText = showTimer ? formatTimer(timerValue) : "";
 
-  // Get explosion position - use ref to track current position
+  // Track bomb position for explosion and connections
+  const bombPositionRef = useRef({ x: initialPosition.x, y: BOMB_HEIGHT / 2, z: initialPosition.z });
   const explosionPositionRef = useRef({ x: initialPosition.x, y: BOMB_HEIGHT / 2, z: initialPosition.z });
   
   useFrame(() => {
     if (meshRef.current) {
-      explosionPositionRef.current = {
-        x: meshRef.current.position.x,
-        y: meshRef.current.position.y,
-        z: meshRef.current.position.z,
+      const pos = meshRef.current.position;
+      bombPositionRef.current = { x: pos.x, y: pos.y, z: pos.z };
+      explosionPositionRef.current = { x: pos.x, y: pos.y, z: pos.z };
+    } else if (object?.position) {
+      bombPositionRef.current = {
+        x: object.position.x,
+        y: object.position.y || BOMB_HEIGHT / 2,
+        z: object.position.z,
       };
     }
   });
@@ -174,6 +180,25 @@ export default function Bomb({ bombId, initialPosition, materials }) {
           emissiveIntensity={holderCount >= 2 ? 0.4 : holderCount === 1 ? 0.25 : 0.1}
         />
       </mesh>
+      
+      {/* Connection lines to players holding the bomb */}
+      {object?.heldBy && object.heldBy.length > 0 && (
+        <>
+          {object.heldBy.map((playerId) => {
+            const player = players[playerId];
+            if (!player) return null;
+            
+            return (
+              <BombConnection
+                key={`connection-${bombId}-${playerId}`}
+                from={{ x: player.x, y: player.y, z: player.z }}
+                to={bombPositionRef.current}
+                color={holderCount >= 2 ? "#ff4400" : "#ffaa00"}
+              />
+            );
+          })}
+        </>
+      )}
       
       {/* 3D Countdown Timer - positioned above bomb */}
       {showTimer && (
