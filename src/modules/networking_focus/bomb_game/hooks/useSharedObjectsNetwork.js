@@ -6,6 +6,7 @@ import { useSharedObjectsStore } from "../stores/useSharedObjectsStore";
 import { broadcastMessage } from "../../general_connection_tooling/broadcastMessage";
 
 const GROUP = "bombGameSharedObjects";
+const INITIAL_TIMER = 22; // Seconds
 
 export function useSharedObjectsNetwork() {
   const isHost = usePeerStore((s) => s.isHost);
@@ -14,6 +15,7 @@ export function useSharedObjectsNetwork() {
   const setObjectPosition = useSharedObjectsStore((s) => s.setObjectPosition);
   const addHolder = useSharedObjectsStore((s) => s.addHolder);
   const removeHolder = useSharedObjectsStore((s) => s.removeHolder);
+  const setTimer = useSharedObjectsStore((s) => s.setTimer);
   const getObjects = useSharedObjectsStore.getState;
 
   useEffect(() => {
@@ -108,13 +110,59 @@ export function useSharedObjectsNetwork() {
           break;
         }
 
+        case "startTimer": {
+          const { objectId, startTime } = payload;
+          if (!objectId || !startTime) return;
+
+          // Set timer start time in store
+          // Note: startTime is the host's performance.now() timestamp
+          // Clients will use this to sync their local timers
+          const object = getObjects().objects[objectId];
+          if (object && !object.timerStartTime) {
+            setTimer(objectId, INITIAL_TIMER); // Set initial value, startTime is stored separately
+            // Store startTime in the object (this is the host's timestamp)
+            useSharedObjectsStore.getState().setObject(objectId, {
+              ...object,
+              timerStartTime: startTime,
+            });
+          }
+
+          // Host rebroadcasts to ensure consistency
+          if (isHost) {
+            broadcastMessage(
+              {
+                scene: "bus",
+                type: "rebroadcastStartTimer",
+                payload: { group: GROUP, sender: senderId, objectId, startTime },
+              },
+              { hostOnly: true }
+            );
+          }
+          break;
+        }
+
+        case "rebroadcastStartTimer": {
+          const { objectId, startTime } = payload;
+          if (objectId && startTime) {
+            const object = getObjects().objects[objectId];
+            if (object && !object.timerStartTime) {
+              setTimer(objectId, INITIAL_TIMER);
+              useSharedObjectsStore.getState().setObject(objectId, {
+                ...object,
+                timerStartTime: startTime,
+              });
+            }
+          }
+          break;
+        }
+
         default:
           break;
       }
     });
 
     return unsubscribe;
-  }, [peerId, isHost, setObjectPosition, addHolder, removeHolder]);
+  }, [peerId, isHost, setObjectPosition, addHolder, removeHolder, setTimer, getObjects]);
 
   const broadcastObjectPosition = (objectId, position) => {
     if (!peerId) return;
@@ -143,6 +191,15 @@ export function useSharedObjectsNetwork() {
     });
   };
 
-  return { broadcastObjectPosition, broadcastGrab, broadcastRelease };
+  const broadcastStartTimer = (objectId, startTime) => {
+    if (!peerId) return;
+    messageBus.broadcast(GROUP, "startTimer", {
+      sender: peerId,
+      objectId,
+      startTime,
+    });
+  };
+
+  return { broadcastObjectPosition, broadcastGrab, broadcastRelease, broadcastStartTimer };
 }
 

@@ -2,7 +2,7 @@
 import create from "zustand";
 
 export const useSharedObjectsStore = create((set, get) => ({
-  objects: {}, // { objectId: { position: {x, y, z}, heldBy: [playerId1, playerId2], type: 'bomb' } }
+  objects: {}, // { objectId: { position: {x, y, z}, heldBy: [playerId1, playerId2], type: 'bomb', timer: number, timerStartTime: number } }
 
   setObjectPosition: (objectId, position) =>
     set((state) => ({
@@ -78,5 +78,16 @@ export const useSharedObjectsStore = create((set, get) => ({
     }),
 
   resetObjects: () => set({ objects: {} }),
+
+  setTimer: (objectId, timer) =>
+    set((state) => ({
+      objects: {
+        ...state.objects,
+        [objectId]: {
+          ...state.objects[objectId],
+          timer,
+        },
+      },
+    })),
 }));
 

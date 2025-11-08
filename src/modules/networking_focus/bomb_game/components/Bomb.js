@@ -1,15 +1,19 @@
 import React, { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
+import { Text } from "@react-three/drei";
 import { useSharedObjectsStore } from "../stores/useSharedObjectsStore";
 import { useSharedObjectsNetwork } from "../hooks/useSharedObjectsNetwork";
 import { usePlayerStoreV4 } from "../stores/usePlayerStoreV4";
 import { usePeerStore } from "../../general_connection_tooling/stores/peerStore";
+import { useBombTimer } from "../hooks/useBombTimer";
 import * as THREE from "three";
 
 const INTERPOLATION_FACTOR = 0.2;
 const BOMB_HEIGHT = 0.8;
 const CARRY_HEIGHT = 1.5; // Height above ground when carried
 const BROADCAST_THROTTLE_MS = 100;
+const INITIAL_TIMER = 22; // Seconds
+const TIMER_HEIGHT_OFFSET = 1.2; // Height above bomb for timer display
 
 export default function Bomb({ bombId, initialPosition, materials }) {
   const meshRef = useRef();
@@ -22,6 +26,12 @@ export default function Bomb({ bombId, initialPosition, materials }) {
   
   // Subscribe to object state changes (for reactive updates)
   const object = useSharedObjectsStore((s) => s.objects[bombId]);
+  
+  // Check if bomb is being carried
+  const isCarried = object?.heldBy && object.heldBy.length >= 2;
+  
+  // Use timer hook for all timer logic
+  const { timerValue, showTimer } = useBombTimer(bombId, isCarried);
 
   // Initialize object in store if not present
   useEffect(() => {
@@ -31,17 +41,17 @@ export default function Bomb({ bombId, initialPosition, materials }) {
         position: initialPosition,
         heldBy: [],
         type: 'bomb',
+        timer: null, // Timer starts when picked up
       });
     }
   }, [bombId, initialPosition]);
 
   // Calculate target position based on holders or network updates
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!meshRef.current || !object) return;
 
     // Check if local player is holding this bomb
     const isLocalPlayerHolding = object.heldBy?.includes(peerId);
-    const isCarried = object.heldBy && object.heldBy.length >= 2;
 
     // Any client can calculate position if they have both player positions
     if (isCarried && object.heldBy.length >= 2) {
@@ -125,17 +135,116 @@ export default function Bomb({ bombId, initialPosition, materials }) {
 
   // Get holder count for rendering (reactive)
   const holderCount = object?.heldBy?.length || 0;
+  
+  // Format timer as "M:SS" (e.g., "0:22")
+  const formatTimer = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+  const timerText = showTimer ? formatTimer(timerValue) : "";
 
   return (
-    <mesh ref={meshRef} receiveShadow castShadow position={[initialPosition.x, initialPosition.y || BOMB_HEIGHT / 2, initialPosition.z]}>
-      <sphereGeometry args={[0.4, 16, 16]} />
-      <meshStandardMaterial
-        ref={materialRef}
-        color={materials?.s?.color || "#333333"}
-        emissive={holderCount >= 2 ? "#ff4400" : holderCount === 1 ? "#ffaa00" : "#440000"}
-        emissiveIntensity={holderCount >= 2 ? 0.4 : holderCount === 1 ? 0.25 : 0.1}
-      />
-    </mesh>
+    <group>
+      <mesh ref={meshRef} receiveShadow castShadow position={[initialPosition.x, initialPosition.y || BOMB_HEIGHT / 2, initialPosition.z]}>
+        <sphereGeometry args={[0.4, 16, 16]} />
+        <meshStandardMaterial
+          ref={materialRef}
+          color={materials?.s?.color || "#333333"}
+          emissive={holderCount >= 2 ? "#ff4400" : holderCount === 1 ? "#ffaa00" : "#440000"}
+          emissiveIntensity={holderCount >= 2 ? 0.4 : holderCount === 1 ? 0.25 : 0.1}
+        />
+      </mesh>
+      
+      {/* 3D Countdown Timer - positioned above bomb */}
+      {showTimer && (
+        <TimerText
+          meshRef={meshRef}
+          text={timerText}
+          timerValue={timerValue}
+        />
+      )}
+    </group>
+  );
+}
+
+// Separate component for timer text that follows the bomb position
+function TimerText({ meshRef, text, timerValue }) {
+  const textRef = useRef();
+  const position = useRef(new THREE.Vector3());
+  const flashTime = useRef(0);
+
+  useFrame((_, delta) => {
+    if (!meshRef?.current || !textRef.current) return;
+    
+    // Update position to be above the bomb
+    position.current.set(
+      meshRef.current.position.x,
+      meshRef.current.position.y + TIMER_HEIGHT_OFFSET,
+      meshRef.current.position.z
+    );
+    
+    // Update text position directly
+    textRef.current.position.copy(position.current);
+
+    // Ensure material is transparent for opacity changes
+    const material = textRef.current?.material;
+    if (!material) return;
+
+    material.transparent = true;
+
+    // Flash animation - always flashing, faster as timer gets lower
+    if (timerValue !== null && timerValue > 0) {
+      flashTime.current += delta;
+      
+      // Base flash speed increases as timer decreases
+      // At 22 seconds: speed = 8, at 0 seconds: speed = 30
+      const baseSpeed = 8;
+      const maxSpeed = 30;
+      const timerProgress = 1 - (timerValue / INITIAL_TIMER); // 0 to 1 as timer counts down
+      const flashSpeed = baseSpeed + (maxSpeed - baseSpeed) * timerProgress;
+      
+      // Dramatic opacity flash: from 0.1 (almost invisible) to 1.0 (fully visible)
+      const opacity = 0.1 + (Math.sin(flashTime.current * flashSpeed) * 0.5 + 0.5) * 0.9;
+      material.opacity = opacity;
+      
+      // Dramatic color flash: from bright red to almost white
+      if (material.color) {
+        const colorIntensity = Math.sin(flashTime.current * flashSpeed) * 0.5 + 0.5; // 0 to 1
+        // At 0: bright red (1, 0.27, 0), at 1: almost white (1, 0.9, 0.5)
+        material.color.setRGB(
+          1,
+          0.27 + colorIntensity * 0.63,
+          colorIntensity * 0.5
+        );
+      }
+      
+      // Add scale pulse for extra drama
+      const scale = 1.0 + Math.sin(flashTime.current * flashSpeed) * 0.15;
+      textRef.current.scale.set(scale, scale, scale);
+    } else {
+      // Reset to normal when timer is done
+      material.opacity = 1;
+      if (material.color) {
+        material.color.setRGB(1, 0.27, 0); // #ff4400
+      }
+      textRef.current.scale.set(1, 1, 1);
+    }
+  });
+
+  return (
+    <Text
+      ref={textRef}
+      fontSize={1.5}
+      color="#ff4400"
+      anchorX="center"
+      anchorY="middle"
+      outlineWidth={0.1}
+      outlineColor="#000000"
+      letterSpacing={0.15}
+    >
+      {text}
+    </Text>
   );
 }
 
