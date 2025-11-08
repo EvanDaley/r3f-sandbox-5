@@ -5,7 +5,7 @@ import { useSharedObjectsStore } from "../stores/useSharedObjectsStore";
 import { useSharedObjectsNetwork } from "./useSharedObjectsNetwork";
 import { usePeerStore } from "../../general_connection_tooling/stores/peerStore";
 
-const INITIAL_TIMER = 22; // Seconds
+const INITIAL_TIMER = 6; // Seconds
 
 /**
  * Hook to manage bomb timer logic including networking
@@ -18,11 +18,12 @@ const INITIAL_TIMER = 22; // Seconds
 export function useBombTimer(bombId, isCarried) {
   const peerId = usePeerStore((s) => s.peerId);
   const isHost = usePeerStore((s) => s.isHost);
-  const { broadcastStartTimer } = useSharedObjectsNetwork();
+  const { broadcastStartTimer, broadcastExplodeBomb } = useSharedObjectsNetwork();
   const object = useSharedObjectsStore((s) => s.objects[bombId]);
   const wasCarried = useRef(false);
   const localStartTime = useRef(null); // Local clock time when we received/started the timer
   const networkStartTime = useRef(null); // Network timestamp from the host
+  const hasExploded = useRef(false); // Track if we've already triggered explosion
 
   // Handle timer start when bomb is picked up
   useFrame(() => {
@@ -69,13 +70,21 @@ export function useBombTimer(bombId, isCarried) {
       
       // Update store timer value (for display)
       useSharedObjectsStore.getState().setTimer(bombId, remaining);
+
+      // Trigger explosion when timer reaches zero (only once, only by host)
+      if (remaining <= 0 && !hasExploded.current && isHost) {
+        hasExploded.current = true;
+        broadcastExplodeBomb(bombId);
+        useSharedObjectsStore.getState().setExploded(bombId, true);
+      }
     }
   });
 
   // Get timer value from store
   const timerValue = object?.timer;
   const showTimer = timerValue !== null && timerValue !== undefined && timerValue > 0;
+  const exploded = object?.exploded || false;
 
-  return { timerValue, showTimer };
+  return { timerValue, showTimer, exploded };
 }
 

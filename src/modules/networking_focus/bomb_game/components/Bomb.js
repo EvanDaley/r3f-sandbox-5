@@ -6,13 +6,14 @@ import { useSharedObjectsNetwork } from "../hooks/useSharedObjectsNetwork";
 import { usePlayerStoreV4 } from "../stores/usePlayerStoreV4";
 import { usePeerStore } from "../../general_connection_tooling/stores/peerStore";
 import { useBombTimer } from "../hooks/useBombTimer";
+import Explosion from "./Explosion";
 import * as THREE from "three";
 
 const INTERPOLATION_FACTOR = 0.2;
 const BOMB_HEIGHT = 0.8;
 const CARRY_HEIGHT = 1.5; // Height above ground when carried
 const BROADCAST_THROTTLE_MS = 100;
-const INITIAL_TIMER = 22; // Seconds
+const INITIAL_TIMER = 6; // Seconds
 const TIMER_HEIGHT_OFFSET = 1.2; // Height above bomb for timer display
 
 export default function Bomb({ bombId, initialPosition, materials }) {
@@ -31,7 +32,7 @@ export default function Bomb({ bombId, initialPosition, materials }) {
   const isCarried = object?.heldBy && object.heldBy.length >= 2;
   
   // Use timer hook for all timer logic
-  const { timerValue, showTimer } = useBombTimer(bombId, isCarried);
+  const { timerValue, showTimer, exploded } = useBombTimer(bombId, isCarried);
 
   // Initialize object in store if not present
   useEffect(() => {
@@ -143,6 +144,24 @@ export default function Bomb({ bombId, initialPosition, materials }) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
   const timerText = showTimer ? formatTimer(timerValue) : "";
+
+  // Get explosion position - use ref to track current position
+  const explosionPositionRef = useRef({ x: initialPosition.x, y: BOMB_HEIGHT / 2, z: initialPosition.z });
+  
+  useFrame(() => {
+    if (meshRef.current) {
+      explosionPositionRef.current = {
+        x: meshRef.current.position.x,
+        y: meshRef.current.position.y,
+        z: meshRef.current.position.z,
+      };
+    }
+  });
+
+  // Don't render bomb if exploded
+  if (exploded) {
+    return <Explosion position={explosionPositionRef.current} />;
+  }
 
   return (
     <group>

@@ -6,7 +6,7 @@ import { useSharedObjectsStore } from "../stores/useSharedObjectsStore";
 import { broadcastMessage } from "../../general_connection_tooling/broadcastMessage";
 
 const GROUP = "bombGameSharedObjects";
-const INITIAL_TIMER = 22; // Seconds
+const INITIAL_TIMER = 6; // Seconds
 
 export function useSharedObjectsNetwork() {
   const isHost = usePeerStore((s) => s.isHost);
@@ -16,6 +16,7 @@ export function useSharedObjectsNetwork() {
   const addHolder = useSharedObjectsStore((s) => s.addHolder);
   const removeHolder = useSharedObjectsStore((s) => s.removeHolder);
   const setTimer = useSharedObjectsStore((s) => s.setTimer);
+  const setExploded = useSharedObjectsStore((s) => s.setExploded);
   const getObjects = useSharedObjectsStore.getState;
 
   useEffect(() => {
@@ -156,13 +157,42 @@ export function useSharedObjectsNetwork() {
           break;
         }
 
+        case "explodeBomb": {
+          const { objectId } = payload;
+          if (!objectId) return;
+
+          // Optimistic update - all clients explode immediately
+          setExploded(objectId, true);
+
+          // Host rebroadcasts to ensure consistency
+          if (isHost) {
+            broadcastMessage(
+              {
+                scene: "bus",
+                type: "rebroadcastExplodeBomb",
+                payload: { group: GROUP, sender: senderId, objectId },
+              },
+              { hostOnly: true }
+            );
+          }
+          break;
+        }
+
+        case "rebroadcastExplodeBomb": {
+          const { objectId } = payload;
+          if (objectId) {
+            setExploded(objectId, true);
+          }
+          break;
+        }
+
         default:
           break;
       }
     });
 
     return unsubscribe;
-  }, [peerId, isHost, setObjectPosition, addHolder, removeHolder, setTimer, getObjects]);
+  }, [peerId, isHost, setObjectPosition, addHolder, removeHolder, setTimer, setExploded, getObjects]);
 
   const broadcastObjectPosition = (objectId, position) => {
     if (!peerId) return;
@@ -200,6 +230,14 @@ export function useSharedObjectsNetwork() {
     });
   };
 
-  return { broadcastObjectPosition, broadcastGrab, broadcastRelease, broadcastStartTimer };
+  const broadcastExplodeBomb = (objectId) => {
+    if (!peerId) return;
+    messageBus.broadcast(GROUP, "explodeBomb", {
+      sender: peerId,
+      objectId,
+    });
+  };
+
+  return { broadcastObjectPosition, broadcastGrab, broadcastRelease, broadcastStartTimer, broadcastExplodeBomb };
 }
 

@@ -89,5 +89,16 @@ export const useSharedObjectsStore = create((set, get) => ({
         },
       },
     })),
+
+  setExploded: (objectId, exploded) =>
+    set((state) => ({
+      objects: {
+        ...state.objects,
+        [objectId]: {
+          ...state.objects[objectId],
+          exploded,
+        },
+      },
+    })),
 }));
 
