@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import * as THREE from 'three'
 import {Outlines} from "@react-three/drei";
 
-export default function SandTileV2({ position, onClick }) {
+export default function SandTileV2({ position, onClick, height = 0 }) {
   const { color, scale, rotation } = useMemo(() => {
     // Stable seed based on tile position (consistent across renders)
     const seed = Math.abs(Math.sin(position[0] * 43.37 + position[2] * 19.23)) % 1
@@ -15,7 +15,6 @@ export default function SandTileV2({ position, onClick }) {
 
     // Reduced scaling to prevent gaps - keep tiles connected
     const scaleX = 1.0 + (seed - 0.5) * 0.02 // Very subtle variation
-    const scaleY = 0.95 + (seed - 0.5) * 0.08 // Height variation
     const scaleZ = 1.0 + (seed - 0.5) * 0.02
 
     // Subtle rotation
@@ -23,10 +22,13 @@ export default function SandTileV2({ position, onClick }) {
 
     return {
       color,
-      scale: [scaleX, scaleY, scaleZ],
+      scale: [scaleX, 1, scaleZ],
       rotation,
     }
   }, [position])
+
+  // Sand tiles are flatter, but still have some height variation
+  const tileHeight = 0.25 + Math.max(0, height) * 0.2
 
   return (
     <mesh
@@ -35,8 +37,9 @@ export default function SandTileV2({ position, onClick }) {
       rotation={[0, rotation, 0]}
       scale={scale}
       receiveShadow={true}
+      castShadow={true}
     >
-      <boxGeometry args={[1.0, 0.5, 1.0]} />
+      <boxGeometry args={[1.0, tileHeight, 1.0]} />
       <meshToonMaterial color={color} />
     </mesh>
   )

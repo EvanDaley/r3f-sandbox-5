@@ -1,13 +1,12 @@
 import create from 'zustand'
 
 const useTerrainStore = create((set) => ({
-  // Terrain generation parameters
+  // Terrain generation parameters (matching defaultTerrainAlgorithm pattern)
   size: 30,
   seed: 0,
   octaves: 4,
   persistence: 0.5,
   lacunarity: 2.0,
-  scale: 0.15,
   
   // Update functions
   setSize: (size) => set({ size }),
@@ -15,7 +14,6 @@ const useTerrainStore = create((set) => ({
   setOctaves: (octaves) => set({ octaves }),
   setPersistence: (persistence) => set({ persistence }),
   setLacunarity: (lacunarity) => set({ lacunarity }),
-  setScale: (scale) => set({ scale }),
 }))
 
 export default useTerrainStore

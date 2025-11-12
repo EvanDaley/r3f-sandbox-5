@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import * as THREE from 'three'
 import {Outlines} from "@react-three/drei";
 
-export default function RockTileV2({ position, onClick, value }) {
+export default function RockTileV2({ position, onClick, value, height = 0 }) {
   const { color, scale, rotation } = useMemo(() => {
     // Stable seed based on tile position
     const seed = Math.abs(Math.sin(position[0] * 12.9898 + position[2] * 78.233)) % 1
@@ -15,7 +15,6 @@ export default function RockTileV2({ position, onClick, value }) {
 
     // Reduced scaling to prevent gaps
     const scaleX = 1.0 + (seed - 0.5) * 0.03 // Very subtle variation
-    const scaleY = 1.0 + (seed - 0.5) * 0.12 // Height variation
     const scaleZ = 1.0 + (seed - 0.5) * 0.03
 
     // Small rotation only
@@ -23,10 +22,13 @@ export default function RockTileV2({ position, onClick, value }) {
 
     return {
       color,
-      scale: [scaleX, scaleY, scaleZ],
+      scale: [scaleX, 1, scaleZ],
       rotation,
     }
   }, [position])
+
+  // Rock tiles are taller and more varied in height
+  const tileHeight = 0.4 + Math.max(0, height) * 0.4 + (Math.abs(Math.sin(position[0] * 7 + position[2] * 13)) % 1) * 0.2
 
   return (
     <mesh
@@ -35,8 +37,9 @@ export default function RockTileV2({ position, onClick, value }) {
       rotation={[0, rotation, 0]}
       scale={scale}
       receiveShadow={true}
+      castShadow={true}
     >
-      <boxGeometry args={[1.0, 0.5, 1.0]} />
+      <boxGeometry args={[1.0, tileHeight, 1.0]} />
       <meshToonMaterial color={color} />
     </mesh>
   )

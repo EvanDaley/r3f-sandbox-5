@@ -8,13 +8,11 @@ export default function TerrainControls() {
     octaves,
     persistence,
     lacunarity,
-    scale,
     setSize,
     setSeed,
     setOctaves,
     setPersistence,
     setLacunarity,
-    setScale,
   } = useTerrainStore()
 
   const controlStyle = {
@@ -129,19 +127,6 @@ export default function TerrainControls() {
           step="0.1"
           value={lacunarity}
           onChange={(e) => setLacunarity(Number(e.target.value))}
-          style={sliderStyle}
-        />
-      </div>
-
-      <div style={controlStyle}>
-        <label style={labelStyle}>Scale: {scale.toFixed(3)}</label>
-        <input
-          type="range"
-          min="0.01"
-          max="0.5"
-          step="0.01"
-          value={scale}
-          onChange={(e) => setScale(Number(e.target.value))}
           style={sliderStyle}
         />
       </div>

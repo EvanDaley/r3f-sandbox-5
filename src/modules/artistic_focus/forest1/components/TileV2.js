@@ -30,6 +30,6 @@ export default function TileV2({ position, value, debugTile = false }) {
 
   // const TileComponent =GrassTileV2
 
-  return <TileComponent position={position} value={value} onClick={handleClick} />
+  return <TileComponent position={position} value={value} height={value * 5.8 + 2} onClick={handleClick} />
 }
 
