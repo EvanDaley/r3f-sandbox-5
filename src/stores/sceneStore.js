@@ -24,6 +24,8 @@ import BombGame from "../modules/networking_focus/bomb_game/BombGame";
 import BombGameOverlay from "../modules/networking_focus/bomb_game/BombGameOverlay";
 import ScreamingText from "../modules/screaming_text/ScreamingText";
 import ScreamingTextOverlay from "../modules/screaming_text/ScreamingTextOverlay";
+import Forest1 from "../modules/artistic_focus/forest1/Forest1";
+import Forest1Overlay from "../modules/artistic_focus/forest1/Forest1Overlay";
 
 const scenes = [
   { id: 'connectPage', name: 'Join Game', scene: ConnectPage, overlay: ConnectPageOverlay },
@@ -40,9 +42,10 @@ const scenes = [
   { id: 'gravitySandbox', name: 'Gravity Sandbox', scene: GravitySandbox, overlay: GravitySandboxOverlay },
   { id: 'bombGame', name: 'Bomb Game', scene: BombGame, overlay: BombGameOverlay },
   { id: 'screamingText', name: 'Screaming Text', scene: null, overlay: ScreamingTextOverlay },
+  { id: 'forest1', name: 'Forest 1', scene: Forest1, overlay: Forest1Overlay },
 ]
 
-let defaultScene = 'bombGame'
+let defaultScene = 'forest1'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {
