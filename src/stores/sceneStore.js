@@ -45,7 +45,7 @@ const scenes = [
   { id: 'forest1', name: 'Forest 1', scene: Forest1, overlay: Forest1Overlay },
 ]
 
-let defaultScene = 'forest1'
+let defaultScene = 'connectPage'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {
