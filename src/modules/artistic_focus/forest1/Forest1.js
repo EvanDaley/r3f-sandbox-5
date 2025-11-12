@@ -1,7 +1,8 @@
-import OrthoZoomOnly from "../../../components/controls/OrthoZoomOnly";
+
 import EffectsV2 from "../../../components/effects/EffectsV2";
 import SimpleLighting2 from "../../../components/environment/SimpleLighting2";
-import TileGrid from "../../procedural_ground/components/TileGrid";
+import TileGridV2 from "./components/TileGridV2";
+import OrthoV2 from "../../../components/controls/OrthoV2";
 
 export default function Forest1() {
     return (
@@ -9,8 +10,8 @@ export default function Forest1() {
             {/* <PerspectiveFollow targetRef={localPlayerRef} /> */}
             <SimpleLighting2 />
             <EffectsV2 />
-            <TileGrid />
-            <OrthoZoomOnly/>
+            <TileGridV2 />
+            <OrthoV2/>
         </>
     )
 }
