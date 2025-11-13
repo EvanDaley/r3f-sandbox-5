@@ -28,6 +28,8 @@ import Forest1 from "../modules/artistic_focus/forest1/Forest1";
 import Forest1Overlay from "../modules/artistic_focus/forest1/Forest1Overlay";
 import Minimal1 from "../modules/artistic_focus/minimal1/Minimal1";
 import Minimal1Overlay from "../modules/artistic_focus/minimal1/Minimal1Overlay";
+import AtlantisText from "../modules/artistic_focus/minimal1/AtlantisText";
+import AtlantisTextOverlay from "../modules/artistic_focus/minimal1/AtlantisTextOverlay";
 
 const scenes = [
   { id: 'connectPage', name: 'Join Game', scene: ConnectPage, overlay: ConnectPageOverlay },
@@ -46,9 +48,10 @@ const scenes = [
   { id: 'screamingText', name: 'Screaming Text', scene: null, overlay: ScreamingTextOverlay },
   { id: 'forest1', name: 'Forest 1', scene: Forest1, overlay: Forest1Overlay },
   { id: 'minimal1', name: 'Minimal 1', scene: Minimal1, overlay: Minimal1Overlay },
+  { id: 'atlantisText', name: 'Atlantis Text', scene: AtlantisText, overlay: AtlantisTextOverlay },
 ]
 
-let defaultScene = 'minimal1'
+let defaultScene = 'movementSandbox2'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {

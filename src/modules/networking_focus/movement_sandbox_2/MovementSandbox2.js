@@ -11,6 +11,7 @@ import Turret2 from "../../dynamic_colors/objects/Turret2";
 import Turret3 from "../../dynamic_colors/objects/Turret3";
 import {usePaletteStore} from "../../dynamic_colors/stores/paletteStore";
 import MoveablePlayers1 from "./MoveablePlayers1";
+import Desk1 from "../../dynamic_colors/objects/Desk1";
 
 export default function MovementSandbox2() {
   const activePalette = usePaletteStore((s) => s.activePalette);
@@ -39,7 +40,7 @@ export default function MovementSandbox2() {
           />
 
           <Building2
-            position={[-7.5, 0, 2]}
+            position={[-7.5, 0, 5]}
             materials={activePalette}
           />
         </group>
@@ -64,8 +65,19 @@ export default function MovementSandbox2() {
           position={[-8, 0, 6]}
           scale={[1.5, 1.5, 1.5]}
         />
+      </group>
 
-
+      <group position={[-10, 0, -3]}>
+        {[-3].map((x) =>
+          ([-6, -4, -2, 0].map((z) =>
+            <Desk1
+              key={`desk1-${x}-${z}`}
+              position={[x, 0, z]}
+              scale={[1,1,1]}
+              materials={activePalette}
+            />
+          ))
+        )}
       </group>
     </>
   );
