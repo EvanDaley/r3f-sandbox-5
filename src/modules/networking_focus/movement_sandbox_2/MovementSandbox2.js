@@ -12,7 +12,7 @@ import Turret3 from "../../dynamic_colors/objects/Turret3";
 import {usePaletteStore} from "../../dynamic_colors/stores/paletteStore";
 import MoveablePlayers1 from "./MoveablePlayers1";
 import Desk1 from "../../dynamic_colors/objects/Desk1";
-import TreeApprox1 from "../../dynamic_colors/objects/TreeAprox1";
+import TreeApprox1 from "../../dynamic_colors/objects/TreeApprox1";
 
 export default function MovementSandbox2() {
   const activePalette = usePaletteStore((s) => s.activePalette);
@@ -61,15 +61,21 @@ export default function MovementSandbox2() {
           />
 
         </group>
-        <Tree1
+        {/* <Tree1
+          materials={activePalette}
+          position={[-8, 0, 6]}
+          scale={[1.5, 1.5, 1.5]}
+        /> */}
+        <TreeApprox1
           materials={activePalette}
           position={[-8, 0, 6]}
           scale={[1.5, 1.5, 1.5]}
         />
         <TreeApprox1
           materials={activePalette}
-          position={[-8, 0, 6]}
+          position={[-8, 0, -10]}
           scale={[1.5, 1.5, 1.5]}
+          rotation={[0, Math.PI / 5, 0]}
         />
       </group>
 
