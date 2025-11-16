@@ -66,7 +66,7 @@ export default function MovementSandbox3() {
         <DebugCameraAxisBoxMaterial
           key={`tree-${index}`}
           playerRef={localPlayerRef}
-          margin={2.0}
+          margin={5.0}
         >
           <TreeApprox1
             materials={activePalette}

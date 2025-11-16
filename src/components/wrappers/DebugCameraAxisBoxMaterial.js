@@ -30,25 +30,29 @@ export default function DebugCameraAxisBoxMaterial({
     const transparentMaterial = activePalette[paletteKey]
     if (!transparentMaterial) return
 
-    // Get camera forward direction
+    // Get camera forward direction (same as working DebugCameraAxisMaterial)
     const cameraForward = new THREE.Vector3()
     camera.getWorldDirection(cameraForward)
 
-    // Get camera right and up directions (orthogonal to forward)
-    const cameraRight = new THREE.Vector3()
-    cameraRight.crossVectors(cameraForward, new THREE.Vector3(0, 1, 0)).normalize()
-    const cameraUp = new THREE.Vector3()
-    cameraUp.crossVectors(cameraRight, cameraForward).normalize()
-
-    // Get camera and player positions
+    // Get camera position
     const cameraPos = new THREE.Vector3()
-    const playerPos = new THREE.Vector3()
     camera.getWorldPosition(cameraPos)
+
+    // Get player world position
+    const playerPos = new THREE.Vector3()
     playerRef.current.getWorldPosition(playerPos)
 
-    // Calculate distance from camera to player along forward axis
+    // Calculate player projection onto camera forward axis
     const playerRelative = new THREE.Vector3().subVectors(playerPos, cameraPos)
     const playerProjection = playerRelative.dot(cameraForward)
+
+    // Get camera right and up for box visualization and material detection
+    // Extract directly from camera's world matrix to get exact orientation
+    const cameraRight = new THREE.Vector3()
+    const cameraUp = new THREE.Vector3()
+    const cameraForwardFromMatrix = new THREE.Vector3()
+    camera.matrixWorld.extractBasis(cameraRight, cameraUp, cameraForwardFromMatrix)
+    // cameraForwardFromMatrix is negative Z, so we use our calculated cameraForward instead
 
     // Create or update box geometry for visualization
     if (!boxHelperRef.current && playerProjection > 0) {
@@ -61,22 +65,20 @@ export default function DebugCameraAxisBoxMaterial({
 
     // Update box position, rotation, and scale
     if (boxHelperRef.current && playerProjection > 0) {
-      const boxDepth = playerProjection
-      
-      // Position at center of box (halfway along forward axis from camera to player)
-      const boxCenter = cameraPos.clone().add(cameraForward.clone().multiplyScalar(boxDepth / 2))
+      // Position box at camera, then offset forward by half depth
+      const boxCenter = cameraPos.clone().add(cameraForward.clone().multiplyScalar(playerProjection / 2))
       boxHelperRef.current.position.copy(boxCenter)
 
-      // Create rotation matrix from camera basis vectors
-      const boxMatrix = new THREE.Matrix4()
-      boxMatrix.makeBasis(cameraRight, cameraUp, cameraForward)
-      boxHelperRef.current.setRotationFromMatrix(boxMatrix)
+      // Use camera's quaternion and rotate 180° around Y so box extends forward
+      // (camera forward is -Z, but BoxGeometry depth is +Z)
+      const yRot180 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
+      boxHelperRef.current.quaternion.copy(camera.quaternion).multiply(yRot180)
 
       // Scale box: width/height = margin*2, depth = playerProjection
-      boxHelperRef.current.scale.set(margin * 2, margin * 2, boxDepth)
+      boxHelperRef.current.scale.set(margin * 2, margin * 2, playerProjection)
     }
 
-    // Update each mesh individually
+    // Update each mesh individually (using the working material swapping logic)
     groupRef.current.traverse((child) => {
       if (child.isMesh && child.material) {
         // Get this specific mesh's world position
@@ -98,7 +100,7 @@ export default function DebugCameraAxisBoxMaterial({
           forwardDist >= 0 && 
           forwardDist <= playerProjection &&
           Math.abs(rightDist) <= margin &&
-          Math.abs(upDist) <= margin
+          Math.abs(upDist) <= margin * 2
 
         // Update materials for this specific mesh
         const materials = Array.isArray(child.material) ? child.material : [child.material]
