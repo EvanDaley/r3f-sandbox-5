@@ -10,7 +10,7 @@ import Turret3 from "../../dynamic_colors/objects/Turret3";
 import {usePaletteStore} from "../../dynamic_colors/stores/paletteStore";
 import MoveablePlayers1 from "../movement_sandbox_2/MoveablePlayers1";
 import Desk1 from "../../dynamic_colors/objects/Desk1";
-import DebugCameraAxisMaterial from "../../../components/wrappers/DebugCameraAxisMaterial";
+import DebugCameraAxisBoxMaterial from "../../../components/wrappers/DebugCameraAxisBoxMaterial";
 
 export default function MovementSandbox3() {
   const activePalette = usePaletteStore((s) => s.activePalette);
@@ -63,9 +63,10 @@ export default function MovementSandbox3() {
 
       {/* Scattered trees */}
       {treePositions.map((position, index) => (
-        <DebugCameraAxisMaterial
+        <DebugCameraAxisBoxMaterial
           key={`tree-${index}`}
           playerRef={localPlayerRef}
+          margin={2.0}
         >
           <TreeApprox1
             materials={activePalette}
@@ -73,7 +74,7 @@ export default function MovementSandbox3() {
             scale={[1.5, 1.5, 1.5]}
             rotation={[0, Math.random() * Math.PI * 2, 0]}
           />
-        </DebugCameraAxisMaterial>
+        </DebugCameraAxisBoxMaterial>
       ))}
 
       {/* Desks */}
