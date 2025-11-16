@@ -1,42 +1,17 @@
 import React, { useMemo } from 'react'
-import { useGLTF } from '@react-three/drei'
-import * as THREE from 'three'
 import useTerrainStore from '../stores/terrainStore'
 import { generateLevelV2 } from '../utils/generateLevelV2'
-
-// Preload the tree model
-useGLTF.preload(window.location.href + '/models/palette_testing/tree1.glb')
+import TreeApprox1 from '../../../dynamic_colors/objects/TreeApprox1'
+import { usePaletteStore } from '../../../dynamic_colors/stores/paletteStore'
 
 function Tree({ position, scale = 1, rotation = 0 }) {
-  const { scene } = useGLTF(window.location.href + '/models/palette_testing/tree1.glb')
-  
-  // Create a simple green material for trees
-  const treeMaterial = useMemo(() => {
-    return new THREE.MeshToonMaterial({ 
-      color: new THREE.Color().setHSL(0.3, 0.7, 0.35),
-      flatShading: true 
-    })
-  }, [])
+  const activePalette = usePaletteStore((s) => s.activePalette)
 
-  // Apply material to all meshes in the tree
-  const treeScene = useMemo(() => {
-    if (!scene) return null
-    const cloned = scene.clone()
-    cloned.traverse((child) => {
-      if (child.isMesh) {
-        child.material = treeMaterial
-        child.castShadow = true
-        child.receiveShadow = true
-      }
-    })
-    return cloned
-  }, [scene, treeMaterial])
-
-  if (!treeScene) return null
+  if (!activePalette) return null
 
   return (
-    <primitive
-      object={treeScene}
+    <TreeApprox1
+      materials={activePalette}
       position={position}
       scale={scale}
       rotation={[0, rotation, 0]}
@@ -65,7 +40,7 @@ export default function TerrainDecorations() {
         const rotSeed = Math.abs(Math.sin(tile.x * 41.3 + tile.y * 53.7 + seed)) % 1
         
         // Place trees with some probability (higher on better grass areas)
-        const treeProbability = (tile.value + 0.3) * 0.4 // 0 to ~0.28 probability
+        const treeProbability = (tile.value + 0.3) * 0.1 // 0 to ~0.07 probability (reduced from 0.28)
         if (treeSeed < treeProbability) {
           const treeX = tile.position[0] + (offsetSeed - 0.5) * 0.6
           const treeZ = tile.position[2] + ((offsetSeed * 1.7) % 1 - 0.5) * 0.6

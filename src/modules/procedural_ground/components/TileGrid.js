@@ -2,7 +2,7 @@
 import Tile from './Tile'
 import { loadLevel } from '../utils/loadLevel'
 
-export default function TileGrid({ debugTile = true }) {
+export default function TileGrid({ debugTile = false }) {
   const tiles = useMemo(() => loadLevel(), [])
 
   return (
