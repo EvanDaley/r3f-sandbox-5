@@ -12,6 +12,8 @@ import MovementSandbox1 from "../modules/networking_focus/movement_sandbox_1/Mov
 import MovementSandboxOverlay from "../modules/networking_focus/movement_sandbox_1/MovementSandboxOverlay";
 import MovementSandbox2 from "../modules/networking_focus/movement_sandbox_2/MovementSandbox2";
 import MovementSandbox2Overlay from "../modules/networking_focus/movement_sandbox_2/MovementSandbox2Overlay";
+import MovementSandbox3 from "../modules/networking_focus/movement_sandbox_3/MovementSandbox3";
+import MovementSandbox3Overlay from "../modules/networking_focus/movement_sandbox_3/MovementSandbox3Overlay";
 import ChatV1 from "../modules/networking_focus/chatV1/ChatV1";
 import ChatV1Overlay from "../modules/networking_focus/chatV1/ChatV1Overlay";
 import OfficePrototype from "../modules/simple_playable_areas/OfficePrototype";
@@ -39,6 +41,7 @@ const scenes = [
   { id: 'abilitiesSandbox1', name: 'Abilities Sandbox', scene: AbilitiesSandbox1, overlay: AbilitiesSandboxOverlay },
   { id: 'movementSandbox1', name: 'Movement Sandbox 1', scene: MovementSandbox1, overlay: MovementSandboxOverlay },
   { id: 'movementSandbox2', name: 'Movement Sandbox 2', scene: MovementSandbox2, overlay: MovementSandbox2Overlay },
+  { id: 'movementSandbox3', name: 'Movement Sandbox 3', scene: MovementSandbox3, overlay: MovementSandbox3Overlay },
   { id: 'chatV1', name: 'Chat V1', scene: ChatV1, overlay: ChatV1Overlay },
   { id: 'OfficePrototype', name: 'OfficePrototype', scene: OfficePrototype, overlay: MovementSandbox2Overlay },
   { id: 'OfficePrototype2', name: 'OfficePrototype2', scene: OfficePrototype2, overlay: PaletteSandboxOverlay },

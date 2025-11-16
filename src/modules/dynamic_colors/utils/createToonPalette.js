@@ -26,5 +26,13 @@ export function createToonPalette({ p, e, s, t, d }) {
             // combine: THREE.MultiplyOperation,
         }),
 
+        // Transparent material for distance-based transparency
+        transparent: new THREE.MeshStandardMaterial({
+            color: d,
+            transparent: true,
+            opacity: 0.1,
+            depthWrite: false,
+        }),
+
     }
 }
