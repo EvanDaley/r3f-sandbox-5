@@ -55,28 +55,30 @@ export default function DebugCameraAxisBoxMaterial({
     // cameraForwardFromMatrix is negative Z, so we use our calculated cameraForward instead
 
     // Create or update box geometry for visualization
-    if (!boxHelperRef.current && playerProjection > 0) {
-      const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
-      const boxEdges = new THREE.EdgesGeometry(boxGeometry)
-      const boxMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00, linewidth: 2 })
-      boxHelperRef.current = new THREE.LineSegments(boxEdges, boxMaterial)
-      scene.add(boxHelperRef.current)
-    }
+    // DISABLED: Box helper turned off since showing/hiding is working well
+    // if (!boxHelperRef.current && playerProjection > 0) {
+    //   const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
+    //   const boxEdges = new THREE.EdgesGeometry(boxGeometry)
+    //   const boxMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00, linewidth: 2 })
+    //   boxHelperRef.current = new THREE.LineSegments(boxEdges, boxMaterial)
+    //   scene.add(boxHelperRef.current)
+    // }
 
     // Update box position, rotation, and scale
-    if (boxHelperRef.current && playerProjection > 0) {
-      // Position box at camera, then offset forward by half depth
-      const boxCenter = cameraPos.clone().add(cameraForward.clone().multiplyScalar(playerProjection / 2))
-      boxHelperRef.current.position.copy(boxCenter)
+    // DISABLED: Box helper turned off since showing/hiding is working well
+    // if (boxHelperRef.current && playerProjection > 0) {
+    //   // Position box at camera, then offset forward by half depth
+    //   const boxCenter = cameraPos.clone().add(cameraForward.clone().multiplyScalar(playerProjection / 2))
+    //   boxHelperRef.current.position.copy(boxCenter)
 
-      // Use camera's quaternion and rotate 180° around Y so box extends forward
-      // (camera forward is -Z, but BoxGeometry depth is +Z)
-      const yRot180 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
-      boxHelperRef.current.quaternion.copy(camera.quaternion).multiply(yRot180)
+    //   // Use camera's quaternion and rotate 180° around Y so box extends forward
+    //   // (camera forward is -Z, but BoxGeometry depth is +Z)
+    //   const yRot180 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
+    //   boxHelperRef.current.quaternion.copy(camera.quaternion).multiply(yRot180)
 
-      // Scale box: width/height = margin*2, depth = playerProjection
-      boxHelperRef.current.scale.set(margin * 2, margin * 2, playerProjection)
-    }
+    //   // Scale box: width/height = margin*2, depth = playerProjection
+    //   boxHelperRef.current.scale.set(margin * 2, margin * 2, playerProjection)
+    // }
 
     // Update each mesh individually (using the working material swapping logic)
     groupRef.current.traverse((child) => {
