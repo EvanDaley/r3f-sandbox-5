@@ -6,6 +6,13 @@ export default function GridSceneOverlay() {
   const setSelectedObjectType = useGridSceneStore((s) => s.setSelectedObjectType);
   const deleteMode = useGridSceneStore((s) => s.deleteMode);
   const setDeleteMode = useGridSceneStore((s) => s.setDeleteMode);
+  const rotationMode = useGridSceneStore((s) => s.rotationMode);
+  const setRotationMode = useGridSceneStore((s) => s.setRotationMode);
+  const overwrite = useGridSceneStore((s) => s.overwrite);
+  const setOverwrite = useGridSceneStore((s) => s.setOverwrite);
+  const selectionMode = useGridSceneStore((s) => s.selectionMode);
+  const setSelectionMode = useGridSceneStore((s) => s.setSelectionMode);
+  const selectedObjectIds = useGridSceneStore((s) => s.selectedObjectIds);
   const clearAll = useGridSceneStore((s) => s.clearAll);
   const serialize = useGridSceneStore((s) => s.serialize);
 
@@ -20,6 +27,10 @@ export default function GridSceneOverlay() {
 
   const handleToggleDeleteMode = () => {
     setDeleteMode(!deleteMode);
+  };
+
+  const handleToggleRotationMode = () => {
+    setRotationMode(!rotationMode);
   };
 
   const handleSave = () => {
@@ -110,53 +121,49 @@ export default function GridSceneOverlay() {
             {selectedObjectType === 'desk' ? '✓ Desk' : 'Desk'}
           </button>
           
-          <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px", marginBottom: "3px" }}>
-            Walls:
-          </div>
-          
           <button
-            onClick={() => handleSelectType('wallX')}
+            onClick={() => handleSelectType('wall')}
             style={{
               padding: "8px 16px",
-              backgroundColor: selectedObjectType === 'wallX' ? "#06d6a0" : "#333",
+              backgroundColor: selectedObjectType === 'wall' ? "#06d6a0" : "#333",
               color: "white",
               border: "none",
               borderRadius: "4px",
               cursor: "pointer",
-              fontWeight: selectedObjectType === 'wallX' ? "bold" : "normal",
+              fontWeight: selectedObjectType === 'wall' ? "bold" : "normal",
             }}
           >
-            {selectedObjectType === 'wallX' ? '✓ Wall X' : 'Wall X'}
+            {selectedObjectType === 'wall' ? '✓ Wall' : 'Wall'}
           </button>
           
           <button
-            onClick={() => handleSelectType('wallZ')}
+            onClick={() => handleSelectType('corner')}
             style={{
               padding: "8px 16px",
-              backgroundColor: selectedObjectType === 'wallZ' ? "#06d6a0" : "#333",
+              backgroundColor: selectedObjectType === 'corner' ? "#06d6a0" : "#333",
               color: "white",
               border: "none",
               borderRadius: "4px",
               cursor: "pointer",
-              fontWeight: selectedObjectType === 'wallZ' ? "bold" : "normal",
+              fontWeight: selectedObjectType === 'corner' ? "bold" : "normal",
             }}
           >
-            {selectedObjectType === 'wallZ' ? '✓ Wall Z' : 'Wall Z'}
+            {selectedObjectType === 'corner' ? '✓ Corner' : 'Corner'}
           </button>
           
           <button
-            onClick={() => handleSelectType('cornerWall')}
+            onClick={() => handleSelectType('tJunction')}
             style={{
               padding: "8px 16px",
-              backgroundColor: selectedObjectType === 'cornerWall' ? "#06d6a0" : "#333",
+              backgroundColor: selectedObjectType === 'tJunction' ? "#06d6a0" : "#333",
               color: "white",
               border: "none",
               borderRadius: "4px",
               cursor: "pointer",
-              fontWeight: selectedObjectType === 'cornerWall' ? "bold" : "normal",
+              fontWeight: selectedObjectType === 'tJunction' ? "bold" : "normal",
             }}
           >
-            {selectedObjectType === 'cornerWall' ? '✓ Corner' : 'Corner'}
+            {selectedObjectType === 'tJunction' ? '✓ T-Junction' : 'T-Junction'}
           </button>
 
           {selectedObjectType && (
@@ -168,6 +175,77 @@ export default function GridSceneOverlay() {
 
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.2)", marginTop: "10px", paddingTop: "10px" }}>
           <button
+            onClick={() => setSelectionMode(!selectionMode)}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: selectionMode ? "#06d6a0" : "#333",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              width: "100%",
+              fontWeight: selectionMode ? "bold" : "normal",
+            }}
+          >
+            {selectionMode ? '✓ Select Tool' : 'Select Tool'}
+          </button>
+          
+          {selectionMode && (
+            <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px", marginBottom: "8px" }}>
+              Drag to select box, Shift+Click to toggle, Press M to move
+            </div>
+          )}
+          
+          {selectedObjectIds.length > 0 && (
+            <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px", marginBottom: "8px", color: "#06d6a0" }}>
+              {selectedObjectIds.length} object{selectedObjectIds.length !== 1 ? 's' : ''} selected
+            </div>
+          )}
+          
+          <button
+            onClick={() => setOverwrite(!overwrite)}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: overwrite ? "#06d6a0" : "#333",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              width: "100%",
+              marginTop: "8px",
+              fontWeight: overwrite ? "bold" : "normal",
+            }}
+          >
+            {overwrite ? '✓ Overwrite' : 'Overwrite'}
+          </button>
+          
+          <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px", marginBottom: "8px" }}>
+            {overwrite ? 'Placing replaces existing objects' : 'Cannot place on occupied squares'}
+          </div>
+          
+          <button
+            onClick={handleToggleRotationMode}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: rotationMode ? "#118ab2" : "#333",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              width: "100%",
+              fontWeight: rotationMode ? "bold" : "normal",
+            }}
+          >
+            {rotationMode ? '✓ Rotate Tool' : 'Rotate Tool'}
+          </button>
+          
+          {rotationMode && (
+            <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px" }}>
+              Click on objects to rotate 90°
+            </div>
+          )}
+          
+          <button
             onClick={handleToggleDeleteMode}
             style={{
               padding: "8px 16px",
@@ -177,6 +255,7 @@ export default function GridSceneOverlay() {
               borderRadius: "4px",
               cursor: "pointer",
               width: "100%",
+              marginTop: "8px",
               fontWeight: deleteMode ? "bold" : "normal",
             }}
           >

@@ -47,6 +47,21 @@ export const useGridSceneStore = create((set, get) => ({
   // Delete mode - when true, clicking will delete objects instead of placing
   deleteMode: false,
 
+  // Rotation mode - when true, clicking will rotate objects by 90 degrees
+  rotationMode: false,
+
+  // Preview rotation - rotation for the preview/ghost object (in radians)
+  previewRotation: 0,
+
+  // Overwrite mode - when true, placing on occupied squares replaces the existing object
+  overwrite: true,
+
+  // Selection system
+  selectedObjectIds: [], // Array of selected object IDs
+  selectionMode: false, // When true, selection tool is active
+  moveMode: false, // When true, selected objects are being moved
+  moveOffset: { gridX: 0, gridZ: 0 }, // Offset for moving selected objects
+
   /**
    * Add an object to the grid
    * @param {string} type - Object type ('desk' | 'wall')
@@ -132,7 +147,90 @@ export const useGridSceneStore = create((set, get) => ({
    * @param {string|null} type - Object type ('desk' | 'wall' | null)
    */
   setSelectedObjectType: (type) => {
-    set({ selectedObjectType: type, deleteMode: false });
+    set({ selectedObjectType: type, deleteMode: false, rotationMode: false, previewRotation: 0 });
+  },
+
+  /**
+   * Rotate the preview by 90 degrees (π/2 radians)
+   */
+  rotatePreview: () => {
+    set((state) => ({
+      previewRotation: (state.previewRotation + Math.PI / 2) % (Math.PI * 2),
+    }));
+  },
+
+  /**
+   * Toggle overwrite mode
+   */
+  setOverwrite: (enabled) => {
+    set({ overwrite: enabled });
+  },
+
+  /**
+   * Selection system methods
+   */
+  setSelectionMode: (enabled) => {
+    set({ 
+      selectionMode: enabled, 
+      selectedObjectType: enabled ? null : undefined, // Clear placement tool when selecting
+      deleteMode: false,
+      rotationMode: false,
+    });
+  },
+
+  selectObject: (id) => {
+    set((state) => {
+      if (state.selectedObjectIds.includes(id)) {
+        // Deselect if already selected
+        return { selectedObjectIds: state.selectedObjectIds.filter((i) => i !== id) };
+      } else {
+        // Add to selection
+        return { selectedObjectIds: [...state.selectedObjectIds, id] };
+      }
+    });
+  },
+
+  selectObjects: (ids) => {
+    set({ selectedObjectIds: ids });
+  },
+
+  clearSelection: () => {
+    set({ selectedObjectIds: [] });
+  },
+
+  setMoveMode: (enabled) => {
+    set({ moveMode: enabled });
+  },
+
+  setMoveOffset: (gridX, gridZ) => {
+    set({ moveOffset: { gridX, gridZ } });
+  },
+
+  applyMove: () => {
+    set((state) => {
+      if (state.selectedObjectIds.length === 0 || !state.moveMode) return state;
+
+      const newObjects = { ...state.objects };
+      const { gridX: offsetX, gridZ: offsetZ } = state.moveOffset;
+
+      // Move all selected objects
+      state.selectedObjectIds.forEach((id) => {
+        const obj = newObjects[id];
+        if (obj) {
+          newObjects[id] = {
+            ...obj,
+            gridX: obj.gridX + offsetX,
+            gridZ: obj.gridZ + offsetZ,
+          };
+        }
+      });
+
+      return {
+        objects: newObjects,
+        moveMode: false,
+        moveOffset: { gridX: 0, gridZ: 0 },
+      };
+    });
   },
 
   /**
@@ -140,7 +238,36 @@ export const useGridSceneStore = create((set, get) => ({
    * @param {boolean} enabled - Whether delete mode is enabled
    */
   setDeleteMode: (enabled) => {
-    set({ deleteMode: enabled, selectedObjectType: null });
+    set({ deleteMode: enabled, selectedObjectType: null, rotationMode: false });
+  },
+
+  /**
+   * Set rotation mode
+   * @param {boolean} enabled - Whether rotation mode is enabled
+   */
+  setRotationMode: (enabled) => {
+    set({ rotationMode: enabled, selectedObjectType: null, deleteMode: false });
+  },
+
+  /**
+   * Rotate an object by 90 degrees (π/2 radians)
+   * @param {string} id - Object ID
+   */
+  rotateObject: (id) => {
+    set((state) => {
+      const object = state.objects[id];
+      if (!object) return state;
+      const newRotation = (object.rotation || 0) + Math.PI / 2;
+      return {
+        objects: {
+          ...state.objects,
+          [id]: {
+            ...object,
+            rotation: newRotation,
+          },
+        },
+      };
+    });
   },
 
   /**
