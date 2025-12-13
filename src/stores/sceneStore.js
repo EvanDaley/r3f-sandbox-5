@@ -36,6 +36,9 @@ import AtlantisText from "../modules/artistic_focus/minimal1/AtlantisText";
 import AtlantisTextOverlay from "../modules/artistic_focus/minimal1/AtlantisTextOverlay";
 import ItemConfigurator1 from "../modules/item_configurator_1/ItemConfigurator1";
 import ItemConfigurator1Overlay from "../modules/item_configurator_1/ItemConfigurator1Overlay";
+import GridScene from "../modules/modular_focus/grid_scene/GridScene";
+import GridSceneOverlay from "../modules/modular_focus/grid_scene/GridSceneOverlay";
+
 
 const scenes = [
   { id: 'connectPage', name: 'Join Game', scene: ConnectPage, overlay: ConnectPageOverlay },
@@ -58,9 +61,10 @@ const scenes = [
   { id: 'minimal1', name: 'Minimal 1', scene: Minimal1, overlay: Minimal1Overlay },
   { id: 'atlantisText', name: 'Atlantis Text', scene: AtlantisText, overlay: AtlantisTextOverlay },
   { id: 'itemConfigurator1', name: 'Item Configurator 1', scene: ItemConfigurator1, overlay: ItemConfigurator1Overlay },
+  { id: 'gridScene', name: 'Grid Scene', scene: GridScene, overlay: GridSceneOverlay },
 ]
 
-let defaultScene = 'movementSandbox4'
+let defaultScene = 'gridScene'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {
