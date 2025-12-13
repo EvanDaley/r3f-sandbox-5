@@ -27,10 +27,64 @@ export default function GridInteraction() {
   const removeObject = useGridSceneStore((s) => s.removeObject);
   const rotateObject = useGridSceneStore((s) => s.rotateObject);
 
-  // Keyboard listener for 'r' key to rotate preview
+  const undo = useGridSceneStore((s) => s.undo);
+  const redo = useGridSceneStore((s) => s.redo);
+  const copySelectedObjects = useGridSceneStore((s) => s.copySelectedObjects);
+  const selectedObjectIds = useGridSceneStore((s) => s.selectedObjectIds);
+  const pasteMode = useGridSceneStore((s) => s.pasteMode);
+  const pasteObjects = useGridSceneStore((s) => s.pasteObjects);
+  const setPasteMode = useGridSceneStore((s) => s.setPasteMode);
+  const saveToHistory = useGridSceneStore((s) => s.saveToHistory);
+
+  // Keyboard listeners
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // Only handle 'r' key when an object type is selected
+      // Undo: Ctrl+Z (or Cmd+Z on Mac)
+      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
+        event.preventDefault();
+        undo();
+        return;
+      }
+
+      // Redo: Ctrl+Y or Ctrl+Shift+Z (or Cmd+Shift+Z on Mac)
+      if ((event.ctrlKey || event.metaKey) && (event.key === 'y' || (event.key === 'z' && event.shiftKey))) {
+        event.preventDefault();
+        redo();
+        return;
+      }
+
+      // Copy: Ctrl+C (or Cmd+C on Mac)
+      if ((event.ctrlKey || event.metaKey) && event.key === 'c') {
+        if (selectedObjectIds.length > 0) {
+          event.preventDefault();
+          copySelectedObjects();
+        }
+        return;
+      }
+
+      // Cancel paste: Escape key
+      if (event.key === 'Escape' && pasteMode) {
+        event.preventDefault();
+        setPasteMode(false);
+        return;
+      }
+
+      // Delete selected objects: 'x' or 'X' key
+      if ((event.key === 'x' || event.key === 'X') && selectedObjectIds.length > 0) {
+        event.preventDefault();
+        const store = useGridSceneStore.getState();
+        // Save history before deleting
+        store.saveToHistory();
+        // Delete all selected objects
+        selectedObjectIds.forEach((id) => {
+          store._removeObjectInternal(id);
+        });
+        // Clear selection after deleting
+        store.clearSelection();
+        return;
+      }
+
+      // Rotate preview: 'r' key when an object type is selected
       if (event.key === 'r' || event.key === 'R') {
         if (selectedObjectType) {
           event.preventDefault();
@@ -41,16 +95,34 @@ export default function GridInteraction() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedObjectType, rotatePreview]);
+  }, [selectedObjectType, rotatePreview, undo, redo, copySelectedObjects, selectedObjectIds, pasteMode, setPasteMode, saveToHistory]);
 
   const handlePointerDown = (event) => {
     // Don't interfere with selection mode or move mode
-    if (selectionMode || moveMode) return;
+    // But allow paste mode to work
+    if ((selectionMode || moveMode) && !pasteMode) return;
 
-    // Right-click (button 2) - unset the tool
+    // Right-click (button 2) - cancel paste or disable tools
     if (event.button === 2) {
       event.stopPropagation();
-      setSelectedObjectType(null);
+      const store = useGridSceneStore.getState();
+      if (pasteMode) {
+        setPasteMode(false);
+        return;
+      }
+      // If delete or rotation mode is active, disable them
+      if (deleteMode) {
+        store.setDeleteMode(false);
+        return;
+      }
+      if (rotationMode) {
+        store.setRotationMode(false);
+        return;
+      }
+      // If selection mode is active, clear selection
+      if (selectionMode) {
+        store.clearSelection();
+      }
       return;
     }
 
@@ -96,6 +168,12 @@ export default function GridInteraction() {
         return;
       }
       
+      // Paste mode - paste copied objects
+      if (pasteMode) {
+        pasteObjects();
+        return;
+      }
+
       // Placement mode - place object
       if (selectedObjectType) {
         // Check if there's already an object at this position
@@ -103,17 +181,25 @@ export default function GridInteraction() {
           ([id, obj]) => obj.gridX === gridX && obj.gridZ === gridZ
         );
         
-        // If overwrite is enabled and there's an existing object, remove it first
-        if (overwrite && objectAtPosition) {
-          removeObject(objectAtPosition[0]);
-        }
-        
         // Only place if position is empty or overwrite is enabled
         if (!objectAtPosition || overwrite) {
+          const store = useGridSceneStore.getState();
+          
+          // Save history once for the entire operation (overwrite or place)
+          store.saveToHistory();
+          
+          // If overwrite is enabled and there's an existing object, remove it first
+          if (overwrite && objectAtPosition) {
+            // Remove without saving history (we already saved it above)
+            store._removeObjectInternal(objectAtPosition[0]);
+          }
+          
           console.log(`Placing ${selectedObjectType} at:`);
           console.log(`  Grid coordinates: (${gridX}, ${gridZ})`);
           console.log(`  World coordinates: (${point.x.toFixed(2)}, ${point.y.toFixed(2)}, ${point.z.toFixed(2)})`);
-          addObject(selectedObjectType, gridX, gridZ, previewRotation);
+          
+          // Add object without saving history (we already saved it above)
+          store._addObjectInternal(selectedObjectType, gridX, gridZ, previewRotation);
         }
       }
     }

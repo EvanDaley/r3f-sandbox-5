@@ -165,6 +165,21 @@ export default function GridSceneOverlay() {
           >
             {selectedObjectType === 'tJunction' ? '✓ T-Junction' : 'T-Junction'}
           </button>
+          
+          <button
+            onClick={() => handleSelectType('fourWayJunction')}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: selectedObjectType === 'fourWayJunction' ? "#06d6a0" : "#333",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontWeight: selectedObjectType === 'fourWayJunction' ? "bold" : "normal",
+            }}
+          >
+            {selectedObjectType === 'fourWayJunction' ? '✓ 4-Way Junction' : '4-Way Junction'}
+          </button>
 
           {selectedObjectType && (
             <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px" }}>
@@ -174,6 +189,8 @@ export default function GridSceneOverlay() {
         </div>
 
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.2)", marginTop: "10px", paddingTop: "10px" }}>
+          <div style={{ fontSize: "12px", opacity: 0.8, marginBottom: "8px" }}>Tools:</div>
+          
           <button
             onClick={() => setSelectionMode(!selectionMode)}
             style={{
@@ -203,27 +220,6 @@ export default function GridSceneOverlay() {
           )}
           
           <button
-            onClick={() => setOverwrite(!overwrite)}
-            style={{
-              padding: "8px 16px",
-              backgroundColor: overwrite ? "#06d6a0" : "#333",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              width: "100%",
-              marginTop: "8px",
-              fontWeight: overwrite ? "bold" : "normal",
-            }}
-          >
-            {overwrite ? '✓ Overwrite' : 'Overwrite'}
-          </button>
-          
-          <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px", marginBottom: "8px" }}>
-            {overwrite ? 'Placing replaces existing objects' : 'Cannot place on occupied squares'}
-          </div>
-          
-          <button
             onClick={handleToggleRotationMode}
             style={{
               padding: "8px 16px",
@@ -233,6 +229,7 @@ export default function GridSceneOverlay() {
               borderRadius: "4px",
               cursor: "pointer",
               width: "100%",
+              marginTop: "8px",
               fontWeight: rotationMode ? "bold" : "normal",
             }}
           >
@@ -240,7 +237,7 @@ export default function GridSceneOverlay() {
           </button>
           
           {rotationMode && (
-            <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px" }}>
+            <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px", marginBottom: "8px" }}>
               Click on objects to rotate 90°
             </div>
           )}
@@ -263,10 +260,33 @@ export default function GridSceneOverlay() {
           </button>
           
           {deleteMode && (
-            <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px" }}>
+            <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px", marginBottom: "8px" }}>
               Click on objects to delete
             </div>
           )}
+        </div>
+
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.2)", marginTop: "10px", paddingTop: "10px" }}>
+          <div style={{ fontSize: "12px", opacity: 0.8, marginBottom: "8px" }}>Settings:</div>
+          <button
+            onClick={() => setOverwrite(!overwrite)}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: overwrite ? "#06d6a0" : "#333",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              width: "100%",
+              fontWeight: overwrite ? "bold" : "normal",
+            }}
+          >
+            {overwrite ? '✓ Overwrite' : 'Overwrite'}
+          </button>
+          
+          <div style={{ fontSize: "11px", opacity: 0.7, marginTop: "5px", marginBottom: "8px" }}>
+            {overwrite ? 'Placing replaces existing objects' : 'Cannot place on occupied squares'}
+          </div>
         </div>
 
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.2)", marginTop: "10px", paddingTop: "10px" }}>

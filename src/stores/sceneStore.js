@@ -64,7 +64,7 @@ const scenes = [
   { id: 'gridScene', name: 'Grid Scene', scene: GridScene, overlay: GridSceneOverlay },
 ]
 
-let defaultScene = 'gridScene'
+let defaultScene = 'movementSandbox3'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {

@@ -38,9 +38,11 @@ export default function SelectionTool() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedObjectIds]);
 
+  const pasteMode = useGridSceneStore((s) => s.pasteMode);
+
   // Handle box selection drag
   const handlePointerDown = (event) => {
-    if (!selectionMode || moveMode || event.button !== 0) return;
+    if (!selectionMode || moveMode || pasteMode || event.button !== 0) return;
 
     event.stopPropagation();
 
@@ -71,7 +73,7 @@ export default function SelectionTool() {
   };
 
   useFrame(() => {
-    if (!isDragging || !selectionMode || moveMode || !planeRef.current) return;
+    if (!isDragging || !selectionMode || moveMode || pasteMode || !planeRef.current) return;
 
     raycasterRef.current.setFromCamera(mouse, camera);
     const intersects = raycasterRef.current.intersectObject(planeRef.current);
@@ -84,7 +86,7 @@ export default function SelectionTool() {
   });
 
   const handlePointerUp = (event) => {
-    if (!isDragging || !selectionMode) return;
+    if (!isDragging || !selectionMode || pasteMode) return;
 
     setIsDragging(false);
 

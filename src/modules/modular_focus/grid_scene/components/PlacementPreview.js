@@ -5,6 +5,7 @@ import { useGridSceneStore, worldToGrid, gridToWorld } from "../stores/gridScene
 import Wall from "../objects/Wall";
 import Corner from "../objects/Corner";
 import TJunction from "../objects/TJunction";
+import FourWayJunction from "../objects/FourWayJunction";
 import Desk1 from "../../../dynamic_colors/objects/Desk1";
 import { usePaletteStore } from "../../../dynamic_colors/stores/paletteStore";
 

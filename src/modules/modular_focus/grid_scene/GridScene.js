@@ -9,9 +9,11 @@ import Desk1 from "../../dynamic_colors/objects/Desk1";
 import Wall from "./objects/Wall";
 import Corner from "./objects/Corner";
 import TJunction from "./objects/TJunction";
+import FourWayJunction from "./objects/FourWayJunction";
 import GridInteraction from "./components/GridInteraction";
 import GridVisualization from "./components/GridVisualization";
 import PlacementPreview from "./components/PlacementPreview";
+import CopyPastePreview from "./components/CopyPastePreview";
 import SelectionTool from "./components/SelectionTool";
 import SelectionHighlight from "./components/SelectionHighlight";
 import MoveTool from "./components/MoveTool";
@@ -37,6 +39,9 @@ export default function GridScene() {
       
       {/* Placement preview - shows where object will be placed */}
       <PlacementPreview />
+      
+      {/* Copy/Paste preview - shows copied objects in ghost mode */}
+      <CopyPastePreview />
       
       {/* Selection tool */}
       <SelectionTool />
@@ -85,6 +90,15 @@ export default function GridScene() {
         } else if (obj.type === 'tJunction') {
           return (
             <TJunction
+              key={id}
+              materials={activePalette}
+              position={[worldPos.x, worldPos.y, worldPos.z]}
+              rotation={obj.rotation || 0}
+            />
+          );
+        } else if (obj.type === 'fourWayJunction') {
+          return (
+            <FourWayJunction
               key={id}
               materials={activePalette}
               position={[worldPos.x, worldPos.y, worldPos.z]}
