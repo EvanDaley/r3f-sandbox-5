@@ -7,6 +7,7 @@ import Corner from "../objects/Corner";
 import TJunction from "../objects/TJunction";
 import FourWayJunction from "../objects/FourWayJunction";
 import Desk1 from "../../../dynamic_colors/objects/Desk1";
+import Turret1 from "../../../dynamic_colors/objects/Turret1";
 import { usePaletteStore } from "../../../dynamic_colors/stores/paletteStore";
 
 /**
@@ -75,8 +76,8 @@ export default function PlacementPreview() {
       setPreviewPosition([worldPos.x, worldPos.y, worldPos.z]);
       setIsValidPosition(valid);
 
-      // Update preview materials for transparency (skip for desk - it stays solid)
-      if (previewRef.current && selectedObjectType !== 'desk') {
+      // Update preview materials for transparency (skip for desk and turret - they stay solid)
+      if (previewRef.current && selectedObjectType !== 'desk' && selectedObjectType !== 'turret') {
         const opacity = valid ? 0.4 : 0.2;
         previewRef.current.traverse((child) => {
           if (child.isMesh && child.material) {
@@ -164,6 +165,14 @@ export default function PlacementPreview() {
   } else if (selectedObjectType === 'desk') {
     PreviewComponent = (
       <Desk1
+        materials={activePalette}
+        position={previewPosition}
+        rotation={[0, previewRotation, 0]}
+      />
+    );
+  } else if (selectedObjectType === 'turret') {
+    PreviewComponent = (
+      <Turret1
         materials={activePalette}
         position={previewPosition}
         rotation={[0, previewRotation, 0]}

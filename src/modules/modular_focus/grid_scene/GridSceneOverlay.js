@@ -122,6 +122,21 @@ export default function GridSceneOverlay() {
           </button>
           
           <button
+            onClick={() => handleSelectType('turret')}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: selectedObjectType === 'turret' ? "#06d6a0" : "#333",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontWeight: selectedObjectType === 'turret' ? "bold" : "normal",
+            }}
+          >
+            {selectedObjectType === 'turret' ? '✓ Turret' : 'Turret'}
+          </button>
+          
+          <button
             onClick={() => handleSelectType('wall')}
             style={{
               padding: "8px 16px",

@@ -7,6 +7,7 @@ import Corner from "../objects/Corner";
 import TJunction from "../objects/TJunction";
 import FourWayJunction from "../objects/FourWayJunction";
 import Desk1 from "../../../dynamic_colors/objects/Desk1";
+import Turret1 from "../../../dynamic_colors/objects/Turret1";
 import { usePaletteStore } from "../../../dynamic_colors/stores/paletteStore";
 
 /**
@@ -90,7 +91,7 @@ export default function CopyPastePreview() {
             if (child.isMesh && child.material) {
               const materials = Array.isArray(child.material) ? child.material : [child.material];
               materials.forEach((mat) => {
-                if (mat && copiedObj.type !== 'desk') {
+                if (mat && copiedObj.type !== 'desk' && copiedObj.type !== 'turret') {
                   // Backup original material properties if not already backed up
                   if (!materialBackupsRef.current.has(mat)) {
                     materialBackupsRef.current.set(mat, {
@@ -202,6 +203,14 @@ export default function CopyPastePreview() {
           } else if (copiedObj.type === 'desk') {
             PreviewComponent = (
               <Desk1
+                materials={activePalette}
+                position={[relativeWorldPos.x, relativeWorldPos.y, relativeWorldPos.z]}
+                rotation={[0, copiedObj.rotation, 0]}
+              />
+            );
+          } else if (copiedObj.type === 'turret') {
+            PreviewComponent = (
+              <Turret1
                 materials={activePalette}
                 position={[relativeWorldPos.x, relativeWorldPos.y, relativeWorldPos.z]}
                 rotation={[0, copiedObj.rotation, 0]}

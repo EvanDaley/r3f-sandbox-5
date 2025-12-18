@@ -45,6 +45,7 @@ export default function SceneSelect() {
           borderRadius: "4px",
           padding: "4px 8px",
           cursor: "pointer",
+          maxHeight: "none !important"
         }}
       >
         {scenes.map((scene) => (

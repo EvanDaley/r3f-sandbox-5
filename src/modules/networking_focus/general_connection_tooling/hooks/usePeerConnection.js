@@ -12,7 +12,7 @@ export default function usePeerConnection() {
     setSceneId
   } = useSceneStore();
 
-  const [hostId, setHostId] = useState('CX-ENGINEERING');
+  const [hostId, setHostId] = useState('');
   const {
     peerId,
     playerName,

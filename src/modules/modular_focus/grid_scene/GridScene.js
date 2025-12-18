@@ -6,6 +6,7 @@ import EffectsV2 from "../../../components/effects/EffectsV2";
 import { usePaletteStore } from "../../dynamic_colors/stores/paletteStore";
 import { useGridSceneStore, gridToWorld } from "./stores/gridSceneStore";
 import Desk1 from "../../dynamic_colors/objects/Desk1";
+import Turret1 from "../../dynamic_colors/objects/Turret1";
 import Wall from "./objects/Wall";
 import Corner from "./objects/Corner";
 import TJunction from "./objects/TJunction";
@@ -63,6 +64,15 @@ export default function GridScene() {
         if (obj.type === 'desk') {
           return (
             <Desk1
+              key={id}
+              materials={activePalette}
+              position={[worldPos.x, worldPos.y, worldPos.z]}
+              rotation={[0, obj.rotation || 0, 0]}
+            />
+          );
+        } else if (obj.type === 'turret') {
+          return (
+            <Turret1
               key={id}
               materials={activePalette}
               position={[worldPos.x, worldPos.y, worldPos.z]}

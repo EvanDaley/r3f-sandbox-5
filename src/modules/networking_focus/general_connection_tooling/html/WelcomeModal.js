@@ -34,8 +34,9 @@ export default function WelcomeModal() {
               className="welcome-modal-input"
             />
 
-            <label className="welcome-modal-label">ROOM CODE</label>
+            <label className="welcome-modal-label" style={{ display: 'none' }}>ROOM CODE</label>
             <input
+              style={{ display: 'none' }}
               type="text"
               placeholder="Enter 3-Letter Room Code"
               value={hostId}
