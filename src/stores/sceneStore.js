@@ -28,6 +28,8 @@ import BombGame from "../modules/networking_focus/bomb_game/BombGame";
 import BombGameOverlay from "../modules/networking_focus/bomb_game/BombGameOverlay";
 import ScreamingText from "../modules/screaming_text/ScreamingText";
 import ScreamingTextOverlay from "../modules/screaming_text/ScreamingTextOverlay";
+import BombGameText from "../modules/bomb_game_text/BombGameText";
+import BombGameTextOverlay from "../modules/bomb_game_text/BombGameTextOverlay";
 import Forest1 from "../modules/artistic_focus/forest1/Forest1";
 import Forest1Overlay from "../modules/artistic_focus/forest1/Forest1Overlay";
 import Minimal1 from "../modules/artistic_focus/minimal1/Minimal1";
@@ -57,6 +59,7 @@ const scenes = [
   { id: 'gravitySandbox', name: 'Gravity Sandbox', scene: GravitySandbox, overlay: GravitySandboxOverlay },
   { id: 'bombGame', name: 'Bomb Game', scene: BombGame, overlay: BombGameOverlay },
   { id: 'screamingText', name: 'Screaming Text', scene: null, overlay: ScreamingTextOverlay },
+  { id: 'bombGameText', name: 'Bomb Game Text', scene: null, overlay: BombGameTextOverlay },
   { id: 'forest1', name: 'Forest 1', scene: Forest1, overlay: Forest1Overlay },
   { id: 'minimal1', name: 'Minimal 1', scene: Minimal1, overlay: Minimal1Overlay },
   { id: 'atlantisText', name: 'Atlantis Text', scene: AtlantisText, overlay: AtlantisTextOverlay },
@@ -64,7 +67,7 @@ const scenes = [
   { id: 'gridScene', name: 'Grid Scene', scene: GridScene, overlay: GridSceneOverlay },
 ]
 
-let defaultScene = 'movementSandbox3'
+let defaultScene = 'bombGameText'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {
