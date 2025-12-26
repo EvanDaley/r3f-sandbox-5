@@ -80,7 +80,7 @@ const styles = `
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: 
-      gradientShift 4s ease-in-out infinite,
+      gradientShift 14s ease-in-out infinite,
       sciFiGlow 2s ease-in-out infinite,
       pulse 2.5s ease-in-out infinite;
     

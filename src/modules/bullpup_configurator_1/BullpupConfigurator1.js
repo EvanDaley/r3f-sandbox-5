@@ -1,9 +1,13 @@
-import { useRef, useEffect } from "react"
+import { useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { useGLTF, ContactShadows, OrbitControls, Environment } from "@react-three/drei"
+import { ContactShadows, OrbitControls, Environment } from "@react-three/drei"
+import { usePaletteStore } from "../dynamic_colors/stores/paletteStore"
+import { usePaletteMeshes } from "../dynamic_colors/hooks/usePaletteMeshes"
 import * as THREE from "three"
 
 export default function BullpupConfigurator1() {
+  const activePalette = usePaletteStore((s) => s.activePalette)
+
   return (
     <>
       <GradientBackground />
@@ -13,7 +17,7 @@ export default function BullpupConfigurator1() {
       <directionalLight intensity={1.5} position={[-10, 10, 5]} castShadow />
       <pointLight intensity={1.0} position={[0, 10, -10]} />
       <directionalLight intensity={1.0} position={[5, 5, 10]} />
-      <Bullpup />
+      <Bullpup materials={activePalette} />
       <Environment preset="city" />
       <ContactShadows position={[0, -0.8, 0]} opacity={0.3} scale={20} blur={2} far={2} />
 
@@ -62,55 +66,35 @@ function GradientBackground() {
   )
 }
 
-function Bullpup() {
+function Bullpup({ materials }) {
   const ref = useRef()
-  const MODEL_PATH = window.location.href + "/models/configurator/christmas-bullpup.glb"
-  const { nodes, materials } = useGLTF(MODEL_PATH)
-
-  // Ensure materials respond to lighting
-  useEffect(() => {
-    Object.keys(materials).forEach((key) => {
-      const material = materials[key]
-      if (!material) return
-      
-      // Convert unlit materials to standard materials
-      if (material.type === 'MeshBasicMaterial') {
-        const newMaterial = new THREE.MeshStandardMaterial()
-        if (material.color) newMaterial.color.copy(material.color)
-        if (material.map) newMaterial.map = material.map
-        newMaterial.roughness = 0.5
-        newMaterial.metalness = 0.1
-        materials[key] = newMaterial
-      }
-    })
-  }, [materials])
+  const MODEL_PATH = "configurator/christmas-bullpup-palette.glb"
+  const { meshes } = usePaletteMeshes(MODEL_PATH, materials)
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime()
     ref.current.position.y = (1 + Math.sin(t / 1.5)) / 10
   })
 
+  if (!meshes?.length) return null
+
   return (
     <group
       rotation={[0, Math.PI, 0]}
       ref={ref}
     >
-      {Object.values(nodes).map((node, index) => {
-        if (!node.geometry) return null
-        const materialName = node.material?.name || Object.keys(materials)[index]
-        const material = materials[materialName]
-        if (!material) return null
-        
-        return (
-          <mesh
-            key={node.uuid || index}
-            receiveShadow
-            castShadow
-            geometry={node.geometry}
-            material={material}
-          />
-        )
-      })}
+      {meshes.map((mesh) => (
+        <mesh
+          key={mesh.uuid}
+          geometry={mesh.geometry}
+          material={mesh.material}
+          position={mesh.position}
+          rotation={mesh.rotation}
+          scale={mesh.scale}
+          receiveShadow
+          castShadow
+        />
+      ))}
     </group>
   )
 }
