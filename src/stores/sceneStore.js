@@ -38,6 +38,8 @@ import AtlantisText from "../modules/artistic_focus/minimal1/AtlantisText";
 import AtlantisTextOverlay from "../modules/artistic_focus/minimal1/AtlantisTextOverlay";
 import ItemConfigurator1 from "../modules/item_configurator_1/ItemConfigurator1";
 import ItemConfigurator1Overlay from "../modules/item_configurator_1/ItemConfigurator1Overlay";
+import BullpupConfigurator1 from "../modules/bullpup_configurator_1/BullpupConfigurator1";
+import BullpupConfigurator1Overlay from "../modules/bullpup_configurator_1/BullpupConfigurator1Overlay";
 import GridScene from "../modules/modular_focus/grid_scene/GridScene";
 import GridSceneOverlay from "../modules/modular_focus/grid_scene/GridSceneOverlay";
 
@@ -64,10 +66,11 @@ const scenes = [
   { id: 'minimal1', name: 'Minimal 1', scene: Minimal1, overlay: Minimal1Overlay },
   { id: 'atlantisText', name: 'Atlantis Text', scene: AtlantisText, overlay: AtlantisTextOverlay },
   { id: 'itemConfigurator1', name: 'Item Configurator 1', scene: ItemConfigurator1, overlay: ItemConfigurator1Overlay },
+  { id: 'bullpupConfigurator1', name: 'Bullpup Configurator 1', scene: BullpupConfigurator1, overlay: BullpupConfigurator1Overlay },
   { id: 'gridScene', name: 'Grid Scene', scene: GridScene, overlay: GridSceneOverlay },
 ]
 
-let defaultScene = 'bombGameText'
+let defaultScene = 'bullpupConfigurator1'
 
 // On the prod version, always default to connectPage. When testing locally,
 if (window.location.hostname !== 'localhost') {
