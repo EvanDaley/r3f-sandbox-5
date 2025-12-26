@@ -31,7 +31,7 @@ export const usePaletteStore = create((set, get) => {
             d: "#4e4848",
         }),
         christmas: createToonPalette({
-            p: "#ffffff",
+            p: "#555555",
             e: "#ff0000",
             s: "#228b22",
             t: "#ffd700",
