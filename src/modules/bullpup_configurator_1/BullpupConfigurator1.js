@@ -4,21 +4,23 @@ import { ContactShadows, OrbitControls, Environment } from "@react-three/drei"
 import { usePaletteStore } from "../dynamic_colors/stores/paletteStore"
 import { usePaletteMeshes } from "../dynamic_colors/hooks/usePaletteMeshes"
 import * as THREE from "three"
+import EffectsV2 from "../../components/effects/EffectsV2"
 
 export default function BullpupConfigurator1() {
   const activePalette = usePaletteStore((s) => s.activePalette)
 
   return (
     <>
-      <GradientBackground />
+      <EffectsV2 />
+      {/* <GradientBackground />Vgc */}
       <perspectiveCamera makeDefault />
-      <ambientLight intensity={2.0} />
-      <spotLight intensity={2.0} angle={0.1} penumbra={1} position={[10, 15, 10]} castShadow />
+      <ambientLight intensity={1.0} />
+      {/* <spotLight intensity={2.0} angle={0.1} penumbra={1} position={[10, 15, 10]} castShadow />
       <directionalLight intensity={1.5} position={[-10, 10, 5]} castShadow />
       <pointLight intensity={1.0} position={[0, 10, -10]} />
-      <directionalLight intensity={1.0} position={[5, 5, 10]} />
+      <directionalLight intensity={1.0} position={[5, 5, 10]} /> */}
       <Bullpup materials={activePalette} />
-      <Environment preset="city" />
+      <Environment preset="city" intensity={0.001}/>
       <ContactShadows position={[0, -0.8, 0]} opacity={0.3} scale={20} blur={2} far={2} />
 
       <OrbitControls
@@ -68,7 +70,8 @@ function GradientBackground() {
 
 function Bullpup({ materials }) {
   const ref = useRef()
-  const MODEL_PATH = "configurator/christmas-bullpup-palette.glb"
+  const MODEL_PATH = "configurator/christmas-bullpup.glb"
+  // const MODEL_PATH = "configurator/christmas-bullpup-palette.glb"
   const { meshes } = usePaletteMeshes(MODEL_PATH, materials)
 
   useFrame((state) => {

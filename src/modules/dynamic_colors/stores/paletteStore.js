@@ -30,6 +30,34 @@ export const usePaletteStore = create((set, get) => {
             t: "#b4a47a",
             d: "#4e4848",
         }),
+        christmas: createToonPalette({
+            p: "#ffffff",
+            e: "#ff0000",
+            s: "#228b22",
+            t: "#ffd700",
+            d: "#2d1810",
+        }),
+        winter: createToonPalette({
+            p: "#f0f8ff",
+            e: "#00bfff",
+            s: "#4682b4",
+            t: "#b0c4de",
+            d: "#2f4f4f",
+        }),
+        candyCane: createToonPalette({
+            p: "#ffffff",
+            e: "#ff0000",
+            s: "#ff6b6b",
+            t: "#ffcccc",
+            d: "#4e4848",
+        }),
+        festive: createToonPalette({
+            p: "#fff8dc",
+            e: "#ff4500",
+            s: "#ffd700",
+            t: "#daa520",
+            d: "#3d2817",
+        }),
     }
 
     const activeKey = "default"
