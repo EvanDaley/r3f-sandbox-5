@@ -16,11 +16,14 @@ const debugMode = 0
 // Helper function to detect local development environment and role
 // When working locally I open it in two tabs. The first tab is on 3000 and the second tab is on 3001.
 // They both use hardcoded peerIds so that I can easily have them find each other.
+// In production, we automatically become the host instead of trying to connect to a host that may not exist.
 const getPreferredConfig = () => {
   const isLocalhost = window.location.hostname === 'localhost';
   const port = window.location.port;
 
-  const role = port === '3001' ? 'host' : 'client'
+  // In production (not localhost), always be the host
+  // In localhost, port 3001 is host, others are clients
+  const role = !isLocalhost ? 'host' : (port === '3001' ? 'host' : 'client');
   const peerId = role === 'host'
     ? localHostName
     : `${localClientPrefix}-${Math.floor(Math.random() * 10000)}`;
